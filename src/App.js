@@ -7,6 +7,7 @@ import OkrosLog from "./components/OkrosLog";
 import "./App.css";
 import NavManage from "./side/NavContext";
 import {useContext} from "react";
+import PlayerInfo from "./pages/PlayerInfo";
 
 function App() {
   const {active} = useContext(NavManage);
@@ -30,6 +31,9 @@ function App() {
           </Route>
           <Route path="/game/okros/log" exact>
             <OkrosLog />
+          </Route>
+          <Route path="/player/:id">
+            <PlayerInfo />
           </Route>
           <Route path="/wins">
             <Winner />

@@ -9,6 +9,7 @@ export function Nav({ children }) {
   const [scores, setScores] = useState([]);
   const [game, setGame] = useState(0);
   const [column, setColumn] = useState(3);
+  const [sum, setSum] = useState([]);
   // const [round, setRound] = useState(0);
 
   const UpgradeGame = (list) => {
@@ -28,7 +29,7 @@ export function Nav({ children }) {
   };
 
   const UpgradePlayers = () => {
-    axios.get("http://localhost/players.php/?players=0").then((res) => {
+    axios.get("http://localhost/players.php?players=0").then((res) => {
       setPlayers(res.data);
     });
   };
@@ -56,12 +57,19 @@ export function Nav({ children }) {
   // }
 
   const newGame = () => {
+    
+    axios.get(`http://localhost/players.php?players=6&game=${game}`)
+    .then((res) => {
+      console.log(res.data);
+    });
     setGame(game + 1);
+    
   };
 
   const UpgradeColumn = (val) => {
     setColumn(val)
   }
+
   // console.log(scores);
 
   return (
@@ -76,7 +84,7 @@ export function Nav({ children }) {
         game,
         newGame,
         column,
-        UpgradeColumn
+        UpgradeColumn,
       }}
     >
       {children}

@@ -134,4 +134,177 @@ if ($_GET["players"] == 3){
     $stmt->bind_param("i", $id);
     $stmt->execute();
 }
+
+if ($_GET["players"] == 4){
+    $id = $_GET["user"];
+
+    // $sql = "SELECT username FROM users WHERE id = ?";
+    $stmt = $database->stmt_init();
+    $stmt = $database->prepare("SELECT username FROM users WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    $data = [];
+
+    array_push($data, $result->fetch_assoc());
+    
+    echo json_encode($data);
+}
+
+if ($_GET["players"] == 5){
+    $id = $_GET["user"];
+
+    $stmt = $database->stmt_init();
+    $stmt = $database->prepare("SELECT value, game FROM jatekok WHERE userID = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $num = $result->num_rows;
+    
+    echo json_encode($num);
+}
+
+if ($_GET["players"] == 6){
+    $game = $_GET["game"];
+    
+    $users = $database->query("SELECT id FROM users");
+    $numUser = $users->num_rows;
+
+    $data = [];
+
+    for ($y = 0; $y < $numUser; $y++){
+        $id = $users->fetch_assoc();
+
+        $stmt = $database->stmt_init();
+        $stmt = $database->prepare("SELECT userID, sum(value) FROM jatekok WHERE userID = ? AND game = ?");
+        $stmt->bind_param("ii", $id["id"], $game);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $num = $result->num_rows;
+        
+        for ($i = 0; $i < $num; $i++){
+            $row = $result->fetch_assoc();
+            array_push($data, $row);
+        }
+    }
+
+    // Vesztés
+
+    $stmt = $database->stmt_init();
+    $stmt = $database->prepare("SELECT userID FROM loses WHERE game = ?");
+    $stmt->bind_param("i", $game);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $num_loses = $result->num_rows;
+
+    if ($num_loses == 0){
+
+        $max = 0;
+
+        $x = 0;
+        while ($x < count($data) && $data[$x]["sum(value)"] == null){
+           $x++;
+        }
+        
+        if ($x < count($data)){
+            $max = $data[$x]["sum(value)"];
+        }
+
+        for ($i = 0; $i < count($data); $i++){
+            if ($data[$i]["sum(value)"] > $max && $data[$i]["sum(value)"] != null) {
+                $max = $data[$i]["sum(value)"];
+            }
+        }
+
+        $winers = [];
+
+        for ($i = 0; $i < count($data); $i++){
+            if ($data[$i]["sum(value)"] == $max){
+                array_push($winers, $data[$i]["userID"]);
+            }
+        }
+
+        for ($i = 0; $i < count($winers); $i++){
+            $stmt = $database->stmt_init();
+            $stmt = $database->prepare("INSERT INTO loses(userID, game) VALUES(?,?)");
+            $stmt->bind_param("ii", $winers[$i], $game);
+            $stmt->execute();
+        }
+
+    }
+
+    // győzelem
+
+    $stmt = $database->stmt_init();
+    $stmt = $database->prepare("SELECT userID FROM wins WHERE game = ?");
+    $stmt->bind_param("i", $game);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $num_win = $result->num_rows;
+
+    if ($num_win == 0){
+
+        $min = 0;
+
+        $x = 0;
+        while ($x < count($data) && $data[$x]["sum(value)"] == null){
+           $x++;
+        }
+        
+        if ($x < count($data)){
+            $min = $data[$x]["sum(value)"];
+        }
+
+        for ($i = 0; $i < count($data); $i++){
+            if ($data[$i]["sum(value)"] < $min && $data[$i]["sum(value)"] != null) {
+                $min = $data[$i]["sum(value)"];
+            }
+        }
+        
+        $losers = [];
+
+        for ($i = 0; $i < count($data); $i++){
+            if ($data[$i]["sum(value)"] == $min){
+                array_push($losers, $data[$i]["userID"]);
+            }
+        }
+
+        for ($i = 0; $i < count($losers); $i++){
+            $stmt = $database->stmt_init();
+            $stmt = $database->prepare("INSERT INTO wins(userID, game) VALUES(?,?)");
+            $stmt->bind_param("ii", $losers[$i], $game);
+            $stmt->execute();
+        }
+    }
+}
+
+if ($_GET["players"] == 7){
+    $id = $_GET["user"];
+    $stmt = $database->stmt_init();
+    $stmt = $database->prepare("SELECT userID FROM loses WHERE userID = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $num = $result->num_rows;
+
+    echo json_encode($num);
+
+}
+
+if ($_GET["players"] == 8){
+    $id = $_GET["user"];
+    $stmt = $database->stmt_init();
+    $stmt = $database->prepare("SELECT userID FROM wins WHERE userID = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $num = $result->num_rows;
+
+    echo json_encode($num);
+
+}
 ?>

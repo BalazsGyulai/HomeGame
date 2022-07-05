@@ -7,7 +7,6 @@ const ListOfPoints = ({game, id}) => {
     useEffect(() => {
         axios.get(`http://localhost/players.php/?players=2&id=${id}&game=${game}`)
         .then((res) => {
-            console.log(res.data);
             setScores(res.data);
         })
     }, [])

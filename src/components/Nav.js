@@ -16,7 +16,7 @@ const Nav = () => {
   const splitLocation = pathname.split("/");
   const { newGame, active, UpgradeActive, players, UpgradePlayers } =
     useContext(NavManage);
-  const [visibleSettings, setVisibleSettings] = useState(true);
+  const [visibleSettings, setVisibleSettings] = useState(false);
   // const histroy = useHistory();
 
   useEffect(() => {
@@ -35,8 +35,7 @@ const Nav = () => {
 
   const showSettings = () => {
     setVisibleSettings(!visibleSettings);
-  }
-
+  };
 
   return (
     <>
@@ -106,12 +105,9 @@ const Nav = () => {
                       <Link className="GameLog" to="/game/okros/log">
                         <GoFile />
                       </Link>
-                      {
-                        splitLocation[3] !== "log" ?
-                        <button className="newGame" onClick={NewGameHandler}>
+                      <button className="newGame" onClick={NewGameHandler}>
                         <GoPlus />
-                      </button> : ""
-                      }
+                      </button>
                     </>
                   ) : (
                     ""
@@ -138,7 +134,15 @@ const Nav = () => {
 
               {players.map((player, index) => (
                 <li key={index}>
-                  <Link className="link" to={`/player/${player.id}`}>
+                  <Link
+                    className={
+                      splitLocation[1] === "player" &&
+                      splitLocation[2] === player.id
+                        ? "active link"
+                        : "link"
+                    }
+                    to={`/player/${player.id}`}
+                  >
                     <span>{player.username}</span>
                   </Link>
                 </li>
@@ -148,13 +152,17 @@ const Nav = () => {
         </div>
 
         <div className="settings">
-            <button onClick={() => {showSettings()}}><GiGears/></button>
+          <button
+            onClick={() => {
+              showSettings();
+            }}
+          >
+            <GiGears />
+          </button>
         </div>
       </nav>
-      
-      {
-        visibleSettings ? <Settings /> : ""
-      }
+
+      {visibleSettings ? <Settings /> : ""}
     </>
   );
 };
