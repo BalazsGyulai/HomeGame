@@ -6,9 +6,9 @@ const NavManage = createContext();
 export function Nav({ children }) {
   let [active, setActive] = useState(true);   // navigációssáv megjelenik vagy sem
   const [players, setPlayers] = useState([]);  // eltárolja, hogy kik játszanak
-  const [scores, setScores] = useState([]);
+  const [scores, setScores] = useState([]);  // eltárolni a játékos pontjait
   const [game, setGame] = useState(0);   // tárolni a játékkört -> melyik kört játszák
-  const [column, setColumn] = useState(3);
+  const [column, setColumn] = useState(3);  // eltárooni hogy hàny játékos legyen egymás mellett
   const [sum, setSum] = useState([]);
   // const [round, setRound] = useState(0);
 
@@ -34,13 +34,13 @@ export function Nav({ children }) {
     });
   };
 
-  const UpgradeScores = () => {
+  const UpgradeScores = () => {  // beállítja a pontokat a jàtékosoknak
     axios.get("http://localhost/players.php?players=1").then((response) => {
       // console.log(response.data);
       setScores(response.data);
       // setGame(parseInt(response.data[0].game));
 
-      let max = response.data[0].game;
+      let max = response.data[0].game;  // kör beállítása a legfriebbre
       for (let i = 1; i < response.data.length; i++) {
         if (response.data[i].game > max) {
           max = response.data[i].game;
