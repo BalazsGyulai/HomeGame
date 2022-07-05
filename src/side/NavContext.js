@@ -4,31 +4,31 @@ import axios from "axios";
 const NavManage = createContext();
 
 export function Nav({ children }) {
-  let [active, setActive] = useState(true);
-  const [players, setPlayers] = useState([]);
+  let [active, setActive] = useState(true);   // navigációssáv megjelenik vagy sem
+  const [players, setPlayers] = useState([]);  // eltárolja, hogy kik játszanak
   const [scores, setScores] = useState([]);
-  const [game, setGame] = useState(0);
+  const [game, setGame] = useState(0);   // tárolni a játékkört -> melyik kört játszák
   const [column, setColumn] = useState(3);
   const [sum, setSum] = useState([]);
   // const [round, setRound] = useState(0);
 
-  const UpgradeGame = (list) => {
-    console.log(list);
-    let max = list[0].game;
-    for (let i = 1; i < list.length; i++) {
+  const UpgradeGame = (list) => {    // megváltoztatni a játékkört a legfrissebre
+  //  console.log(list);
+    let max = list[0].game;  // legelső játékkör
+    for (let i = 1; i < list.length; i++) {  // megkeresi a legfrisebb kört
       if (list[i].game > max) {
         max = list[i].game;
       }
     }
 
-    setGame(max);
+    setGame(max);  // beállítja a kört a legfrisebbre
   };
 
-  const UpgradeActive = (set) => {
-    setActive((active = set));
+  const UpgradeActive = (set) => {  // megváltoztatja a navigációssávot -> true (megjelenik), false (nem jelenik meg)
+    setActive(!active);
   };
 
-  const UpgradePlayers = () => {
+  const UpgradePlayers = () => {  // beállítja a játékosokat
     axios.get("http://localhost/players.php?players=0").then((res) => {
       setPlayers(res.data);
     });
@@ -56,7 +56,7 @@ export function Nav({ children }) {
   //   setRound(round + 1);
   // }
 
-  const newGame = () => {
+  const newGame = () => {  // új kört kezd
     
     axios.get(`http://localhost/players.php?players=6&game=${game}`)
     .then((res) => {
@@ -66,7 +66,7 @@ export function Nav({ children }) {
     
   };
 
-  const UpgradeColumn = (val) => {
+  const UpgradeColumn = (val) => {  // a játékban beállítja hány játékos pontjai legyen egymás mellett
     setColumn(val)
   }
 
