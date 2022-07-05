@@ -1,0 +1,64 @@
+.error {
+    position: absolute;
+    top: -120px;
+    left: calc(100% - 10px);
+    transform: translateX(-100%);
+    border-radius: 7px;
+    min-width: 300px;
+    max-width: 400px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    transition: 0.4s ease-in-out;
+}
+
+.fail {
+    box-shadow: 3px 3px 0 #bd790d;
+    background: #fca311;   
+}
+
+.fail p {
+    color: #000;
+}
+
+.success {
+    box-shadow: 3px 3px 0 #2c6e49;
+    background: #4c956c;   
+}
+
+.success p{
+    color: #fff;
+}
+
+img {
+    margin: 5px 10px;
+    width: 40px;
+    height: 40px;
+}
+
+p{
+    padding: 5px 10px 5px 5px;
+    font-size: 1em;
+}
+
+.visible{
+    top: 10px;
+    animation: show 1.5s;
+}
+
+.hidden {
+    top: -120px;
+    animation: show 1.5s;
+    animation-direction: reverse;
+}
+
+@keyframes show {
+    0% {
+       top: -120px; 
+    }
+
+    100% {
+        top: 10px;
+    }
+
+}

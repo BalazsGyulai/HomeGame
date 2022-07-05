@@ -1,0 +1,75 @@
+#wins{
+    width: 100%;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 1;
+}
+
+header {
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+header::before{
+    content: '';
+    position: absolute;
+    top: calc(100% - 2px);
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #e5e5e5;
+}
+
+header h1{
+    font-size: 2.5em;
+    color: rgb(252, 163, 17);
+}
+
+#chart {
+    width: 100%;
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rank h2{
+    width: 100%;
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    font-size: 1.8em;
+    color: #14213d;
+    border-bottom: 1px solid rgb(218, 218, 218);
+}
+
+.rank table {
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+.rank table td,
+.rank table th{
+    padding: 0 20px;
+    border-bottom: 1px solid rgb(218, 218, 218);
+    height: 40px;
+    color: #000;
+}
+
+.rank table tr:nth-child(odd) td{
+    background-color: rgb(249, 249, 249);
+}
+
+.rank table tr:nth-child(1) th{
+    border-bottom: 2px solid #000;
+}
+
+.rank table th{
+    font-size: 1em;
+}
+
+.rank table td:nth-child(1){
+    text-align: center;
+}

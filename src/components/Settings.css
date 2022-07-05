@@ -1,0 +1,81 @@
+.settingsBlank{
+    position: absolute;
+    top: calc(100% - 5px);
+    left: 315px;
+    transform: translateY(-100%);
+    width: 300px;
+    height: 200px;
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.22);
+    z-index: 5;
+}
+
+.settingsBlank::before{
+    content: '';
+    position: absolute;
+    top: calc(100% - 14px);
+    left: -8px;
+    background-color: #fff;
+    width: 14px;
+    height: 14px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    transform: translateY(-100%) rotateZ(45deg);
+    z-index: 3;
+}
+
+.settingsBlank > div {
+    position: relative;
+    width: 100%;
+    height: 40px;
+}
+
+.settingsBlank > div h1{
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+    height: 40px;
+    color: #14213d;
+}
+
+.settingsBlank .changer{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    top: 0;
+    right: 0;
+    height: 40px;
+}
+
+.settingsBlank .changer span{
+    padding: 0 10px;
+}
+
+.settingsBlank .changer button{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    right: 0;
+    width: 25px;
+    height: 25px;
+    font-size: 0.8em;
+    background: none;
+    color: #14213d;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    cursor: pointer;
+    outline: none;
+    transition: 0.3s;
+}
+
+.settingsBlank .changer button:hover,
+.settingsBlank .changer button:active{
+    background: #e9e9e9;
+    border-style: #a8a8a8;
+    transition: 0.3s;
+}

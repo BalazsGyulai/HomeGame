@@ -1,0 +1,192 @@
+.game {
+  display: grid;
+  /* grid-template-columns: repeat(auto-fit, calc(100% / var(--column))); */
+  grid-auto-rows: calc(100% / 3);
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.player {
+  position: relative;
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  border: 1px solid #ccc;
+  border-radius: 9px;
+  margin: 5px;
+  overflow: hidden;
+}
+
+.player h1 {
+  text-align: center;
+  font-size: 1.2em;
+  padding: 3px;
+  color: #14213d;
+}
+
+.gameInfo .addPoints {
+  position: relative;
+}
+
+.gameInfo .addPoints {
+  margin-left: 3px;
+  margin-bottom: 5px;
+  width: calc(100% - 6px);
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ccc;
+}
+
+.player .gameInfo {
+  position: absolute;
+  width: 100%;
+  height: 32%;
+}
+
+.player .gameInfo p {
+  text-align: center;
+  font-size: 1em;
+  font-weight: 500;
+  padding: 0 3px;
+  color: #fca311;
+}
+
+.player .gameInfo input {
+  width: 100%;
+  height: 30px;
+  padding: 3px 30px 3px 3px;
+  border-radius: 5px;
+  outline: none;
+  border: 2px solid #ccc;
+  font-size: 1em;
+  transition: 0.3s;
+  z-index: 2;
+}
+
+.player .gameInfo input:hover {
+  border: 2px solid #14213d;
+  transition: 0.3s;
+}
+
+.player .gameInfo input:focus {
+  border: 2px solid #fca311;
+  transition: 0.3s;
+}
+
+.player .gameInfo button {
+  position: absolute;
+  right: 3px;
+  top: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 #2c6e49;
+  background: #4c956c;
+  font-size: 0.7em;
+  color: #fff;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  z-index: 3;
+  transition: 0.3s;
+}
+
+.player .hiddenbtn {
+  display: none;
+}
+
+.player .visiblebtn {
+  display: block;
+}
+
+@keyframes buttonComming {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.player .gameInfo button:hover {
+  box-shadow: inset 3px 3px 0 #2c6e49;
+}
+.player .gameInfo button:active {
+  background: #2c6e49;
+}
+
+.player form {
+  width: 100%;
+  height: 100%;
+}
+
+.player .gameRounds {
+  position: absolute;
+  width: 100%;
+  top: 32%;
+  height: 68%;
+  padding: 3px 0 3px 3px;
+  overflow-y: scroll;
+}
+
+.player .gameRounds::-webkit-scrollbar {
+  width: 10px;
+}
+
+.player .gameRounds::-webkit-scrollbar-track {
+  background: #fff;
+}
+
+.player .gameRounds::-webkit-scrollbar-thumb {
+  background-color: #14213d;
+  border: 3px solid #fff;
+  border-radius: 5px;
+}
+
+.player .gameRounds div {
+  display: flex;
+  align-items: center;
+  padding: 2px 3px;
+  width: 100%;
+  height: 30px;
+  color: #14213d;
+  font-weight: 400;
+}
+
+.player .gameRounds div:nth-child(odd) {
+  background-color: rgb(246, 246, 246);
+}
+
+.gameRounds p {
+  padding: 0 3px;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.gameRounds .round {
+  font-weight: bold;
+  padding: 0 3px;
+}
+
+.delbtn {
+  position: absolute;
+  right: 5px;
+  width: 23px;
+  height: 23px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #c1121f;
+  box-shadow: 0 0 0 #780000;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  outline: none;
+}
+
+.delbtn:hover,
+.delbtn:active{
+  box-shadow: inset 3px 3px 0 #780000;
+}

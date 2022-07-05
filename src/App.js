@@ -1,24 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import Okros from "./components/Okros";
+import { Route } from "react-router-dom";
+import Winner from "./pages/Winner";
+import Nav from "./components/Nav";
+import Add from "./pages/Add";
+import OkrosLog from "./components/OkrosLog";
+import "./App.css";
+import NavManage from "./side/NavContext";
+import {useContext} from "react";
 
 function App() {
+  const {active} = useContext(NavManage);
+
+  let opened = active ? "menuOpened" : "menuClosed";
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="App">
+        <Nav />
+
+        <div className={`container ${opened}`}>
+          <Route path="/" exact>
+            <Winner />
+          </Route>
+          <Route path="/add">
+            <Add />
+          </Route>
+          <Route path="/game/okros" exact>
+            <Okros />
+          </Route>
+          <Route path="/game/okros/log" exact>
+            <OkrosLog />
+          </Route>
+          <Route path="/wins">
+            <Winner />
+          </Route>
+        </div>
+      </div>
+    </>
   );
 }
 
