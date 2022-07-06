@@ -5,6 +5,7 @@ const ListOfPoints = ({game, id}) => {
     const [scores, setScores] = useState([]);
 
     useEffect(() => {
+
         axios.get(`http://localhost/players.php/?players=2&id=${id}&game=${game}`)
         .then((res) => {
             setScores(res.data);

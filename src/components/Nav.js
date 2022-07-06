@@ -6,7 +6,9 @@ import { Link, useLocation } from "react-router-dom";
 import NavManage from "../side/NavContext";
 import { GoPlus, GoFile } from "react-icons/go";
 import { GiGears } from "react-icons/gi";
+import { FaTrash } from "react-icons/fa";
 import Settings from "./Settings";
+import axios from "axios";
 // import { useHistory } from "react-router-dom";
 
 const Nav = () => {
@@ -21,6 +23,7 @@ const Nav = () => {
 
   useEffect(() => {
     UpgradePlayers();
+    console.log(players)
   }, []);
 
   // UpgradePlayers();
@@ -36,6 +39,13 @@ const Nav = () => {
   const showSettings = () => {
     setVisibleSettings(!visibleSettings);
   };
+
+  const delPlayer = (val) =>{
+    axios
+      .get(`http://localhost/players.php/?players=9&user=${val}`).then(() => {
+        UpgradePlayers();
+      })
+  }
 
   return (
     <>
@@ -79,7 +89,7 @@ const Nav = () => {
                       : "link"
                   }
                 >
-                  <span>Nyerések</span>
+                  <span>Statisztika</span>
                 </Link>
               </li>
             </ul>
@@ -144,6 +154,13 @@ const Nav = () => {
                     to={`/player/${player.id}`}
                   >
                     <span>{player.username}</span>
+                    {
+                      splitLocation[1] === "player" &&
+                      splitLocation[2] === player.id
+                        ? <button onClick={() => {delPlayer(player.id)}} className="delbtn"><FaTrash/></button>
+                        : ""
+                    }
+                    
                   </Link>
                 </li>
               ))}

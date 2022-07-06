@@ -1,11 +1,13 @@
 <?php
-    require_once("../connect/connect.php");
 
-    header('Access-Control-Allow-Origin: *');
-    header("Access-Control-Allow-Headers: Content-Type");
-    $data = json_decode(array_keys($_POST)[0], true);
+header('Access-Control-Allow-Origin: *');
+// header("Access-Control-Allow-Headers: Content-Type");
 
-    
+$data = json_decode(file_get_contents('php://input'), true);
+// $data = json_decode(array_keys($_POST), true);
+// echo json_encode($data);
+require_once("../connect/connect.php");
+
     $name = $data['name'];
     $username = $data["username"];
     $email = $data["email"];
@@ -41,12 +43,10 @@
         $stmt->bind_param("ssss", $name, $username, $email, $pwdHashed);
         $stmt->execute();
 
-
-        
         echo json_encode("success");
     }
-    
+
     $stmt->close();
     $database->close();
-    
+
 ?>

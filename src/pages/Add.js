@@ -1,12 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import Error from "../components/Error";
 import "./Add.css";
-import axios from "axios";
-import { useHistory } from "react-router-dom";
 import NavManage from "../side/NavContext";
 
 const Add = () => {
-  const histroy = useHistory();
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -16,16 +13,21 @@ const Add = () => {
   const [ErrorShow, setErrorShow] = useState(2);
   const [ErrorDesc, setErrorDesc] = useState("Sikeres csatlakozás!");
   const [ErrorType, setErrorType] = useState("");
-  const {UpgradePlayers} = useContext(NavManage);
-
+  const { UpgradePlayers } = useContext(NavManage);
 
   useEffect(() => {
-    if (name !== "" && username !== "" && email !== "" && password !== "" && password2 !== "") {
-        if (password === password2){
-            setSubmitAllow(true);
-        } else {
-            setSubmitAllow(false);
-        }
+    if (
+      name !== "" &&
+      username !== "" &&
+      email !== "" &&
+      password !== "" &&
+      password2 !== ""
+    ) {
+      if (password === password2) {
+        setSubmitAllow(true);
+      } else {
+        setSubmitAllow(false);
+      }
     } else {
       setSubmitAllow(false);
     }
@@ -68,45 +70,58 @@ const Add = () => {
     setErrorType(type);
 
     setErrorShow(1);
-
-    setTimeout(() => {
-      setErrorShow(0);
-      histroy.push("/");
-    }, 5000)
-  }
+  };
 
   const submitHandler = (event) => {
     event.preventDefault();
-    if (name !== "" && username !== "" && email !== "" && password !== "" && password2 !== "") {
-        if (password === password2){
-            axios.post('http://localhost/add/add.php', {
-                name: name,
-                username: username,
-                email: email,
-                password: password,
-                password2: password2
-            })
-            .then((res) => {
-                if (res.data === "failed to connect to database"){
-                  errorHandler("Váratlan hiba! Kérem küldje le újból a regisztrációt!", "fail");
-                  setPassword("");
-                  setPassword2("");
-                  setEmail("");
-                  setUsername("");
-                } else if (res.data === "success"){
-                  errorHandler("Sikeres regisztráció!", "success");
-                  
-                  UpgradePlayers();
-                  
-                } else if (res.data === "Already exist"){
-                  errorHandler("Felhasználónév vagy email már létezik!", "fail");
-                  setPassword("");
-                  setPassword2("");
-                  setEmail("");
-                  setUsername("");
-                }
-            })
-        }  
+    if (
+      name !== "" &&
+      username !== "" &&
+      email !== "" &&
+      password !== "" &&
+      password2 !== ""
+    ) {
+      if (password === password2) {
+        let data = {
+          name: name,
+          username: username,
+          email: email,
+          password: password,
+          password2: password2,
+        };
+
+        fetch("http://localhost/add/add.php", {
+          method: "post",
+          body: JSON.stringify(data),
+        })
+          .then((data) => data.json())
+          .then((data) => {
+            if (data === "failed to connect to database") {
+              errorHandler(
+                "Váratlan hiba! Kérem küldje le újból a regisztrációt!",
+                "fail"
+              );
+              setPassword("");
+              setPassword2("");
+              setEmail("");
+              setUsername("");
+            } else if (data === "success") {
+              errorHandler("Sikeres regisztráció!", "success");
+              UpgradePlayers();
+              setName("");
+              setPassword("");
+              setPassword2("");
+              setEmail("");
+              setUsername("");
+            } else if (data === "Already exist") {
+              errorHandler("Felhasználónév vagy email már létezik!", "fail");
+              setPassword("");
+              setPassword2("");
+              setEmail("");
+              setUsername("");
+            }
+          });
+      }
     }
   };
 
@@ -115,7 +130,9 @@ const Add = () => {
       <Error
         type={ErrorType}
         value={ErrorDesc}
-        className={ErrorShow === 1 ? "visible" : ErrorShow === 0 ?"hidden" : ""}
+        className={
+          ErrorShow === 1 ? "visible" : ErrorShow === 0 ? "hidden" : ""
+        }
       />
       <div className="add">
         <form onSubmit={submitHandler}>
@@ -142,7 +159,7 @@ const Add = () => {
           <div className="field">
             <label>Email:</label>
             <input
-              type="text"
+              type="email"
               value={email}
               onChange={emailChangeHandler}
               required
@@ -169,7 +186,10 @@ const Add = () => {
               className="newPlayer"
             />
           </div>
-          <button type="submit" className={submitAllow ? "enable submitbtn" : "disable submitbtn"}>
+          <button
+            type="submit"
+            className={submitAllow ? "enable submitbtn" : "disable submitbtn"}
+          >
             Regisztráció
           </button>
         </form>

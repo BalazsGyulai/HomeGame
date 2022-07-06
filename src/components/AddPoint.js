@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { FaCheck } from "react-icons/fa";
 import "./Okros.css";
-import axios from "axios";
 import NavManage from "../side/NavContext";
 
 const AddPoint = ({ id }) => {
@@ -20,25 +19,22 @@ const AddPoint = ({ id }) => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    axios
-      .post("http://localhost/add/score.php", {
+    fetch("http://localhost/add/score.php", {
+      method: "post",
+      body: JSON.stringify({
         id: e.target[0].id,
         val: e.target[0].value,
         game: game
-      })
-      .then((res) => {
-        // console.log(res.data);
-        UpgradeScores();
-      });
-    // console.log(e.target[0].value);
-    
+      }),
+    })
+    .then(() => {
+      UpgradeScores();
+    })
+
     setScore("");
-    // NewRound();
 };
-// console.log(playerRound);
 
   const clickHandler = () => {
-    // console.log("a");
     setVisbtn(false);
   };
 

@@ -1,6 +1,7 @@
 <?php
 
 header('Access-Control-Allow-Origin: *');
+
 require_once("./connect/connect.php");
 
 if ($_GET["players"] == 0){
@@ -168,8 +169,9 @@ if ($_GET["players"] == 5){
 }
 
 if ($_GET["players"] == 6){
-    $game = $_GET["game"];
     
+    $game = $_GET["game"];
+    echo json_encode($game);
     $users = $database->query("SELECT id FROM users");
     $numUser = $users->num_rows;
 
@@ -305,6 +307,34 @@ if ($_GET["players"] == 8){
     $num = $result->num_rows;
 
     echo json_encode($num);
+}
 
+if ($_GET["players"] == 9){
+    $id = $_GET["user"];
+
+    $stmt = $database->stmt_init();
+    $stmt = $database->prepare("DELETE FROM users WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->close();
+
+    $stmt = $database->stmt_init();
+    $stmt = $database->prepare("DELETE FROM jatekok WHERE userID = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->close();
+
+    $stmt = $database->stmt_init();
+    $stmt = $database->prepare("DELETE FROM loses WHERE userID = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->close();
+
+    $stmt = $database->stmt_init();
+    $stmt = $database->prepare("DELETE FROM wins WHERE userID = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->close();
+ 
 }
 ?>

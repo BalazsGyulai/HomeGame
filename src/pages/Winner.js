@@ -1,62 +1,129 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Winner.css";
-import Plotly from "plotly.js-dist";
+import { Chart, BarElement } from "chart.js";
+import { Bar } from "react-chartjs-2";
+
+Chart.register(BarElement);
 
 const Winner = () => {
-  let data = [
-    {
-      x: ["Bali", "Gery", "Atis"],
-      y: [30, 20, 10],
-      type: "bar",
-      marker: {
-        color: 'rgb(252, 163, 17)',
-      }
-    },
-  ];
+  const [players, setPlayers] = useState([]);
+  const [playerWins, setPlayersWins] = useState([]);
+  const [playerLose, setPLayerLose] = useState([]);
 
   useEffect(() => {
-    Plotly.newPlot("chart", data);
-  });
+    UpgradePlayer();
+    UpgradeWins();
+    UpgradeLose();
+  }, []);
+
+  const UpgradePlayer = () => {
+    fetch("http://localhost/stats.php", {
+      method: "post",
+      body: JSON.stringify({
+        get: "players",
+      }),
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        // console.log(data);
+        setPlayers(data);
+      });
+  };
+
+  const UpgradeWins = () => {
+    fetch("http://localhost/stats.php", {
+      method: "post",
+      body: JSON.stringify({
+        get: "wins",
+      }),
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        // console.log(data);
+        setPlayersWins(data);
+      });
+  };
+
+  const UpgradeLose = () => {
+    fetch("http://localhost/stats.php", {
+      method: "post",
+      body: JSON.stringify({
+        get: "lose",
+      }),
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        // console.log(data);
+        setPLayerLose(data);
+      });
+  }
 
   return (
     <>
       <div id="wins">
         <header>
-          <h1>Nyerések</h1>
+          <h1>Statisztika</h1>
         </header>
-        <div id="chart"></div>
-        <div className="rank">
-          <h2>Rangsor</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Helyezés</th>
-                <th>Név</th>
-                <th>Nyerések</th>
-                <th>Vesztések</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1.</td>
-                <td>Bali</td>
-                <td>30</td>
-                <td>10</td>
-              </tr>
-              <tr>
-                <td>2.</td>
-                <td>Gery</td>
-                <td>20</td>
-                <td>10</td>
-              </tr>
-              <tr>
-                <td>3.</td>
-                <td>Atis</td>
-                <td>10</td>
-                <td>10</td>
-              </tr>
-            </tbody>
-          </table>
+        <h2>Nyerések</h2>
+        <div className="chart">
+        <Bar
+          options={{
+            maintainAspectRatio: false,
+            indexAxis: "y",
+            elements: {
+              bar: {
+                borderWidth: 2,
+              },
+            },
+            plugins: {
+              legend: {
+                position: "right",
+              },
+            },
+          }}
+          data={{
+            labels: players,
+            datasets: [
+              {
+                label: "wins",
+                data: playerWins,
+                borderColor: "rgb(253, 163, 18)",
+                backgroundColor: "rgba(253, 163, 18, 0.4)",
+              },
+            ],
+          }}
+        />
+        </div>
+          <h2>Vesztések</h2>
+        <div className="chart">
+        <Bar
+          
+          options={{
+            maintainAspectRatio: false,
+            indexAxis: "y",
+            elements: {
+              bar: {
+                borderWidth: 2,
+              },
+            },
+            plugins: {
+              legend: {
+                position: "right",
+              },
+            },
+          }}
+          data={{
+            labels: players,
+            datasets: [
+              {
+                label: "wins",
+                data: playerLose,
+                borderColor: "rgb(253, 163, 18)",
+                backgroundColor: "rgba(253, 163, 18, 0.4)",
+              },
+            ],
+          }}
+        />
         </div>
       </div>
     </>

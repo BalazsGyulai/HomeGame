@@ -14,6 +14,7 @@ const PlayerInfo = () => {
   const [username, setUsername] = useState("");
   const [scores, setScores] = useState(0);
   const [loses, setLoses] = useState(0);
+  const [games, setGames] = useState(0);
   const [winPoints, setWinPoints] = useState(0);
 
   useEffect(() => {
@@ -38,7 +39,18 @@ const PlayerInfo = () => {
   };
 
   function AllGames() {
-    return <div>{scores}</div>;
+    fetch("http://localhost/stats.php", {
+      method: "post",
+      body: JSON.stringify({
+        get: "allgames",
+        id: id,
+      }),
+    })
+    .then((data) => data.json())
+      .then((data) => {
+        setGames(data);
+      });
+    return <div>{games}</div>;
   }
 
   function Losses() {
@@ -57,6 +69,18 @@ const PlayerInfo = () => {
         setWinPoints(res.data);
       });
     return <div>{winPoints}</div>;
+  }
+
+  function WinRate() {
+    return (
+      <div>{Math.round(winPoints / scores * 100)} %</div>
+    )
+  }
+
+  function LoseRate() {
+    return (
+      <div>{Math.round(loses / scores * 100)} %</div>
+    )
   }
 
   return (
@@ -78,8 +102,16 @@ const PlayerInfo = () => {
             <p>Összes játék</p>
             <AllGames />
           </div>
+          <div className="wins">
+            <p>Nyerési esély</p>
+            <WinRate />
+          </div>
+          <div className="losses">
+            <p>Vesztési esély</p>
+            <LoseRate />
+          </div>
         </div>
-        <Line
+        {/* <Line
           options={{
             responsive: true,
             plugins: {
@@ -102,9 +134,9 @@ const PlayerInfo = () => {
                 pointHoverRadius: 15
               }
             ]
-        }}
+        }} */}
 
-        />
+        {/* /> */}
       </div>
     </>
   );
