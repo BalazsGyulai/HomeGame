@@ -84,8 +84,13 @@ header h1{
 }
 
 
-h2{
+h2,
+h3{
     color: #14213d;
     font-size: 1.7em;
     padding: 10px 0;
+}
+
+h3{
+    font-size: 1.4em;
 }

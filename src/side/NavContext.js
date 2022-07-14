@@ -15,7 +15,7 @@ export function Nav({ children }) {
   const [ErrorShow, setErrorShow] = useState(0);
   const [ErrorDesc, setErrorDesc] = useState("Sikeres csatlakozás!");
   const [ErrorType, setErrorType] = useState("");
-  const baseURL = "http://teszt.gyulaibalazs.hu/";
+  const baseURL = "http://localhost/";
   const [errors, setErrors] = useState([]);
   const [games, setGames] = useState([]);
   const [customGame, setCustomGame] = useState(0);
@@ -123,7 +123,7 @@ export function Nav({ children }) {
     })
       .then((data) => data.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
 
         if (data.length !== 0){
           setGames(data);

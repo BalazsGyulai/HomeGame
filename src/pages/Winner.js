@@ -3,6 +3,7 @@ import "./Winner.css";
 import { Chart, BarElement } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import NavManage from "../side/NavContext";
+import AllPlayerStats from "../components/AllPlayerStats";
 
 Chart.register(BarElement);
 
@@ -10,7 +11,7 @@ const Winner = () => {
   const [players, setPlayers] = useState([]);
   const [playerWins, setPlayersWins] = useState([]);
   const [playerLose, setPLayerLose] = useState([]);
-  const {baseURL, secureCode} = useContext(NavManage);
+  const {baseURL, secureCode, games} = useContext(NavManage);
 
   useEffect(() => {
     UpgradePlayer();
@@ -66,7 +67,8 @@ const Winner = () => {
         <header>
           <h1>Statisztika</h1>
         </header>
-        <h2>Nyerések</h2>
+        <h2>Összes játék</h2>
+        <h3>Nyerések</h3>
         <div className="chart">
         <Bar
           options={{
@@ -96,7 +98,7 @@ const Winner = () => {
           }}
         />
         </div>
-          <h2>Vesztések</h2>
+          <h3>Vesztések</h3>
         <div className="chart">
         <Bar
           
@@ -127,6 +129,13 @@ const Winner = () => {
           }}
         />
         </div>
+        {
+          games.map((game, index) => (
+            <>
+            <AllPlayerStats key={index} gameName={game}/>
+            </>
+          ))
+        }
       </div>
     </>
   );

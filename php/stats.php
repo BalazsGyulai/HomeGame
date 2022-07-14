@@ -1,6 +1,6 @@
 <?php
 header('Access-Control-Allow-Origin: http://teszt.gyulaibalazs.hu/');
-// header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Origin: *');
 
 $input = json_decode(file_get_contents('php://input'), true);
 
@@ -110,6 +110,62 @@ if ($input["get"] == "lose"){
     }
 
     echo json_encode($data);
+}
+
+if ($input["get"] == "gamewins"){
+    $game = $input["gameID"];
+    $gameName = $input["gameName"];
+
+    $stmt = $database->stmt_init();
+    $stmt = $database->prepare("SELECT id FROM users WHERE gameID = ?");
+    $stmt->bind_param("s", $game);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $id_num = $result->num_rows;
+
+    $data = [];
+
+    for ($i = 0; $i < $id_num; $i++){
+        $id = $result->fetch_assoc()["id"];
+
+        $stmt = $database->stmt_init();
+        $stmt = $database->prepare("SELECT count(game) FROM wins WHERE userID = ? AND gameName = ?");
+        $stmt->bind_param("is", $id, $gameName);
+        $stmt->execute();
+        $wins = $stmt->get_result();
+        
+        array_push($data, $wins->fetch_assoc()["count(game)"]);
+    }
+
+    echo json_encode($data);   
+}
+
+if ($input["get"] == "gamelose"){
+    $game = $input["gameID"];
+    $gameName = $input["gameName"];
+
+    $stmt = $database->stmt_init();
+    $stmt = $database->prepare("SELECT id FROM users WHERE gameID = ?");
+    $stmt->bind_param("s", $game);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $id_num = $result->num_rows;
+
+    $data = [];
+
+    for ($i = 0; $i < $id_num; $i++){
+        $id = $result->fetch_assoc()["id"];
+
+        $stmt = $database->stmt_init();
+        $stmt = $database->prepare("SELECT count(game) FROM loses WHERE userID = ? AND gameName = ?");
+        $stmt->bind_param("is", $id, $gameName);
+        $stmt->execute();
+        $wins = $stmt->get_result();
+        
+        array_push($data, $wins->fetch_assoc()["count(game)"]);
+    }
+
+    echo json_encode($data);   
 }
 
 ?>
