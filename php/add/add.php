@@ -1,20 +1,18 @@
 <?php
 
-header('Access-Control-Allow-Origin: *');
-// header("Access-Control-Allow-Headers: Content-Type");
+header('Access-Control-Allow-Origin: http://teszt.gyulaibalazs.hu/');
+// header('Access-Control-Allow-Origin: *');
 
 $data = json_decode(file_get_contents('php://input'), true);
-// $data = json_decode(array_keys($_POST), true);
-// echo json_encode($data);
+
 require_once("../connect/connect.php");
 
-    $name = $data['name'];
     $username = $data["username"];
-    $email = $data["email"];
     $password = $data["password"];
     $password2 = $data["password2"];
+    $gameID = $data["gameID"];
 
-    $sql = "SELECT * FROM users WHERE email = ? OR username = ?";
+    $sql = "SELECT * FROM users WHERE username = ? AND gameID = ?";
     $stmt = $database->stmt_init();
 
     if (!$stmt = $database->prepare($sql)){
@@ -22,14 +20,15 @@ require_once("../connect/connect.php");
         exit;
     }
 
-    $stmt->bind_param("ss", $email, $username);
+    $stmt->bind_param("ss", $username, $gameID);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($row = $result->fetch_assoc()){
         echo json_encode("Already exist");
     } else {
-        $sql = "INSERT INTO users(nev, username, email, pass) VALUES(?, ?, ?, ?)";
+        $status = "member";
+        $sql = "INSERT INTO users(username, pass, gameID, status) VALUES(?, ?, ?, ?)";
         $stmt = $database->stmt_init();
 
         if (!$stmt = $database->prepare($sql)){
@@ -40,7 +39,7 @@ require_once("../connect/connect.php");
         $option["cost"] = 10;
         $pwdHashed = password_hash($password, PASSWORD_DEFAULT, $option);
 
-        $stmt->bind_param("ssss", $name, $username, $email, $pwdHashed);
+        $stmt->bind_param("ssss", $username, $pwdHashed, $gameID, $status);
         $stmt->execute();
 
         echo json_encode("success");

@@ -1,0 +1,12 @@
+.btns {
+    display: flex;
+}
+
+.btns button{
+    font-size: 1em;
+}
+
+h1{
+    color: #fca311;
+    margin-bottom: 20px;
+}

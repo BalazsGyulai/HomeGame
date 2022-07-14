@@ -6,7 +6,7 @@ import NavManage from "../side/NavContext";
 const AddPoint = ({ id }) => {
   const [score, setScore] = useState("");
   const [visbtn, setVisbtn] = useState(false);
-  const {game, UpgradeScores } = useContext(NavManage);
+  const {baseURL, game, UpgradeScores } = useContext(NavManage);
 
   const changeHandler = (e) => {
     setScore(e.target.value);
@@ -19,13 +19,16 @@ const AddPoint = ({ id }) => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    fetch("http://localhost/add/score.php", {
+    fetch(`${baseURL}add/score.php`, {
       method: "post",
       body: JSON.stringify({
         id: e.target[0].id,
         val: e.target[0].value,
-        game: game
+        game: game,
       }),
+    })
+    .then((data) => {
+      data.json();
     })
     .then(() => {
       UpgradeScores();
@@ -52,11 +55,8 @@ const AddPoint = ({ id }) => {
             value={score}
           />
 
-          {/* className="hiddenbtn" */}
           <button
             type="submit"
-            // onMouseOver={onMouseOverHandller}
-            // onMouseOut={onMouseOutHandler}
             className={visbtn ? "visiblebtn" : "hiddenbtn"}
             onClick={clickHandler}
           >

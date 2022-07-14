@@ -27,3 +27,17 @@
     width: calc(100% - 350px);
 }
 
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+::-webkit-scrollbar-track {
+    background: #fff;
+  }
+  
+::-webkit-scrollbar-thumb {
+    background-color: #14213d;
+    border: 3px solid #fff;
+    border-radius: 5px;
+  }

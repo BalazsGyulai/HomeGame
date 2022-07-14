@@ -1,95 +1,266 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import "./PlayerInfo.css";
-import { Chart , PointElement, LineElement, CategoryScale, LinearScale} from "chart.js";
-import { Line } from "react-chartjs-2";
+import {
+  Chart,
+  PointElement,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+} from "chart.js";
+import { Line, Bar, PolarArea } from "react-chartjs-2";
+import NavManage from "../side/NavContext";
+import { FaDove } from "react-icons/fa";
+import PlayerStats from "../components/PlayerStats";
 
 Chart.register(
-    PointElement, LineElement, CategoryScale, LinearScale
-)
+  PointElement,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  BarElement
+);
 
 const PlayerInfo = () => {
   const { id } = useParams();
   const [username, setUsername] = useState("");
-  const [scores, setScores] = useState(0);
   const [loses, setLoses] = useState(0);
-  const [games, setGames] = useState(0);
+  const [gamesA, setGamesA] = useState(0);
   const [winPoints, setWinPoints] = useState(0);
+  // const [code, setCode] = useState("");
+  const [viewGame, setViewGame] = useState(0);
+  const { baseURL, column, game, secureCode, games, players } =
+    useContext(NavManage);
+  const [gameScoresDates, setGameScoresDates] = useState([]);
+  const [gameScores, setGameScores] = useState([]);
+  const [playedGames, setPlayedGames] = useState([]);
+  const [gameSumScoresDates, setGameSumScoresDates] = useState([]);
+  const [gameSumScores, setGameSumScores] = useState([]);
+  // const [customGameData, setCustomGameData] = useState([]);
+  // const [customGameLoseData, setCustomGameLoseData] = useState([]);
+  const [scroll, setScroll] = useState(0);
 
   useEffect(() => {
     UpgradeUsername();
-    UpgradePlayerScores();
-  }, [id]);
+    setViewGame(game);
+    UpgradeChart(game);
+    UpgradeSumChart();
+    // UpgradeCustomChart();
+    // UpgradeCustomLoseData();
+  }, [id, game]);
 
-  const UpgradeUsername = () => {
-    axios
-      .get(`http://localhost/players.php/?players=4&user=${id}`)
-      .then((res) => {
-        setUsername(res.data[0].username);
-      });
-  };
+  // const UpgradeCustomLoseData = () => {
+  //   fetch(`${baseURL}customgame.php`, {
+  //     method: "post",
+  //     body: JSON.stringify({
+  //       players: 7,
+  //       id: id,
+  //       game: secureCode,
+  //       games: games,
+  //       max: players,
+  //     }),
+  //   })
+  //     .then((data) => data.json())
+  //     .then((data) => {
+  //       // console.log(data);
+  //       // setCustomGameData(data);
+  //       setCustomGameLoseData(data);
+  //     });
+  // };
 
-  const UpgradePlayerScores = () => {
-    axios
-      .get(`http://localhost/players.php/?players=5&user=${id}`)
-      .then((res) => {
-        setScores(res.data);
-      });
-  };
+  // const UpgradeCustomChart = () => {
+  //   fetch(`${baseURL}customgame.php`, {
+  //     method: "post",
+  //     body: JSON.stringify({
+  //       players: 6,
+  //       id: id,
+  //       game: secureCode,
+  //       games: games,
+  //     }),
+  //   })
+  //     .then((data) => data.json())
+  //     .then((data) => {
+  //       // console.log(data);
+  //       setCustomGameData(data);
+  //     });
+  // };
 
-  function AllGames() {
-    fetch("http://localhost/stats.php", {
+  const UpgradeChart = (show) => {
+    fetch(`${baseURL}players.php`, {
       method: "post",
       body: JSON.stringify({
-        get: "allgames",
-        id: id,
+        players: 10,
+        user: id,
+        game: show,
       }),
     })
-    .then((data) => data.json())
+      .then((data) => data.json())
       .then((data) => {
-        setGames(data);
+        // console.log(data);
+        setGameScoresDates(data);
       });
-    return <div>{games}</div>;
+
+    fetch(`${baseURL}players.php`, {
+      method: "post",
+      body: JSON.stringify({
+        players: 11,
+        user: id,
+        game: show,
+      }),
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        // console.log(data);
+        setGameScores(data);
+      });
+
+    fetch(`${baseURL}players.php`, {
+      method: "post",
+      body: JSON.stringify({
+        players: 12,
+        user: id,
+        game: show,
+      }),
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        // console.log(data);
+        setPlayedGames(data);
+      });
+  };
+
+  const UpgradeSumChart = () => {
+    fetch(`${baseURL}players.php`, {
+      method: "post",
+      body: JSON.stringify({
+        players: 13,
+        user: id,
+      }),
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        // console.log(data);
+        setGameSumScores(data);
+      });
+
+    fetch(`${baseURL}players.php`, {
+      method: "post",
+      body: JSON.stringify({
+        players: 12,
+        user: id,
+      }),
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        // console.log(data);
+        setGameSumScoresDates(data);
+      });
+  };
+
+  const UpgradeUsername = () => {
+    fetch(`${baseURL}players.php`, {
+      method: "post",
+      body: JSON.stringify({
+        players: 4,
+        user: id,
+      }),
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        setUsername(data[0].username);
+      });
+  };
+
+  function PlayerCode() {
+    return <span>{`#${parseInt(id) + 1000}`}</span>;
+  }
+
+  function AllGames() {
+      fetch(`${baseURL}stats.php`, {
+        method: "post",
+        body: JSON.stringify({
+          get: "allgames",
+          id: id,
+        }),
+      })
+        .then((data) => data.json())
+        .then((data) => {
+          setGamesA(data);
+        });
+
+    return <div>{gamesA}</div>;
   }
 
   function Losses() {
-    axios
-      .get(`http://localhost/players.php/?players=7&user=${id}`)
-      .then((res) => {
-        setLoses(res.data);
+    fetch(`${baseURL}players.php`, {
+      method: "post",
+      body: JSON.stringify({
+        players: 7,
+        user: id,
+      }),
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        setLoses(data);
       });
     return <div>{loses}</div>;
   }
 
   function Wins() {
-    axios
-      .get(`http://localhost/players.php/?players=8&user=${id}`)
-      .then((res) => {
-        setWinPoints(res.data);
+    fetch(`${baseURL}players.php`, {
+      method: "post",
+      body: JSON.stringify({
+        players: 8,
+        user: id,
+      }),
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        setWinPoints(data);
       });
     return <div>{winPoints}</div>;
   }
 
   function WinRate() {
-    return (
-      <div>{Math.round(winPoints / scores * 100)} %</div>
-    )
+    return <div>{Math.round((winPoints / gamesA) * 100)} %</div>;
   }
 
   function LoseRate() {
-    return (
-      <div>{Math.round(loses / scores * 100)} %</div>
-    )
+    return <div>{Math.round((loses / gamesA) * 100)} %</div>;
   }
+
+  // const onScrollHandler = (e) => {
+  //   console.log(e.target.scrollTop);
+  //   setScroll(e.target.scrollTop);
+  //   console.log(document.getElementsByClassName("roundPoint")[0].getClientRects()[0].y)
+  //   console.log(document.getElementsByClassName("roundPoint")[0].getClientRects()[0].y + document.getElementsByClassName("roundPoint")[0].getClientRects()[0].height)
+  //   console.log(window.innerHeight)
+
+  //   if (document.getElementsByClassName("roundPoint")[0].getClientRects()[0].y >= 0 || document.getElementsByClassName("roundPoint")[0].getClientRects()[0].y + document.getElementsByClassName("roundPoint")[0].getClientRects()[0].height <= window.innerHeight){
+  //     console.log("see")
+  //   }
+  //   else {
+  //     console.log("smoke");
+  //   }
+  // };
 
   return (
     <>
-      <div className="playerInfo">
+      <div className="playerInfo" id="playerInfo">
         <div className="playerName">
-          <h1>{username}</h1>
+          <h1>
+            {`${username}`}
+            <PlayerCode />
+          </h1>
         </div>
-        <div className="scores">
+        <h2>Összes játék</h2>
+        <div
+          className="scores"
+          style={{
+            gridTemplateColumns: `repeat(auto-fit, calc(100% / ${column}))`,
+          }}
+        >
           <div className="wins">
             <p>Győzelmek</p>
             <Wins />
@@ -111,32 +282,12 @@ const PlayerInfo = () => {
             <LoseRate />
           </div>
         </div>
-        {/* <Line
-          options={{
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: "Egy",
-                }
-            }
-          }}
-        data = {{
-            labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6'],
-            datasets: [
-              {
-                label: 'Dataset',
-                data: [10,20,30,20,30,10],
-                borderColor: "rgb(255,0,0)",
-                backgroundColor: "rgba(255,0,0,0.2)",
-                pointStyle: 'circle',
-                pointRadius: 10,
-                pointHoverRadius: 15
-              }
-            ]
-        }} */}
 
-        {/* /> */}
+        {games.map((game, index) => (
+          <>
+            <PlayerStats gameName={game} id={id} key={index}/>
+          </>
+        ))}
       </div>
     </>
   );

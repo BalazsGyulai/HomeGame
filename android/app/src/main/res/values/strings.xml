@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">szamolos-jatek</string>
+    <string name="title_activity_main">szamolos-jatek</string>
+    <string name="package_name">com.szamolosjatek.com</string>
+    <string name="custom_url_scheme">com.szamolosjatek.com</string>
+</resources>

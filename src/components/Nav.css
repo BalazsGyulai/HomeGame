@@ -218,3 +218,46 @@ span h1 {
   background: #cccccc;
   transition: 0.3s;
 }
+
+.won{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  height: 50%;
+  z-index: 15;
+  background: #fff; 
+  border: 1px solid #cccccc;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px #cccccc;
+}
+
+.won .choosebtns{
+  width: 70%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.won button{
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  font-size: 1.2em;
+  cursor: pointer;
+  background: #fca311;
+  color: #14213d;
+  transition: 0.3s;
+}
+
+.won button:hover,
+.won button:active {
+  background: #14213d;
+  color: #fff;
+  transition: 0.3s;
+}

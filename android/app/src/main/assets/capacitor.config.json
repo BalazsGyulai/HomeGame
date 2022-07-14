@@ -1,0 +1,6 @@
+{
+	"appId": "com.szamolosjatek.com",
+	"appName": "szamolos-jatek",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}

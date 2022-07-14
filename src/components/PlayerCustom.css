@@ -1,0 +1,11 @@
+.player .gameInfo{
+    position: relative;
+}
+
+.player .PlayerPlace{
+    position: absolute;
+    top: 0;
+    left: 5px;
+    font-size: 1.1em;
+    color: #fca311;
+}

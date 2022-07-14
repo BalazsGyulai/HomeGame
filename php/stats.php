@@ -1,12 +1,19 @@
 <?php
-header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Origin: http://teszt.gyulaibalazs.hu/');
+// header('Access-Control-Allow-Origin: *');
 
 $input = json_decode(file_get_contents('php://input'), true);
 
 require_once("./connect/connect.php");
 
 if ($input["get"] == "players"){
-    $result = $database->query("SELECT username FROM users");
+    $game = $input["gameID"];
+
+    $stmt = $database->stmt_init();
+    $stmt = $database->prepare("SELECT username FROM users WHERE gameID = ?");
+    $stmt->bind_param("s", $game);
+    $stmt->execute();
+    $result = $stmt->get_result();
     $num = $result->num_rows;
 
     $data = [];
@@ -19,8 +26,14 @@ if ($input["get"] == "players"){
 }
 
 if ($input["get"] == "wins"){
+    
+    $game = $input["gameID"];
 
-    $result = $database->query("SELECT id FROM users");
+    $stmt = $database->stmt_init();
+    $stmt = $database->prepare("SELECT id FROM users WHERE gameID = ?");
+    $stmt->bind_param("s", $game);
+    $stmt->execute();
+    $result = $stmt->get_result();
     $id_num = $result->num_rows;
 
     $data = [];
@@ -73,7 +86,13 @@ if ($input["get"] == "allgames"){
 }
 
 if ($input["get"] == "lose"){
-    $result = $database->query("SELECT id FROM users");
+    $game = $input["gameID"];
+
+    $stmt = $database->stmt_init();
+    $stmt = $database->prepare("SELECT id FROM users WHERE gameID = ?");
+    $stmt->bind_param("s", $game);
+    $stmt->execute();
+    $result = $stmt->get_result();
     $id_num = $result->num_rows;
 
     $data = [];

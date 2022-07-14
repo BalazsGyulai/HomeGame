@@ -20,7 +20,8 @@
 .player h1 {
   text-align: center;
   font-size: 1.2em;
-  padding: 3px;
+  padding: 0 3px;
+  margin: 0;
   color: #14213d;
 }
 
@@ -39,7 +40,7 @@
 .player .gameInfo {
   position: absolute;
   width: 100%;
-  height: 32%;
+  height: 40%;
 }
 
 .player .gameInfo p {
@@ -123,8 +124,8 @@
 .player .gameRounds {
   position: absolute;
   width: 100%;
-  top: 32%;
-  height: 68%;
+  top: 40%;
+  height: 60%;
   padding: 3px 0 3px 3px;
   overflow-y: scroll;
 }

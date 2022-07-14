@@ -8,25 +8,35 @@ import { GoPlus, GoFile } from "react-icons/go";
 import { GiGears } from "react-icons/gi";
 import { FaTrash } from "react-icons/fa";
 import Settings from "./Settings";
-import axios from "axios";
-// import { useHistory } from "react-router-dom";
 
 const Nav = () => {
-  // let [active, setActive] = useState(true);
   const location = useLocation();
   const { pathname } = location;
   const splitLocation = pathname.split("/");
-  const { newGame, active, UpgradeActive, players, UpgradePlayers } =
-    useContext(NavManage);
+  const {
+    playerCode,
+    secureCode,
+    baseURL,
+    newGame,
+    active,
+    UpgradeActive,
+    players,
+    UpgradePlayers,
+    errorHandler,
+    UpgradeGames,
+    games,
+    NewCustomGame
+  } = useContext(NavManage);
   const [visibleSettings, setVisibleSettings] = useState(false);
-  // const histroy = useHistory();
 
   useEffect(() => {
     UpgradePlayers();
-    console.log(players)
-  }, []);
-
-  // UpgradePlayers();
+    errorHandler(
+      `Biztonsági azonosító: #${playerCode}! A játékos fülnél is látod!`,
+      "success"
+    );
+    UpgradeGames();
+  }, [playerCode, secureCode]);
 
   const onClickHandler = (set) => {
     UpgradeActive(set);
@@ -36,20 +46,53 @@ const Nav = () => {
     newGame();
   };
 
+  const NewCustomGameHandler = () => { 
+
+    NewCustomGame();
+  }
+
   const showSettings = () => {
     setVisibleSettings(!visibleSettings);
   };
 
-  const delPlayer = (val) =>{
-    axios
-      .get(`http://localhost/players.php/?players=9&user=${val}`).then(() => {
-        UpgradePlayers();
+  const delPlayer = (val) => {
+    fetch(`${baseURL}players.php`, {
+      method: "post",
+      body: JSON.stringify({
+        players: 9,
+        user: val,
+      }),
+    }).then(() => {
+      UpgradePlayers();
+    });
+  };
+
+  const delGame = (val) => {
+    fetch(`${baseURL}delGame.php`, {
+      method: "post",
+      body: JSON.stringify({
+        game: val,
+        gameID: secureCode,
+      }),
+    })
+      .then(() => {
+        UpgradeGames();
       })
-  }
+  };
 
   return (
     <>
-      {/* <OpenMenu /> */}
+    {/* {seeWon ? (
+
+      <div className="won">
+        <div className="choosebtns">
+        <button type="button" onClick={() => {onClickWonHandler("min")}}>A legkevesebb pont nyer</button>
+        <button type="button" onClick={() => {onClickWonHandler("max")}}>A legtöbb pont nyer</button>
+        </div>
+      </div>
+
+    ) : ""} */}
+
       <button
         type="button"
         onClick={() => {
@@ -101,6 +144,18 @@ const Nav = () => {
             <ul className="category-item">
               <li>
                 <Link
+                  to="/game/new"
+                  className={
+                    splitLocation[1] === "game" && splitLocation[2] === "new"
+                      ? "active link"
+                      : "link"
+                  }
+                >
+                  <span>Új játék</span>
+                </Link>
+              </li>
+              {/* <li>
+                <Link
                   to="/game/okros"
                   className={
                     splitLocation[1] === "game" && splitLocation[2] === "okros"
@@ -123,7 +178,44 @@ const Nav = () => {
                     ""
                   )}
                 </Link>
-              </li>
+              </li> */}
+              {games.map((game, index) => (
+                <li key={index}>
+                  <Link
+                    to={`/custom/${game}`}
+                    className={
+                      splitLocation[1] === "custom" && splitLocation[2] === game
+                        ? "active link"
+                        : "link"
+                    }
+                  >
+
+                    <span>{game}</span>
+                    {splitLocation[1] === "custom" &&
+                    splitLocation[2] === game ? (
+                      <>
+                        <Link className="GameLog" to={`/custom/log/${game}`}>
+                          <GoFile />
+                        </Link>
+                        <button className="newGame" onClick= {NewCustomGameHandler}>
+                          <GoPlus />
+                        </button>
+                        <button
+                        style={{right: '70px'}}
+                          onClick={() => {
+                            delGame(game);
+                          }}
+                          className="delbtn"
+                        >
+                          <FaTrash />
+                        </button>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div className="category">
@@ -141,26 +233,31 @@ const Nav = () => {
                   <span>Új játékos</span>
                 </Link>
               </li>
-
               {players.map((player, index) => (
                 <li key={index}>
                   <Link
                     className={
                       splitLocation[1] === "player" &&
-                      splitLocation[2] === player.id
+                      parseInt(splitLocation[2]) === player.id
                         ? "active link"
                         : "link"
                     }
                     to={`/player/${player.id}`}
                   >
                     <span>{player.username}</span>
-                    {
-                      splitLocation[1] === "player" &&
-                      splitLocation[2] === player.id
-                        ? <button onClick={() => {delPlayer(player.id)}} className="delbtn"><FaTrash/></button>
-                        : ""
-                    }
-                    
+                    {splitLocation[1] === "player" &&
+                    parseInt(splitLocation[2]) === player.id ? (
+                      <button
+                        onClick={() => {
+                          delPlayer(player.id);
+                        }}
+                        className="delbtn"
+                      >
+                        <FaTrash />
+                      </button>
+                    ) : (
+                      ""
+                    )}
                   </Link>
                 </li>
               ))}

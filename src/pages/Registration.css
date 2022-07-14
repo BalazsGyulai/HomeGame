@@ -1,0 +1,8 @@
+.btns {
+    display: flex;
+}
+
+.btns button{
+    font-size: 1em;
+}
+

@@ -1,53 +1,40 @@
 import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
 import AddPoint from "./AddPoint";
 import NavManage from "../side/NavContext";
 import { FaTrash } from "react-icons/fa";
 
 function Player({ score, del }) {
   const [Actscores, setActScores] = useState([]);
-  const { game, scores } = useContext(NavManage);
+  const { baseURL, game, scores, secureCode, errorHandler } = useContext(NavManage);
   const [sum, setSum] = useState(0);
 
-  // let sum = 0;
 
   useEffect(() => {
-    // axios
-    //   .get(
-    //     `http://localhost/players.php/?players=2&id=${score.id}&game=${game}`
-    //   )
-    //   .then((res) => {
-    //     setActScores(res.data);
-
-    //     // console.log(res.data);
-    //     // let point = 0;
-    //     // for (let i = 0; i < res.data.length; i++) {
-    //     //   point += res.data[i].value;
-    //     // }
-
-    //     // setSum(point);
-    //     UpgradeSum(res.data);
-    //   });
     UpdateActScores();
   }, [scores, game]);
 
   const UpdateActScores = () => {
-    axios
-      .get(
-        `http://localhost/players.php/?players=2&id=${score.id}&game=${game}`
-      )
-      .then((res) => {
-        setActScores(res.data);
+    fetch(`${baseURL}customgame.php`, {
+      method: "post",
+      body: JSON.stringify({
+        players: 3,
+        id: score.id,
+        round: game,
+        gameID: secureCode,
+        gameName: "okros"
+      })
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        if (data["status"] === "success") {
+          const res = data[0];
+          setActScores(res);
+          UpgradeSum(res);
+        } else if (data["status"] === "failed to connect to database") {
+          errorHandler("Váratlan hiba! Kérem jelentkezzen be újra!", "fail");
 
-        // console.log(res.data);
-        // let point = 0;
-        // for (let i = 0; i < res.data.length; i++) {
-        //   point += res.data[i].value;
-        // }
-
-        // setSum(point);
-        UpgradeSum(res.data);
-      });
+        }
+    })
   };
 
   const UpgradeSum = (array) => {
@@ -60,11 +47,16 @@ function Player({ score, del }) {
   };
 
   const delScore = (id) => {
-    axios.get(`http://localhost/players.php/?players=3&id=${id}`)
-    .then(() =>{
+    fetch(`${baseURL}players.php`, {
+      method: 'post',
+      body: JSON.stringify({
+        players: 3,
+        id: id,
+      }),
+    })
+    .then(() => {
       UpdateActScores();
-  })
-    ;
+    })
   };
 
   return (
