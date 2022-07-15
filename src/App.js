@@ -18,10 +18,10 @@ import CustomGameLog from "./pages/CustomGameLog";
 function App() {
   const { active, login, regist, upgradeLogin } = useContext(NavManage);
 
-  let opened = active ? "menuOpened" : "menuClosed";
+  let opened = active ? "menuOpened" : "menuClosed";  // menü nyitva van e vagy sem
 
   useEffect(() => {
-    upgradeLogin();
+    upgradeLogin();  // ha betöltött utána frissíti a bejelentkezést
   }, [])
   return (
     <>
@@ -34,7 +34,7 @@ function App() {
       /> */}
 
 
-      {login ? (
+      {login ? (  // ha be van jelentkezve akkor lehet látni az adatokat különben csak bejelentkezni és regisztrálni lehet 
         <div className="App">
           <Nav />
 

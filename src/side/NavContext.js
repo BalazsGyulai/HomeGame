@@ -22,7 +22,7 @@ export function Nav({ children }) {
   const [customScores, setcustomScores] = useState([]);
   const [ActGame, setActGameName] = useState("");
 
-  const upgradeActGameName = (ActGameName) => {
+  const upgradeActGameName = (ActGameName) => {  // játék nevét tárolja rl
     setActGameName(ActGameName);
   }
 
