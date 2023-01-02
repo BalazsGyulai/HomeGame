@@ -9,7 +9,7 @@ import { GiGears } from "react-icons/gi";
 import { FaTrash } from "react-icons/fa";
 import Settings from "./Settings";
 import Logout from "../img/logout.svg";
-import {clearSession} from "../functions/Session";
+import { clearSession } from "../functions/Session";
 
 const Nav = () => {
   const location = useLocation();
@@ -27,7 +27,7 @@ const Nav = () => {
     errorHandler,
     UpgradeGames,
     games,
-    NewCustomGame
+    NewCustomGame,
   } = useContext(NavManage);
   const [visibleSettings, setVisibleSettings] = useState(false);
 
@@ -48,10 +48,13 @@ const Nav = () => {
     newGame();
   };
 
-  const NewCustomGameHandler = () => { 
-
+  const NewCustomGameHandler = () => {
     NewCustomGame();
-  }
+  };
+
+  //---------------------------------
+  // Shows the settings panel
+  //---------------------------------
 
   const showSettings = () => {
     setVisibleSettings(!visibleSettings);
@@ -84,10 +87,9 @@ const Nav = () => {
         game: val,
         gameID: secureCode,
       }),
-    })
-      .then(() => {
-        UpgradeGames();
-      })
+    }).then(() => {
+      UpgradeGames();
+    });
   };
 
   //---------------------------------
@@ -97,11 +99,11 @@ const Nav = () => {
   const logOutHandler = () => {
     clearSession();
     window.location.reload(false);
-  }
+  };
 
   return (
     <>
-    {/* {seeWon ? (
+      {/* {seeWon ? (
 
       <div className="won">
         <div className="choosebtns">
@@ -131,6 +133,10 @@ const Nav = () => {
             className="btn"
             onClick={() => {
               onClickHandler(false);
+
+              if (visibleSettings) {
+                setVisibleSettings(false);
+              }
             }}
           >
             <img className="nav-btn" src={close} alt="close" />
@@ -208,7 +214,6 @@ const Nav = () => {
                         : "link"
                     }
                   >
-
                     <span>{game}</span>
                     {splitLocation[1] === "custom" &&
                     splitLocation[2] === game ? (
@@ -216,11 +221,14 @@ const Nav = () => {
                         <Link className="GameLog" to={`/custom/log/${game}`}>
                           <GoFile />
                         </Link>
-                        <button className="newGame" onClick= {NewCustomGameHandler}>
+                        <button
+                          className="newGame"
+                          onClick={NewCustomGameHandler}
+                        >
                           <GoPlus />
                         </button>
                         <button
-                        style={{right: '70px'}}
+                          style={{ right: "70px" }}
                           onClick={() => {
                             delGame(game);
                           }}
@@ -285,10 +293,15 @@ const Nav = () => {
         </div>
 
         <div className="settings">
-          <Link to="/" onClick={() => {logOutHandler()}}>
-          <button>
-            <img src={Logout}/>
-          </button>
+          <Link
+            to="/"
+            onClick={() => {
+              logOutHandler();
+            }}
+          >
+            <button>
+              <img src={Logout} />
+            </button>
           </Link>
           <button
             onClick={() => {

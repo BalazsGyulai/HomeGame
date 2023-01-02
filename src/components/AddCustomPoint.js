@@ -8,20 +8,37 @@ const AddCustomPoint = ({ id, gameName }) => {
   const [visbtn, setVisbtn] = useState(false);
   const { baseURL, customGame, UpgradeCustomScores } = useContext(NavManage);
 
+  //------------------------------------------------------
+  // When the input value is changing it changes its value
+  //------------------------------------------------------
   const changeHandler = (e) => {
     setScore(e.target.value);
   };
 
+  //---------------------------------------------------
+  //If user click on the input field it shows the check button
+  //----------------------------------------------------
   const focusHandler = () => {
     setVisbtn(true);
   };
 
+  //------------------------------------------------------
+  //If user clicked outside of teh input field then if the field is empty, it hides the check button
+  //------------------------------------------------------
+  const BlurHandler = (e) => {
+    if (e.target.value === "" || e.target.value === null) {
+      setVisbtn(false);
+    } else {
+      setVisbtn(true);
+    }
+  };
+
+  //----------------------------------------------------
+  //When user click on the check button it uploads the user's newest value
+  //---------------------------------------------------
   const submitHandler = (e) => {
     e.preventDefault();
-    // console.log(e.target[0].id);
-    // console.log(e.target[0].value);
-    // console.log(game);
-    // console.log(gameName);
+
     fetch(`${baseURL}customgame.php`, {
       method: "post",
       body: JSON.stringify({
@@ -40,9 +57,6 @@ const AddCustomPoint = ({ id, gameName }) => {
       });
 
     setScore("");
-  };
-
-  const clickHandler = () => {
     setVisbtn(false);
   };
 
@@ -54,19 +68,20 @@ const AddCustomPoint = ({ id, gameName }) => {
             id={id}
             type="number"
             placeholder="Új pont"
-            onBlur={focusHandler}
+            onBlur={BlurHandler}
             onFocus={focusHandler}
             onChange={changeHandler}
             value={score}
           />
 
-          <button
-            type="submit"
-            className={visbtn ? "visiblebtn" : "hiddenbtn"}
-            onClick={clickHandler}
-          >
-            <FaCheck />
-          </button>
+          {visbtn ? (
+            <button type="submit">
+              {" "}
+              <FaCheck />
+            </button>
+          ) : (
+            ""
+          )}
         </form>
       </div>
     </>
