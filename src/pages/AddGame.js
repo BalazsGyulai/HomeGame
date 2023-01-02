@@ -12,10 +12,20 @@ const AddGame = () => {
         UpgraeSubmitAllow();
     }, [NewGameName, winner])
 
+    //---------------------------------------------
+    //Stores the newest value
+    //---------------------------------------------
     const NewGameHandler = (e) => {
         setNewGameName(e.target.value);
     }
-
+    
+    const winnerChangeHandler = (e) => {
+      setWinner(e.target.value);
+    }
+  
+    //---------------------------------------------
+    //Allows submitting
+    //---------------------------------------------
     const UpgraeSubmitAllow = () => {
         if (NewGameName !== "" && winner !== ""){
             setSubmitAllow(true);
@@ -24,6 +34,9 @@ const AddGame = () => {
         }
     }
 
+    //---------------------------------------------
+    //Submits the values
+    //---------------------------------------------
     const submitHandler = (e) => {
         e.preventDefault();
 
@@ -45,9 +58,6 @@ const AddGame = () => {
         }
     }
 
-    const winnerChangeHandler = (e) => {
-      setWinner(e.target.value);
-    }
   return (
     <>
       <div className="add">
