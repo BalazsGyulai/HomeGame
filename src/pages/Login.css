@@ -1,3 +1,16 @@
+.add form{
+    width: 80%;
+    max-width: 400px;
+}
+
+.add .field {
+    width: 100%;
+}
+
+.add form input{
+    width: 100%;
+}
+
 .btns {
     display: flex;
 }
@@ -9,4 +22,10 @@
 h1{
     color: #fca311;
     margin-bottom: 20px;
+}
+
+@media screen and (max-width: 380px) {
+    .btns {
+        flex-wrap: wrap;
+    }
 }

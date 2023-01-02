@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
-import { FaCheck } from "react-icons/fa";
 import "./Okros.css";
 import NavManage from "../side/NavContext";
+import Done from "../img/done.svg";
 
 const AddCustomPoint = ({ id, gameName }) => {
   const [score, setScore] = useState("");
@@ -77,7 +77,7 @@ const AddCustomPoint = ({ id, gameName }) => {
           {visbtn ? (
             <button type="submit">
               {" "}
-              <FaCheck />
+              <img src={Done}/>
             </button>
           ) : (
             ""
