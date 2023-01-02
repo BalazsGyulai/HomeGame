@@ -50,42 +50,9 @@ const PlayerInfo = () => {
     // UpgradeCustomLoseData();
   }, [id, game]);
 
-  // const UpgradeCustomLoseData = () => {
-  //   fetch(`${baseURL}customgame.php`, {
-  //     method: "post",
-  //     body: JSON.stringify({
-  //       players: 7,
-  //       id: id,
-  //       game: secureCode,
-  //       games: games,
-  //       max: players,
-  //     }),
-  //   })
-  //     .then((data) => data.json())
-  //     .then((data) => {
-  //       // console.log(data);
-  //       // setCustomGameData(data);
-  //       setCustomGameLoseData(data);
-  //     });
-  // };
-
-  // const UpgradeCustomChart = () => {
-  //   fetch(`${baseURL}customgame.php`, {
-  //     method: "post",
-  //     body: JSON.stringify({
-  //       players: 6,
-  //       id: id,
-  //       game: secureCode,
-  //       games: games,
-  //     }),
-  //   })
-  //     .then((data) => data.json())
-  //     .then((data) => {
-  //       // console.log(data);
-  //       setCustomGameData(data);
-  //     });
-  // };
-
+  //---------------------------------------------
+  //Creates the charts
+  //---------------------------------------------
   const UpgradeChart = (show) => {
     fetch(`${baseURL}players.php`, {
       method: "post",
