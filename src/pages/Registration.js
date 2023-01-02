@@ -1,6 +1,8 @@
 import React, {useState, useContext, useEffect} from "react";
 import NavManage from "../side/NavContext";
 import "./Registration.css";
+import LoginSvg from "../img/login.svg";
+import CreateSvg from "../img/registration.svg";
 
 const Registration = () => {
   const [username, setUsername] = useState("");
@@ -122,7 +124,8 @@ const Registration = () => {
             type="submit"
             className={submitAllow ? "enable submitbtn" : "disable submitbtn"}
           >
-            REGISZTRÁCIÓ
+             <img src={CreateSvg} />
+            <span>REGISZTRÁCIÓ</span>
           </button>
           <button
             type="button"
@@ -132,7 +135,8 @@ const Registration = () => {
             }}
             className="submitbtn"
           >
-            BELÉPÉS
+            <img src={LoginSvg} />
+            <span>BELÉPÉS</span>
           </button>
         </div>
         </form>

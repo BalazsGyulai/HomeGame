@@ -1,14 +1,23 @@
 import React, { useContext, useEffect, useState } from "react";
 import NavManage from "../side/NavContext";
 import "./Login.css";
-import {SetSession} from "../functions/Session";
+import { SetSession } from "../functions/Session";
+import LoginSvg from "../img/login.svg";
+import CreateSvg from "../img/registration.svg";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [secure, setSecure] = useState("");
   const [pwd, setPwd] = useState("");
   const [submitAllow, setSubmitAllow] = useState(false);
-  const { upgradeRegist, baseURL, upgradeLogin, UpgradePlayers, UpgradeSecureCode, errorHandler } = useContext(NavManage);
+  const {
+    upgradeRegist,
+    baseURL,
+    upgradeLogin,
+    UpgradePlayers,
+    UpgradeSecureCode,
+    errorHandler,
+  } = useContext(NavManage);
 
   useEffect(() => {
     if (username !== "" && pwd !== "" && secure !== "") {
@@ -41,9 +50,9 @@ const Login = () => {
             SetSession("gameID", data["gameID"]);
             SetSession("lastAction", new Date().getTime());
             SetSession("loginsha", data["loginsha"]);
-            
+
             upgradeLogin(true);
-          } else if(data["status"] === "wrong"){
+          } else if (data["status"] === "wrong") {
             errorHandler("Hibás bejelentkezési adatok!", "fail");
             setUsername("");
             setPwd("");
@@ -54,8 +63,6 @@ const Login = () => {
         });
     }
   };
-
-
 
   const nameChangeHandler = (e) => {
     setUsername(e.target.value);
@@ -68,7 +75,7 @@ const Login = () => {
   const pwdHandler = (e) => {
     setPwd(e.target.value);
   };
-  
+
   return (
     <div className="add">
       <form onSubmit={submitHandler}>
@@ -118,13 +125,15 @@ const Login = () => {
             }}
             className="submitbtn"
           >
-            REGISZTRÁCIÓ
+            <img src={CreateSvg} />
+            <span>REGISZTRÁCIÓ</span>
           </button>
           <button
             type="submit"
             className={submitAllow ? "enable submitbtn" : "disable submitbtn"}
           >
-            BELÉPÉS
+            <img src={LoginSvg} />
+            <span>BELÉPÉS</span>
           </button>
         </div>
       </form>
