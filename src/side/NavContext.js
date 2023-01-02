@@ -16,7 +16,8 @@ export function Nav({ children }) {
   const [ErrorDesc, setErrorDesc] = useState("Sikeres csatlakozás!");
   const [ErrorType, setErrorType] = useState("");
   // const baseURL = "http://games.gyulaibalazs.hu/";
-  const baseURL = "http://localhost/";
+  // const baseURL = "http://localhost/";
+  const baseURL = "http://192.168.0.46/";
   const [errors, setErrors] = useState([]);
   const [games, setGames] = useState([]);
   const [customGame, setCustomGame] = useState(0);

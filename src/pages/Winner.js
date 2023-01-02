@@ -1,17 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Winner.css";
-import { Chart, BarElement } from "chart.js";
+import { Chart, BarElement, Tooltip } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import NavManage from "../side/NavContext";
 import AllPlayerStats from "../components/AllPlayerStats";
 
-Chart.register(BarElement);
+Chart.register(BarElement, Tooltip);
 
 const Winner = () => {
   const [players, setPlayers] = useState([]);
   const [playerWins, setPlayersWins] = useState([]);
   const [playerLose, setPLayerLose] = useState([]);
-  const {baseURL, secureCode, games} = useContext(NavManage);
+  const { baseURL, secureCode, games } = useContext(NavManage);
 
   useEffect(() => {
     UpgradePlayer();
@@ -24,7 +24,7 @@ const Winner = () => {
       method: "post",
       body: JSON.stringify({
         get: "players",
-        gameID: secureCode
+        gameID: secureCode,
       }),
     })
       .then((data) => data.json())
@@ -38,7 +38,7 @@ const Winner = () => {
       method: "post",
       body: JSON.stringify({
         get: "wins",
-        gameID: secureCode
+        gameID: secureCode,
       }),
     })
       .then((data) => data.json())
@@ -52,14 +52,14 @@ const Winner = () => {
       method: "post",
       body: JSON.stringify({
         get: "lose",
-        gameID: secureCode
+        gameID: secureCode,
       }),
     })
       .then((data) => data.json())
       .then((data) => {
         setPLayerLose(data);
       });
-  }
+  };
 
   return (
     <>
@@ -67,75 +67,82 @@ const Winner = () => {
         <header>
           <h1>Statisztika</h1>
         </header>
-        <h2>Összes játék</h2>
-        <h3>Nyerések</h3>
-        <div className="chart">
-        <Bar
-          options={{
-            maintainAspectRatio: false,
-            indexAxis: "y",
-            elements: {
-              bar: {
-                borderWidth: 2,
-              },
-            },
-            plugins: {
-              legend: {
-                position: "right",
-              },
-            },
-          }}
-          data={{
-            labels: players,
-            datasets: [
-              {
-                label: "wins",
-                data: playerWins,
-                borderColor: "rgb(253, 163, 18)",
-                backgroundColor: "rgba(253, 163, 18, 0.4)",
-              },
-            ],
-          }}
-        />
+
+        <div className="Games">
+          <h2>Összes játék</h2>
+
+          <div className="Bars">
+            <div className="Bar">
+              <h3>Nyerések</h3>
+              <div className="chart">
+                <Bar
+                  options={{
+                    maintainAspectRatio: false,
+                    indexAxis: "y",
+                    elements: {
+                      bar: {
+                        borderWidth: 2,
+                      },
+                    },
+                    plugins: {
+                      legend: {
+                        position: "right",
+                      },
+                    },
+                  }}
+                  data={{
+                    labels: players,
+                    datasets: [
+                      {
+                        label: "Nyerések",
+                        data: playerWins,
+                        borderColor: "rgb(20, 33, 61)",
+                        backgroundColor: "rgba(20, 33, 61, 0.6)",
+                      },
+                    ],
+                  }}
+                />
+              </div>
+            </div>
+            <div className="Bar">
+              <h3>Vesztések</h3>
+              <div className="chart">
+                <Bar
+                  options={{
+                    maintainAspectRatio: false,
+                    indexAxis: "y",
+                    elements: {
+                      bar: {
+                        borderWidth: 2,
+                      },
+                    },
+                    plugins: {
+                      legend: {
+                        position: "right",
+                      },
+                    },
+                  }}
+                  data={{
+                    labels: players,
+                    datasets: [
+                      {
+                        label: "Vesztések",
+                        data: playerLose,
+                        borderColor: "rgb(20, 33, 61)",
+                        backgroundColor: "rgba(20, 33, 61, 0.6)",
+                      },
+                    ],
+                  }}
+                />
+              </div>
+            </div>
+          </div>
         </div>
-          <h3>Vesztések</h3>
-        <div className="chart">
-        <Bar
-          
-          options={{
-            maintainAspectRatio: false,
-            indexAxis: "y",
-            elements: {
-              bar: {
-                borderWidth: 2,
-              },
-            },
-            plugins: {
-              legend: {
-                position: "right",
-              },
-            },
-          }}
-          data={{
-            labels: players,
-            datasets: [
-              {
-                label: "wins",
-                data: playerLose,
-                borderColor: "rgb(253, 163, 18)",
-                backgroundColor: "rgba(253, 163, 18, 0.4)",
-              },
-            ],
-          }}
-        />
-        </div>
-        {
-          games.map((game, index) => (
-            <>
-            <AllPlayerStats key={index} gameName={game}/>
-            </>
-          ))
-        }
+        {games.map((game, index) => (
+          <>
+            <AllPlayerStats key={index} gameName={game} />
+          </>
+        ))}
       </div>
     </>
   );

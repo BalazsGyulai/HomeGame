@@ -1,11 +1,37 @@
 .player .gameInfo{
-    position: relative;
+    display: grid;
+    grid-template-columns: 50px calc(100% - 50px);
+    grid-template-rows: auto auto auto;
+    grid-template-areas: "place name"
+                         "place point"
+                         "adder adder";
+    height: 90px;
 }
 
+.player .gameInfo > h2 {
+    grid-area: place;
+}
+
+.player .gameInfo > h1{
+    grid-area: name;
+}
+
+.player .gameInfo > p{
+    grid-area: point;
+}
+
+.player .gameInfo > .Adder{
+    grid-area: adder;
+}
 .player .PlayerPlace{
     position: absolute;
     top: 0;
     left: 5px;
     font-size: 1.1em;
     color: #fca311;
+}
+
+.player .gameRounds{
+    top: 90px;
+    height: calc(100% - 90px);
 }

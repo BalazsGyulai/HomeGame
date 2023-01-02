@@ -27,10 +27,12 @@ const Registration = () => {
     }
   }, [password, password2, username]);
 
+  //---------------------------------------
+  //Update the fields value
+  //---------------------------------------
   const usernameChangeHandler = (event) => {
     setUsername(event.target.value);
   };
-
 
   const passwordChangeHandler = (event) => {
     setPassword(event.target.value);
@@ -40,6 +42,9 @@ const Registration = () => {
     setPassword2(event.target.value);
   };
 
+  //--------------------------------------
+  //submits the fields vlaues
+  //--------------------------------------
   const submitHandler = (event) => {
     event.preventDefault();
     if (

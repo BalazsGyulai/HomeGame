@@ -89,10 +89,12 @@ const PlayerCustom = ({score, del, gameName}) => {
     <>
       <div className="player">
         <div className="gameInfo">
-          <h1>{score.username}</h1>
           <h2 className="PlayerPlace">#{place}</h2>
+          <h1>{score.username}</h1>
           <p>{sum}</p>
+          <div className="Adder">
           <AddCustomPoint id={score.id} gameName={gameName}/>
+          </div>
         </div>
         <div className="gameRounds">
           {Actscores.map((actScore, index, array) => (

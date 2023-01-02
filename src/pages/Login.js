@@ -27,6 +27,9 @@ const Login = () => {
     }
   }, [username, secure, pwd]);
 
+  //-------------------------------------
+  //Submits the fields value
+  //------------------------------------
   const submitHandler = (e) => {
     e.preventDefault();
 
@@ -64,6 +67,9 @@ const Login = () => {
     }
   };
 
+  //---------------------------------
+  //Update the values
+  //--------------------------------
   const nameChangeHandler = (e) => {
     setUsername(e.target.value);
   };
