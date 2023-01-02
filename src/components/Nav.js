@@ -29,7 +29,7 @@ const Nav = () => {
     games,
     NewCustomGame,
   } = useContext(NavManage);
-  const [visibleSettings, setVisibleSettings] = useState(false);
+  const [visibleSettings, setVisibleSettings] = useState(true);
 
   useEffect(() => {
     UpgradePlayers();
@@ -103,17 +103,6 @@ const Nav = () => {
 
   return (
     <>
-      {/* {seeWon ? (
-
-      <div className="won">
-        <div className="choosebtns">
-        <button type="button" onClick={() => {onClickWonHandler("min")}}>A legkevesebb pont nyer</button>
-        <button type="button" onClick={() => {onClickWonHandler("max")}}>A legtöbb pont nyer</button>
-        </div>
-      </div>
-
-    ) : ""} */}
-
       <button
         type="button"
         onClick={() => {
@@ -124,62 +113,65 @@ const Nav = () => {
         <img className="nav-btn" src={open} alt="open" />
       </button>
       <nav className={active ? "opened" : "closed"}>
-        <div id="logo">
-          <span>
-            <h1>JÁTÉKOK</h1>
-          </span>
-          <button
-            type="button"
-            className="btn"
-            onClick={() => {
-              onClickHandler(false);
+        {visibleSettings ? (
+          <div className="MenuItems">
+            <div id="logo">
+              <span>
+                <h1>JÁTÉKOK</h1>
+              </span>
+              <button
+                type="button"
+                className="btn"
+                onClick={() => {
+                  onClickHandler(false);
 
-              if (visibleSettings) {
-                setVisibleSettings(false);
-              }
-            }}
-          >
-            <img className="nav-btn" src={close} alt="close" />
-          </button>
-        </div>
-        <div id="menu">
-          <div className="category">
-            <div className="category-label">
-              <h2>Eredmények</h2>
-            </div>
-            <ul className="category-item">
-              <li>
-                <Link
-                  to="/wins"
-                  className={
-                    splitLocation[1] === "wins" || splitLocation[1] === ""
-                      ? "active link"
-                      : "link"
+                  if (!visibleSettings) {
+                    setVisibleSettings(true);
                   }
-                >
-                  <span>Statisztika</span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div className="category">
-            <div className="category-label">
-              <h2>Játékok</h2>
+                }}
+              >
+                <img className="nav-btn" src={close} alt="close" />
+              </button>
             </div>
-            <ul className="category-item">
-              <li>
-                <Link
-                  to="/game/new"
-                  className={
-                    splitLocation[1] === "game" && splitLocation[2] === "new"
-                      ? "active link"
-                      : "link"
-                  }
-                >
-                  <span>Új játék</span>
-                </Link>
-              </li>
-              {/* <li>
+            <div id="menu">
+              <div className="category">
+                <div className="category-label">
+                  <h2>Eredmények</h2>
+                </div>
+                <ul className="category-item">
+                  <li>
+                    <Link
+                      to="/wins"
+                      className={
+                        splitLocation[1] === "wins" || splitLocation[1] === ""
+                          ? "active link"
+                          : "link"
+                      }
+                    >
+                      <span>Statisztika</span>
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+              <div className="category">
+                <div className="category-label">
+                  <h2>Játékok</h2>
+                </div>
+                <ul className="category-item">
+                  <li>
+                    <Link
+                      to="/game/new"
+                      className={
+                        splitLocation[1] === "game" &&
+                        splitLocation[2] === "new"
+                          ? "active link"
+                          : "link"
+                      }
+                    >
+                      <span>Új játék</span>
+                    </Link>
+                  </li>
+                  {/* <li>
                 <Link
                   to="/game/okros"
                   className={
@@ -204,95 +196,110 @@ const Nav = () => {
                   )}
                 </Link>
               </li> */}
-              {games.map((game, index) => (
-                <li key={index}>
-                  <Link
-                    to={`/custom/${game}`}
-                    className={
-                      splitLocation[1] === "custom" && splitLocation[2] === game
-                        ? "active link"
-                        : "link"
-                    }
-                  >
-                    <span>{game}</span>
-                    {splitLocation[1] === "custom" &&
-                    splitLocation[2] === game ? (
-                      <>
-                        <Link className="GameLog" to={`/custom/log/${game}`}>
-                          <GoFile />
-                        </Link>
-                        <button
-                          className="newGame"
-                          onClick={NewCustomGameHandler}
-                        >
-                          <GoPlus />
-                        </button>
-                        <button
-                          style={{ right: "70px" }}
-                          onClick={() => {
-                            delGame(game);
-                          }}
-                          className="delbtn"
-                        >
-                          <FaTrash />
-                        </button>
-                      </>
-                    ) : (
-                      ""
-                    )}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="category">
-            <div className="category-label">
-              <h2>Tagok</h2>
-            </div>
-            <ul className="category-item">
-              <li>
-                <Link
-                  to="/add"
-                  className={
-                    splitLocation[1] === "add" ? "active link" : "link"
-                  }
-                >
-                  <span>Új játékos</span>
-                </Link>
-              </li>
-              {players.map((player, index) => (
-                <li key={index}>
-                  <Link
-                    className={
-                      splitLocation[1] === "player" &&
-                      parseInt(splitLocation[2]) === player.id
-                        ? "active link"
-                        : "link"
-                    }
-                    to={`/player/${player.id}`}
-                  >
-                    <span>{player.username}</span>
-                    {splitLocation[1] === "player" &&
-                    parseInt(splitLocation[2]) === player.id ? (
-                      <button
-                        onClick={() => {
-                          delPlayer(player.id);
-                        }}
-                        className="delbtn"
+                  {games.map((game, index) => (
+                    <li key={index}>
+                      <Link
+                        to={`/custom/${game}`}
+                        className={
+                          splitLocation[1] === "custom" &&
+                          splitLocation[2] === game
+                            ? "active link"
+                            : "link"
+                        }
                       >
-                        <FaTrash />
-                      </button>
-                    ) : (
-                      ""
-                    )}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+                        <span>{game}</span>
+                        {splitLocation[1] === "custom" &&
+                        splitLocation[2] === game ? (
+                          <>
+                            <Link
+                              className="GameLog"
+                              to={`/custom/log/${game}`}
+                            >
+                              <GoFile />
+                            </Link>
+                            <button
+                              className="newGame"
+                              onClick={NewCustomGameHandler}
+                            >
+                              <GoPlus />
+                            </button>
+                            <button
+                              style={{ right: "70px" }}
+                              onClick={() => {
+                                delGame(game);
+                              }}
+                              className="delbtn"
+                            >
+                              <FaTrash />
+                            </button>
+                          </>
+                        ) : (
+                          ""
+                        )}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="category">
+                <div className="category-label">
+                  <h2>Tagok</h2>
+                </div>
+                <ul className="category-item">
+                  <li>
+                    <Link
+                      to="/add"
+                      className={
+                        splitLocation[1] === "add" ? "active link" : "link"
+                      }
+                    >
+                      <span>Új játékos</span>
+                    </Link>
+                  </li>
+                  {players.map((player, index) => (
+                    <li key={index}>
+                      <Link
+                        className={
+                          splitLocation[1] === "player" &&
+                          parseInt(splitLocation[2]) === player.id
+                            ? "active link"
+                            : "link"
+                        }
+                        to={`/player/${player.id}`}
+                      >
+                        <span>{player.username}</span>
+                        {splitLocation[1] === "player" &&
+                        parseInt(splitLocation[2]) === player.id ? (
+                          <button
+                            onClick={() => {
+                              delPlayer(player.id);
+                            }}
+                            className="delbtn"
+                          >
+                            <FaTrash />
+                          </button>
+                        ) : (
+                          ""
+                        )}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
-        </div>
+        ) : (
+          <Settings setVisible={(setVisible) => setVisibleSettings(setVisible)} menuActive={(menuActive) => UpgradeActive(menuActive)} />
+        )}
 
         <div className="settings">
+          <button
+            onClick={() => {
+              showSettings();
+            }}
+          >
+            <GiGears />
+          </button>
           <Link
             to="/"
             onClick={() => {
@@ -303,17 +310,9 @@ const Nav = () => {
               <img src={Logout} />
             </button>
           </Link>
-          <button
-            onClick={() => {
-              showSettings();
-            }}
-          >
-            <GiGears />
-          </button>
         </div>
       </nav>
 
-      {visibleSettings ? <Settings /> : ""}
     </>
   );
 };

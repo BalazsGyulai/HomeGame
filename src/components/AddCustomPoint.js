@@ -66,7 +66,7 @@ const AddCustomPoint = ({ id, gameName }) => {
         <form onSubmit={submitHandler}>
           <input
             id={id}
-            type="number"
+            type="tel"
             placeholder="Új pont"
             onBlur={BlurHandler}
             onFocus={focusHandler}

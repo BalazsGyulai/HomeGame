@@ -8,6 +8,12 @@
     height: 90px;
 }
 
+@media screen and (max-width: 500px) {
+    .player .gameInfo{
+        grid-template-columns: 35px calc(100% - 35px);
+    }
+}
+
 .player .gameInfo > h2 {
     grid-area: place;
 }
