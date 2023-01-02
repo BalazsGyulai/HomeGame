@@ -6,11 +6,15 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Building
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@master
+      - name: Use npm
+        uses: actions/setup-node@v3
+        with:
+          node-version: 10.x
       - name: install
         run: npm ci
       - name: build
