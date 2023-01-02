@@ -38,7 +38,7 @@ jobs:
       - name: Commit build
 
         run:
-
+          git config --global --add safe.directory /home/runner/work/HomeGame/HomeGame
           git config --global user.name 'BalazsGyulai'
 
           git config --global user.email 'https://github.com/BalazsGyulai/HomeGame.git'
