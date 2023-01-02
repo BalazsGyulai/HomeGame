@@ -12,10 +12,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@master
       - name: Use npm
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v1
         with:
-          node-version: 10.x
+          node-version: 12.x
       - name: install
-        run: npm ci
+        run: npm install
       - name: build
         run: npm run build
