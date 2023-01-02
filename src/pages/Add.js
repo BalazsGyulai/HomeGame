@@ -25,6 +25,9 @@ const Add = () => {
     }
   }, [password, password2, username]);
 
+  //---------------------------------------------
+  // Stores the newest values
+  //---------------------------------------------
   const usernameChangeHandler = (event) => {
     setUsername(event.target.value);
   };
@@ -37,6 +40,9 @@ const Add = () => {
     setPassword2(event.target.value);
   };
 
+  //---------------------------------------------
+  //Sends the values
+  //---------------------------------------------
   const submitHandler = (event) => {
     event.preventDefault();
     if (
