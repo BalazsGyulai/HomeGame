@@ -190,16 +190,18 @@ span h1 {
 
 .settings{
   position: relative;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content:space-between;
   height: 50px;
 }
 
 .settings button{
-  position: absolute;
+  /* position: absolute; */
   display: flex;
   align-items: center;
   justify-content: center;
-  top: 50%;
-  transform: translateY(-50%);
   right: 10px;
   width: 30px;
   height: 30px;
@@ -211,6 +213,11 @@ span h1 {
   cursor: pointer;
   outline: none;
   transition: 0.3s;
+}
+
+.settings button img{
+  width: 100%;
+  height: auto;
 }
 
 .settings button:active,

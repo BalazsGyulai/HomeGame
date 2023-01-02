@@ -1,10 +1,13 @@
 <?php
-header('Access-Control-Allow-Origin: http://teszt.gyulaibalazs.hu/');
-header('Access-Control-Allow-Origin: *');
+require("./context/header.php");
 
-$input = json_decode(file_get_contents('php://input'), true);
+function AccessDenied($error)
+{
+    $data["status"] = $error;
 
-require_once("./connect/connect.php");
+    echo json_encode($data);
+    exit;
+};
 
 $username = $input["username"];
 $pwd = $input["pwd"];
@@ -21,28 +24,29 @@ $result = $stmt->get_result();
 $num = $result->num_rows;
 
 $data = [];
-if ($num == 1){
+
+
+
+if ($num == 1) {
     $user = $result->fetch_assoc();
 
     $checkPwd = password_verify($pwd, $user["pass"]);
 
-    if ($checkPwd === false){
-        $data["status"] = "wrong";
-        echo json_encode($data);
-        exit;
-    } else if ($checkPwd === true){
+    if ($checkPwd === false) {
+        AccessDenied("wrong");
+    } else if ($checkPwd === true) {
+
+        $data["userID"] = $user["id"];
+        $data["gameID"] = $user["gameID"];
+        $data["loginsha"] = hash("sha256", $user["id"] . $data["gameID"] . $_SERVER["REMOTE_ADDR"]);
         $data["status"] = "success";
-        $data["code"] = $user["gameID"];
+
         echo json_encode($data);
         exit;
     }
-} else{
-    $data["status"] = "wrong";
-    echo json_encode($data);
-    exit;
+} else {
+    AccessDenied("wrong");
 }
 
 
 // echo json_encode($input);
-
-?>

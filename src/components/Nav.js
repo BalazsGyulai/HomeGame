@@ -8,6 +8,8 @@ import { GoPlus, GoFile } from "react-icons/go";
 import { GiGears } from "react-icons/gi";
 import { FaTrash } from "react-icons/fa";
 import Settings from "./Settings";
+import Logout from "../img/logout.svg";
+import {clearSession} from "../functions/Session";
 
 const Nav = () => {
   const location = useLocation();
@@ -55,6 +57,10 @@ const Nav = () => {
     setVisibleSettings(!visibleSettings);
   };
 
+  //---------------------------------
+  // Delete a player
+  //---------------------------------
+
   const delPlayer = (val) => {
     fetch(`${baseURL}players.php`, {
       method: "post",
@@ -66,6 +72,10 @@ const Nav = () => {
       UpgradePlayers();
     });
   };
+
+  //-------------------------------
+  // Delete a game
+  //-------------------------------
 
   const delGame = (val) => {
     fetch(`${baseURL}delGame.php`, {
@@ -79,6 +89,15 @@ const Nav = () => {
         UpgradeGames();
       })
   };
+
+  //---------------------------------
+  //  Logout
+  //---------------------------------
+
+  const logOutHandler = () => {
+    clearSession();
+    window.location.reload(false);
+  }
 
   return (
     <>
@@ -266,6 +285,11 @@ const Nav = () => {
         </div>
 
         <div className="settings">
+          <Link to="/" onClick={() => {logOutHandler()}}>
+          <button>
+            <img src={Logout}/>
+          </button>
+          </Link>
           <button
             onClick={() => {
               showSettings();

@@ -1,3 +1,4 @@
+import { useContext, useEffect } from "react";
 import Okros from "./components/Okros";
 import { Route } from "react-router-dom";
 import Winner from "./pages/Winner";
@@ -6,43 +7,55 @@ import Add from "./pages/Add";
 import OkrosLog from "./components/OkrosLog";
 import "./App.css";
 import NavManage from "./side/NavContext";
-import { useContext, useEffect } from "react";
 import PlayerInfo from "./pages/PlayerInfo";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
-// import Error from "./components/Error";
+import Error from "./components/Error";
 import AddGame from "./pages/AddGame";
 import CustomGame from "./pages/CustomGame";
 import CustomGameLog from "./pages/CustomGameLog";
+import {IsThereASession, SessionValue, clearSession} from "./functions/Session";
 
 function App() {
-  const { active, login, regist, upgradeLogin } = useContext(NavManage);
+  const { active, login, regist, upgradeLogin, ErrorType, ErrorDesc, ErrorShow, UpgradePlayers, UpgradeSecureCode} = useContext(NavManage);
 
   let opened = active ? "menuOpened" : "menuClosed";
 
+
   useEffect(() => {
-    upgradeLogin();
-  }, [])
+
+    if (IsThereASession("userID") && IsThereASession("gameID") && IsThereASession("username")){
+      UpgradeSecureCode(SessionValue("gameID"), SessionValue("username"));
+      UpgradePlayers();
+      upgradeLogin(true);
+    } else {
+      upgradeLogin(false);
+      clearSession();
+    }
+  }, []);
   return (
     <>
- {/* <Error
+      {
+        ErrorShow === 1 ?
+        <Error
         type={ErrorType}
         value={ErrorDesc}
-        className={
-          ErrorShow === 1 ? "visible" : ErrorShow === 0 ? "hidden" : ""
-        }
-      /> */}
-
+        // className={
+        //   ErrorShow === 1 ? "visible" : ErrorShow === 0 ? "hidden" : ""
+        // }
+      /> : ""
+      }
+      
 
       {login ? (
         <div className="App">
           <Nav />
 
-          <div className={`container ${opened}`}>
+          <div className="container">
             <Route path="/" exact>
               <Winner />
             </Route>
-            <Route path="/add">
+            <Route path="/add" exact>
               <Add />
             </Route>
             <Route path="/game/okros" exact>
@@ -60,19 +73,17 @@ function App() {
             <Route path="/custom/log/:game" exact>
               <CustomGameLog />
             </Route>
-            <Route path="/player/:id">
+            <Route path="/player/:id" exact>
               <PlayerInfo />
             </Route>
-            <Route path="/wins">
+            <Route path="/wins" exact>
               <Winner />
             </Route>
           </div>
         </div>
-      ) : (
-
-        regist ? 
+      ) : regist ? (
         <Registration />
-        :
+      ) : (
         <Login />
       )}
     </>

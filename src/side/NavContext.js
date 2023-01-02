@@ -15,6 +15,7 @@ export function Nav({ children }) {
   const [ErrorShow, setErrorShow] = useState(0);
   const [ErrorDesc, setErrorDesc] = useState("Sikeres csatlakozás!");
   const [ErrorType, setErrorType] = useState("");
+  // const baseURL = "http://games.gyulaibalazs.hu/";
   const baseURL = "http://localhost/";
   const [errors, setErrors] = useState([]);
   const [games, setGames] = useState([]);
@@ -144,7 +145,7 @@ export function Nav({ children }) {
     setErrorShow(1);
     setTimeout(() => {
       setErrorShow(0);
-    }, 5000);
+    }, 7000);
   };
 
   const UpgradeSecureCode = (code, name) => {

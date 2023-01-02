@@ -1,10 +1,6 @@
 <?php
-header('Access-Control-Allow-Origin: http://teszt.gyulaibalazs.hu/');
-header('Access-Control-Allow-Origin: *');
 
-$input = json_decode(file_get_contents('php://input'), true);
-
-require_once("./connect/connect.php");
+require("./context/header.php");
 
 if ($input["get"] == "players"){
     $game = $input["gameID"];

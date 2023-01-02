@@ -13,19 +13,20 @@
     top: 0;
     left: 100%;
     transform: translateX(-100%);
+    width: calc(100% - 70px);
     height: 100vh;
     padding: 0 10px;
     transition: 0.5s ease-in-out;
     overflow-y: auto;
 }
 
-.menuClosed{
+/* .menuClosed{
     width: calc(100% - 70px);
 }
 
 .menuOpened{
     width: calc(100% - 350px);
-}
+} */
 
 
 ::-webkit-scrollbar {

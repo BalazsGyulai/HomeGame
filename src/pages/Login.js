@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import NavManage from "../side/NavContext";
 import "./Login.css";
+import {SetSession} from "../functions/Session";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -31,22 +32,30 @@ const Login = () => {
       })
         .then((data) => data.json())
         .then((data) => {
-
           if (data["status"] === "success") {
             UpgradePlayers();
-            UpgradeSecureCode(data["code"], username);
+            UpgradeSecureCode(data["gameID"], username);
+
+            SetSession("userID", data["userID"]);
+            SetSession("username", username);
+            SetSession("gameID", data["gameID"]);
+            SetSession("lastAction", new Date().getTime());
+            SetSession("loginsha", data["loginsha"]);
+            
             upgradeLogin(true);
           } else if(data["status"] === "wrong"){
             errorHandler("Hibás bejelentkezési adatok!", "fail");
             setUsername("");
             setPwd("");
             setSecure("");
-            sessionStorage.setItem("LoggedIn", false);
+            // sessionStorage.setItem("LoggedIn", false);
             upgradeLogin(false);
           }
         });
     }
   };
+
+
 
   const nameChangeHandler = (e) => {
     setUsername(e.target.value);
@@ -59,6 +68,7 @@ const Login = () => {
   const pwdHandler = (e) => {
     setPwd(e.target.value);
   };
+  
   return (
     <div className="add">
       <form onSubmit={submitHandler}>
