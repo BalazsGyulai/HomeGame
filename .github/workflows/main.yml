@@ -41,7 +41,7 @@ jobs:
 
           git config --global user.name 'BalazsGyulai'
 
-          git config --global user.email 'your-username@users.noreply.github.com'
+          git config --global user.email 'https://github.com/BalazsGyulai/HomeGame.git'
 
           git commit -am "Automated commit"
 
