@@ -35,3 +35,14 @@ jobs:
       - name: build
 
         run: CI=false npm run build
+      - name: Commit build
+
+        run:
+
+          git config --global user.name 'BalazsGyulai'
+
+          git config --global user.email 'your-username@users.noreply.github.com'
+
+          git commit -am "Automated commit"
+
+          git push origin master
