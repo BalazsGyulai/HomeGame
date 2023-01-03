@@ -74,8 +74,8 @@ header h1{
 
 
 
-h2,
-h3{
+.Games h2,
+.Games h3{
     color: #14213d;
     font-size: 1.7em;
     padding: 10px 0;

@@ -28,104 +28,17 @@ const PlayerInfo = () => {
   const [loses, setLoses] = useState(0);
   const [gamesA, setGamesA] = useState(0);
   const [winPoints, setWinPoints] = useState(0);
-  // const [code, setCode] = useState("");
-  const [viewGame, setViewGame] = useState(0);
-  const { baseURL, column, game, secureCode, games, players } =
-    useContext(NavManage);
-  const [gameScoresDates, setGameScoresDates] = useState([]);
-  const [gameScores, setGameScores] = useState([]);
-  const [playedGames, setPlayedGames] = useState([]);
-  const [gameSumScoresDates, setGameSumScoresDates] = useState([]);
-  const [gameSumScores, setGameSumScores] = useState([]);
-  // const [customGameData, setCustomGameData] = useState([]);
-  // const [customGameLoseData, setCustomGameLoseData] = useState([]);
-  const [scroll, setScroll] = useState(0);
+  const { baseURL, column, game, games } = useContext(NavManage);
 
   useEffect(() => {
-    UpgradeUsername();
-    setViewGame(game);
-    UpgradeChart(game);
-    UpgradeSumChart();
-    // UpgradeCustomChart();
-    // UpgradeCustomLoseData();
+    SetUsername();
   }, [id, game]);
 
-  //---------------------------------------------
-  //Creates the charts
-  //---------------------------------------------
-  const UpgradeChart = (show) => {
-    fetch(`${baseURL}players.php`, {
-      method: "post",
-      body: JSON.stringify({
-        players: 10,
-        user: id,
-        game: show,
-      }),
-    })
-      .then((data) => data.json())
-      .then((data) => {
-        // console.log(data);
-        setGameScoresDates(data);
-      });
+  //-------------------------------------------------
+  // Sets the username
+  //-------------------------------------------------
 
-    fetch(`${baseURL}players.php`, {
-      method: "post",
-      body: JSON.stringify({
-        players: 11,
-        user: id,
-        game: show,
-      }),
-    })
-      .then((data) => data.json())
-      .then((data) => {
-        // console.log(data);
-        setGameScores(data);
-      });
-
-    fetch(`${baseURL}players.php`, {
-      method: "post",
-      body: JSON.stringify({
-        players: 12,
-        user: id,
-        game: show,
-      }),
-    })
-      .then((data) => data.json())
-      .then((data) => {
-        // console.log(data);
-        setPlayedGames(data);
-      });
-  };
-
-  const UpgradeSumChart = () => {
-    fetch(`${baseURL}players.php`, {
-      method: "post",
-      body: JSON.stringify({
-        players: 13,
-        user: id,
-      }),
-    })
-      .then((data) => data.json())
-      .then((data) => {
-        // console.log(data);
-        setGameSumScores(data);
-      });
-
-    fetch(`${baseURL}players.php`, {
-      method: "post",
-      body: JSON.stringify({
-        players: 12,
-        user: id,
-      }),
-    })
-      .then((data) => data.json())
-      .then((data) => {
-        // console.log(data);
-        setGameSumScoresDates(data);
-      });
-  };
-
-  const UpgradeUsername = () => {
+  const SetUsername = () => {
     fetch(`${baseURL}players.php`, {
       method: "post",
       body: JSON.stringify({
@@ -139,26 +52,36 @@ const PlayerInfo = () => {
       });
   };
 
+  //-------------------------------------------------
+  // Players's login secured code
+  //-------------------------------------------------
+
   function PlayerCode() {
     return <span>{`#${parseInt(id) + 1000}`}</span>;
   }
 
+  //-------------------------------------------------
+  // Sets the all played games
+  //-------------------------------------------------
   function AllGames() {
-      fetch(`${baseURL}stats.php`, {
-        method: "post",
-        body: JSON.stringify({
-          get: "allgames",
-          id: id,
-        }),
-      })
-        .then((data) => data.json())
-        .then((data) => {
-          setGamesA(data);
-        });
+    fetch(`${baseURL}stats.php`, {
+      method: "post",
+      body: JSON.stringify({
+        get: "allgames",
+        id: id,
+      }),
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        setGamesA(data);
+      });
 
     return <div>{gamesA}</div>;
   }
 
+  //---------------------------------------------------
+  // Sets the losses from the played games
+  //---------------------------------------------------
   function Losses() {
     fetch(`${baseURL}players.php`, {
       method: "post",
@@ -174,6 +97,9 @@ const PlayerInfo = () => {
     return <div>{loses}</div>;
   }
 
+  //---------------------------------------------------
+  // Sets the wins from the played games
+  //---------------------------------------------------
   function Wins() {
     fetch(`${baseURL}players.php`, {
       method: "post",
@@ -189,6 +115,9 @@ const PlayerInfo = () => {
     return <div>{winPoints}</div>;
   }
 
+  // --------------------------------------------------
+  // Calculating the win and lose rates
+  // --------------------------------------------------
   function WinRate() {
     return <div>{Math.round((winPoints / gamesA) * 100)} %</div>;
   }
@@ -196,21 +125,6 @@ const PlayerInfo = () => {
   function LoseRate() {
     return <div>{Math.round((loses / gamesA) * 100)} %</div>;
   }
-
-  // const onScrollHandler = (e) => {
-  //   console.log(e.target.scrollTop);
-  //   setScroll(e.target.scrollTop);
-  //   console.log(document.getElementsByClassName("roundPoint")[0].getClientRects()[0].y)
-  //   console.log(document.getElementsByClassName("roundPoint")[0].getClientRects()[0].y + document.getElementsByClassName("roundPoint")[0].getClientRects()[0].height)
-  //   console.log(window.innerHeight)
-
-  //   if (document.getElementsByClassName("roundPoint")[0].getClientRects()[0].y >= 0 || document.getElementsByClassName("roundPoint")[0].getClientRects()[0].y + document.getElementsByClassName("roundPoint")[0].getClientRects()[0].height <= window.innerHeight){
-  //     console.log("see")
-  //   }
-  //   else {
-  //     console.log("smoke");
-  //   }
-  // };
 
   return (
     <>
@@ -221,40 +135,40 @@ const PlayerInfo = () => {
             <PlayerCode />
           </h1>
         </div>
-        <h2>Összes játék</h2>
-        <div
-          className="scores"
-          style={{
-            gridTemplateColumns: `repeat(auto-fit, calc(100% / ${column}))`,
-          }}
-        >
-          <div className="wins">
-            <p>Győzelmek</p>
-            <Wins />
-          </div>
-          <div className="losses">
-            <p>Vesztések</p>
-            <Losses />
-          </div>
-          <div className="games">
-            <p>Összes játék</p>
-            <AllGames />
-          </div>
-          <div className="wins">
-            <p>Nyerési esély</p>
-            <WinRate />
-          </div>
-          <div className="losses">
-            <p>Vesztési esély</p>
-            <LoseRate />
-          </div>
-        </div>
 
-        {games.map((game, index) => (
-          <>
-            <PlayerStats gameName={game} id={id} key={index}/>
-          </>
-        ))}
+        <div className="Stats">
+          <div className="gameStats">
+            <h2>Összes játék</h2>
+            <div className="scores">
+              <div className="GridBox">
+                <p>Nyerési esély</p>
+                <WinRate />
+              </div>
+              <div className="GridBox">
+                <p>Vesztési esély</p>
+                <LoseRate />
+              </div>
+              <div className="GridBox">
+                <p>Győzelmek</p>
+                <Wins />
+              </div>
+              <div className="GridBox">
+                <p>Vesztések</p>
+                <Losses />
+              </div>
+              <div className="GridBox">
+                <p>Játékok</p>
+                <AllGames />
+              </div>
+            </div>
+          </div>
+
+          {games.map((game, index) => (
+            <>
+              <PlayerStats gameName={game} id={id} key={index} />
+            </>
+          ))}
+        </div>
       </div>
     </>
   );

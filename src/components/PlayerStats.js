@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import NavManage from "../side/NavContext";
+import expandSVG from "../img/expand_more.svg";
 import {
   Chart,
   PointElement,
@@ -7,20 +8,22 @@ import {
   CategoryScale,
   LinearScale,
   BarElement,
+  Tooltip,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-
 Chart.register(
   PointElement,
   LineElement,
   CategoryScale,
   LinearScale,
-  BarElement
+  BarElement,
+  Tooltip
 );
 
+Chart.defaults.color = "#14213d";
+
 const PlayerStats = ({ gameName, id }) => {
-  const { baseURL, column, game, secureCode } = useContext
-  (NavManage);
+  const { baseURL, column, game, secureCode } = useContext(NavManage);
 
   const [loses, setLoses] = useState(0);
   const [gamesA, setGamesA] = useState(0);
@@ -32,6 +35,9 @@ const PlayerStats = ({ gameName, id }) => {
   const [playedGames, setPlayedGames] = useState([]);
   const [gameSumScoresDates, setGameSumScoresDates] = useState([]);
   const [gameSumScores, setGameSumScores] = useState([]);
+  const [showGainedScores, setShowGainedScores] = useState(false);
+  const [showGainedScoresHeight, setShowGainedScoresHeight] = useState("40px");
+  const [showMoreRotation, setShowMoreRotation] = useState("0deg");
 
   useEffect(() => {
     setViewGame(game);
@@ -40,6 +46,18 @@ const PlayerStats = ({ gameName, id }) => {
     // UpgradeCustomChart();
     // UpgradeCustomLoseData();
   }, [id, game]);
+
+  const showGainedScoresHandler = () => {
+    setShowGainedScores(!showGainedScores);
+    
+    if (showGainedScores) {
+      setShowGainedScoresHeight("40px");
+      setShowMoreRotation("0deg");
+    } else {
+      setShowGainedScoresHeight("65vh");
+      setShowMoreRotation("-180deg");
+    }
+  };
 
   function AllGames() {
     fetch(`${baseURL}customgame.php`, {
@@ -111,7 +129,7 @@ const PlayerStats = ({ gameName, id }) => {
         players: 13,
         user: id,
         game: show,
-        gameName: gameName
+        gameName: gameName,
       }),
     })
       .then((data) => data.json())
@@ -126,7 +144,7 @@ const PlayerStats = ({ gameName, id }) => {
         players: 14,
         user: id,
         game: show,
-        gameName: gameName
+        gameName: gameName,
       }),
     })
       .then((data) => data.json())
@@ -140,7 +158,7 @@ const PlayerStats = ({ gameName, id }) => {
       body: JSON.stringify({
         players: 15,
         user: id,
-        gameName: gameName
+        gameName: gameName,
       }),
     })
       .then((data) => data.json())
@@ -151,13 +169,12 @@ const PlayerStats = ({ gameName, id }) => {
   };
 
   const UpgradeSumChart = () => {
-    
     fetch(`${baseURL}customgame.php`, {
       method: "post",
       body: JSON.stringify({
         players: 15,
         user: id,
-        gameName: gameName
+        gameName: gameName,
       }),
     })
       .then((data) => data.json())
@@ -166,84 +183,45 @@ const PlayerStats = ({ gameName, id }) => {
         setGameSumScoresDates(data);
       });
 
-      fetch(`${baseURL}customgame.php`, {
-        method: "post",
-        body: JSON.stringify({
-          players: 16,
-          user: id,
-          gameName: gameName,
-        }),
-      })
-        .then((data) => data.json())
-        .then((data) => {
-          // console.log(data);
-          setGameSumScores(data);
-        });
+    fetch(`${baseURL}customgame.php`, {
+      method: "post",
+      body: JSON.stringify({
+        players: 16,
+        user: id,
+        gameName: gameName,
+      }),
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        // console.log(data);
+        setGameSumScores(data);
+      });
   };
 
   return (
     <>
       <div className="gameStats">
         <h2>{gameName} játék</h2>
-        <div
-          className="scores"
-          style={{
-            gridTemplateColumns: `repeat(auto-fit, calc(100% / ${column}))`,
-          }}
-        >
-          <div className="wins">
-            <p>Győzelmek</p>
-            <Wins gameName={game} />
-          </div>
-          <div className="losses">
-            <p>Vesztések</p>
-            <Losses gameName={game} />
-          </div>
-          <div className="games">
-            <p>Összes játék</p>
-            <AllGames gameName={game} />
-          </div>
-          <div className="wins">
+        <div className="scores">
+          <div className="GridBox">
             <p>Nyerési esély</p>
             <WinRate gameName={game} />
           </div>
-          <div className="losses">
+          <div className="GridBox">
             <p>Vesztési esély</p>
             <LoseRate gameName={game} />
           </div>
-        </div>
-
-        <div className="roundPoint">
-          <div className="roundDetails">
-            <h2>{gameName} játékban szerzett pontok alakulása</h2>
-            <select onChange={UpgradeShowGame} value={viewGame}>
-              {playedGames.map((playedGame, index) => (
-                <option key={index} value={playedGame}>
-                  {playedGame}
-                </option>
-              ))}
-            </select>
+          <div className="GridBox">
+            <p>Győzelmek</p>
+            <Wins gameName={game} />
           </div>
-          <div className="roundChart">
-            <Line
-              options={{
-                maintainAspectRatio: false,
-              }}
-              data={{
-                labels: gameScoresDates,
-                datasets: [
-                  {
-                    label: "Dataset",
-                    data: gameScores,
-                    borderColor: "rgb(253, 163, 18)",
-                    backgroundColor: "rgba(253, 163, 18, 0.4)",
-                    pointStyle: "circle",
-                    pointRadius: 10,
-                    pointHoverRadius: 15,
-                  },
-                ],
-              }}
-            />
+          <div className="GridBox">
+            <p>Vesztések</p>
+            <Losses gameName={game} />
+          </div>
+          <div className="GridBox">
+            <p>Összes játék</p>
+            <AllGames gameName={game} />
           </div>
         </div>
 
@@ -251,6 +229,7 @@ const PlayerStats = ({ gameName, id }) => {
           <div className="roundDetails">
             <h2>{gameName} játékban szerzett összegek alakulása</h2>
           </div>
+
           <div className="roundChart">
             <Line
               options={{
@@ -262,8 +241,8 @@ const PlayerStats = ({ gameName, id }) => {
                   {
                     label: "Dataset",
                     data: gameSumScores,
-                    borderColor: "rgb(253, 163, 18)",
-                    backgroundColor: "rgba(253, 163, 18, 0.4)",
+                    borderColor: "rgb(20, 33, 61)",
+                    backgroundColor: "rgba(20, 33, 61, 0.7)",
                     pointStyle: "circle",
                     pointRadius: 10,
                     pointHoverRadius: 15,
@@ -272,6 +251,55 @@ const PlayerStats = ({ gameName, id }) => {
               }}
             />
           </div>
+        </div>
+
+        <div className="roundPoint"
+        style={{
+          height: showGainedScoresHeight
+        }}
+        >
+          <div className="roundDetails">
+            <h2>
+              {gameName} játékban szerzett pontok alakulása
+              <button onClick={showGainedScoresHandler}>
+                <img style={{
+                  transform: `rotateZ(${showMoreRotation})`
+                }} 
+                src={expandSVG} />
+              </button>
+            </h2>
+          </div>
+
+          {showGainedScores ?
+          <div className="roundChart">
+          <select onChange={UpgradeShowGame} value={viewGame}>
+            {playedGames.map((playedGame, index) => (
+              <option key={index} value={playedGame}>
+                {playedGame}
+              </option>
+            ))}
+          </select>
+            <Line
+              options={{
+                maintainAspectRatio: false,
+              }}
+              data={{
+                labels: gameScoresDates,
+                datasets: [
+                  {
+                    label: "Dataset",
+                    data: gameScores,
+                    borderColor: "rgb(20, 33, 61)",
+                    backgroundColor: "rgba(20, 33, 61, 0.7)",
+                    pointStyle: "circle",
+                    pointRadius: 10,
+                    pointHoverRadius: 15,
+                  },
+                ],
+              }}
+            />
+          </div>
+          : ""}
         </div>
       </div>
     </>
