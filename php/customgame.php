@@ -51,7 +51,7 @@ if ($input["players"] == 2) {
     $id = $input["id"];
     $val = $input["val"];
     $game = $input["game"];
-    $caledar = date("Y.d.m. G:i");
+    $caledar = date("Y.m.d. G:i");
     $gameName = $input["gameName"];
 
     $sql = "INSERT INTO jatekok(userID, value, game, gameName, calendar) VALUES(?,?,?,?,?)";

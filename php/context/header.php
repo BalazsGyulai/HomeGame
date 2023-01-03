@@ -13,3 +13,6 @@ function dd($value){
 
     die();
 }
+
+
+// SELECT jatekok.jatekID, YEAR(jatekok.calendar) AS year from jatekok WHERE jatekok.userID = 1 GROUP BY year;

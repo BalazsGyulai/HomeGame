@@ -44,6 +44,7 @@ const Winner = () => {
     })
       .then((data) => data.json())
       .then((data) => {
+        console.log(data);
         setPlayersWins(data);
       });
   };
@@ -71,6 +72,13 @@ const Winner = () => {
 
         <div className="Games">
             <h2>Összes játék</h2>
+
+            <div className="roundChart">
+            <select>
+              <option>2022</option>
+              <option>2023</option>
+            </select>
+            </div>
 
             <div className="Bars">
               <div className="Bar">

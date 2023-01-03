@@ -15,6 +15,8 @@ const AllPlayerStats = ({ gameName }) => {
     UpgradePlayer();
     UpgradeWins();
     UpgradeLose();
+
+    console.log(`${secureCode}         ${gameName}`)
   }, []);
 
   const UpgradePlayer = () => {

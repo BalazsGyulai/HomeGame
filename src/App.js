@@ -14,17 +14,33 @@ import Error from "./components/Error";
 import AddGame from "./pages/AddGame";
 import CustomGame from "./pages/CustomGame";
 import CustomGameLog from "./pages/CustomGameLog";
-import {IsThereASession, SessionValue, clearSession} from "./functions/Session";
+import {
+  IsThereASession,
+  SessionValue,
+  clearSession,
+} from "./functions/Session";
 
 function App() {
-  const { active, login, regist, upgradeLogin, ErrorType, ErrorDesc, ErrorShow, UpgradePlayers, UpgradeSecureCode} = useContext(NavManage);
+  const {
+    active,
+    login,
+    regist,
+    upgradeLogin,
+    ErrorType,
+    ErrorDesc,
+    ErrorShow,
+    UpgradePlayers,
+    UpgradeSecureCode,
+  } = useContext(NavManage);
 
   let opened = active ? "menuOpened" : "menuClosed";
 
-
   useEffect(() => {
-
-    if (IsThereASession("userID") && IsThereASession("gameID") && IsThereASession("username")){
+    if (
+      IsThereASession("userID") &&
+      IsThereASession("gameID") &&
+      IsThereASession("username")
+    ) {
       UpgradeSecureCode(SessionValue("gameID"), SessionValue("username"));
       UpgradePlayers();
       upgradeLogin(true);
@@ -35,17 +51,7 @@ function App() {
   }, []);
   return (
     <>
-      {
-        ErrorShow === 1 ?
-        <Error
-        type={ErrorType}
-        value={ErrorDesc}
-        // className={
-        //   ErrorShow === 1 ? "visible" : ErrorShow === 0 ? "hidden" : ""
-        // }
-      /> : ""
-      }
-      
+      {ErrorShow === 1 ? <Error type={ErrorType} value={ErrorDesc} /> : ""}
 
       {login ? (
         <div className="App">
