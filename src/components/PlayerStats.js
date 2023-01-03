@@ -36,7 +36,7 @@ const PlayerStats = ({ gameName, id }) => {
   const [gameSumScoresDates, setGameSumScoresDates] = useState([]);
   const [gameSumScores, setGameSumScores] = useState([]);
   const [showGainedScores, setShowGainedScores] = useState(false);
-  const [showGainedScoresHeight, setShowGainedScoresHeight] = useState("40px");
+  const [showGainedScoresHeight, setShowGainedScoresHeight] = useState("auto");
   const [showMoreRotation, setShowMoreRotation] = useState("0deg");
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const PlayerStats = ({ gameName, id }) => {
     setShowGainedScores(!showGainedScores);
 
     if (showGainedScores) {
-      setShowGainedScoresHeight("40px");
+      setShowGainedScoresHeight("auto");
       setShowMoreRotation("0deg");
     } else {
       setShowGainedScoresHeight("65vh");
