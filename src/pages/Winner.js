@@ -6,6 +6,7 @@ import NavManage from "../side/NavContext";
 import AllPlayerStats from "../components/AllPlayerStats";
 
 Chart.register(BarElement, Tooltip);
+Chart.defaults.color = "#14213d";
 
 const Winner = () => {
   const [players, setPlayers] = useState([]);
@@ -69,74 +70,74 @@ const Winner = () => {
         </header>
 
         <div className="Games">
-          <h2>Összes játék</h2>
+            <h2>Összes játék</h2>
 
-          <div className="Bars">
-            <div className="Bar">
-              <h3>Nyerések</h3>
-              <div className="chart">
-                <Bar
-                  options={{
-                    maintainAspectRatio: false,
-                    indexAxis: "y",
-                    elements: {
-                      bar: {
-                        borderWidth: 2,
+            <div className="Bars">
+              <div className="Bar">
+                <h3>Nyerések</h3>
+                <div className="chart">
+                  <Bar
+                    options={{
+                      maintainAspectRatio: false,
+                      indexAxis: "y",
+                      elements: {
+                        bar: {
+                          borderWidth: 2,
+                        },
                       },
-                    },
-                    plugins: {
-                      legend: {
-                        position: "right",
+                      plugins: {
+                        legend: {
+                          position: "right",
+                        },
                       },
-                    },
-                  }}
-                  data={{
-                    labels: players,
-                    datasets: [
-                      {
-                        label: "Nyerések",
-                        data: playerWins,
-                        borderColor: "rgb(20, 33, 61)",
-                        backgroundColor: "rgba(20, 33, 61, 0.6)",
+                    }}
+                    data={{
+                      labels: players,
+                      datasets: [
+                        {
+                          label: "Nyerések",
+                          data: playerWins,
+                          borderColor: "rgb(20, 33, 61)",
+                          backgroundColor: "rgba(20, 33, 61, 0.7)",
+                        },
+                      ],
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="Bar">
+                <h3>Vesztések</h3>
+                <div className="chart">
+                  <Bar
+                    options={{
+                      maintainAspectRatio: false,
+                      indexAxis: "y",
+                      elements: {
+                        bar: {
+                          borderWidth: 2,
+                        },
                       },
-                    ],
-                  }}
-                />
+                      plugins: {
+                        legend: {
+                          position: "right",
+                        },
+                      },
+                    }}
+                    data={{
+                      labels: players,
+                      datasets: [
+                        {
+                          label: "Vesztések",
+                          data: playerLose,
+                          borderColor: "rgb(20, 33, 61)",
+                          backgroundColor: "rgba(20, 33, 61, 0.7)",
+                        },
+                      ],
+                    }}
+                  />
+                </div>
               </div>
             </div>
-            <div className="Bar">
-              <h3>Vesztések</h3>
-              <div className="chart">
-                <Bar
-                  options={{
-                    maintainAspectRatio: false,
-                    indexAxis: "y",
-                    elements: {
-                      bar: {
-                        borderWidth: 2,
-                      },
-                    },
-                    plugins: {
-                      legend: {
-                        position: "right",
-                      },
-                    },
-                  }}
-                  data={{
-                    labels: players,
-                    datasets: [
-                      {
-                        label: "Vesztések",
-                        data: playerLose,
-                        borderColor: "rgb(20, 33, 61)",
-                        backgroundColor: "rgba(20, 33, 61, 0.6)",
-                      },
-                    ],
-                  }}
-                />
-              </div>
-            </div>
-          </div>
         </div>
         {games.map((game, index) => (
           <>

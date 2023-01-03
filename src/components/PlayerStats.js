@@ -49,7 +49,7 @@ const PlayerStats = ({ gameName, id }) => {
 
   const showGainedScoresHandler = () => {
     setShowGainedScores(!showGainedScores);
-    
+
     if (showGainedScores) {
       setShowGainedScoresHeight("40px");
       setShowMoreRotation("0deg");
@@ -225,81 +225,88 @@ const PlayerStats = ({ gameName, id }) => {
           </div>
         </div>
 
-        <div className="roundPoint">
-          <div className="roundDetails">
-            <h2>{gameName} játékban szerzett összegek alakulása</h2>
+        <div className="PlayerCharts">
+          <div className="roundPoint">
+            <div className="roundDetails">
+              <h2>{gameName} játékban szerzett összegek alakulása</h2>
+            </div>
+
+            <div className="roundChart">
+              <Line
+                options={{
+                  maintainAspectRatio: false,
+                }}
+                data={{
+                  labels: gameSumScoresDates,
+                  datasets: [
+                    {
+                      label: "Dataset",
+                      data: gameSumScores,
+                      borderColor: "rgb(20, 33, 61)",
+                      backgroundColor: "rgba(20, 33, 61, 0.7)",
+                      pointStyle: "circle",
+                      pointRadius: 10,
+                      pointHoverRadius: 15,
+                    },
+                  ],
+                }}
+              />
+            </div>
           </div>
 
-          <div className="roundChart">
-            <Line
-              options={{
-                maintainAspectRatio: false,
-              }}
-              data={{
-                labels: gameSumScoresDates,
-                datasets: [
-                  {
-                    label: "Dataset",
-                    data: gameSumScores,
-                    borderColor: "rgb(20, 33, 61)",
-                    backgroundColor: "rgba(20, 33, 61, 0.7)",
-                    pointStyle: "circle",
-                    pointRadius: 10,
-                    pointHoverRadius: 15,
-                  },
-                ],
-              }}
-            />
-          </div>
-        </div>
+          <div
+            className="roundPoint"
+            style={{
+              height: showGainedScoresHeight,
+            }}
+          >
+            <div className="roundDetails">
+              <h2>
+                {gameName} játékban szerzett pontok alakulása
+                <button onClick={showGainedScoresHandler}>
+                  <img
+                    style={{
+                      transform: `rotateZ(${showMoreRotation})`,
+                    }}
+                    src={expandSVG}
+                  />
+                </button>
+              </h2>
+            </div>
 
-        <div className="roundPoint"
-        style={{
-          height: showGainedScoresHeight
-        }}
-        >
-          <div className="roundDetails">
-            <h2>
-              {gameName} játékban szerzett pontok alakulása
-              <button onClick={showGainedScoresHandler}>
-                <img style={{
-                  transform: `rotateZ(${showMoreRotation})`
-                }} 
-                src={expandSVG} />
-              </button>
-            </h2>
+            {showGainedScores ? (
+              <div className="roundChart">
+                <select onChange={UpgradeShowGame} value={viewGame}>
+                  {playedGames.map((playedGame, index) => (
+                    <option key={index} value={playedGame}>
+                      {playedGame}
+                    </option>
+                  ))}
+                </select>
+                <Line
+                  options={{
+                    maintainAspectRatio: false,
+                  }}
+                  data={{
+                    labels: gameScoresDates,
+                    datasets: [
+                      {
+                        label: "Dataset",
+                        data: gameScores,
+                        borderColor: "rgb(20, 33, 61)",
+                        backgroundColor: "rgba(20, 33, 61, 0.7)",
+                        pointStyle: "circle",
+                        pointRadius: 10,
+                        pointHoverRadius: 15,
+                      },
+                    ],
+                  }}
+                />
+              </div>
+            ) : (
+              ""
+            )}
           </div>
-
-          {showGainedScores ?
-          <div className="roundChart">
-          <select onChange={UpgradeShowGame} value={viewGame}>
-            {playedGames.map((playedGame, index) => (
-              <option key={index} value={playedGame}>
-                {playedGame}
-              </option>
-            ))}
-          </select>
-            <Line
-              options={{
-                maintainAspectRatio: false,
-              }}
-              data={{
-                labels: gameScoresDates,
-                datasets: [
-                  {
-                    label: "Dataset",
-                    data: gameScores,
-                    borderColor: "rgb(20, 33, 61)",
-                    backgroundColor: "rgba(20, 33, 61, 0.7)",
-                    pointStyle: "circle",
-                    pointRadius: 10,
-                    pointHoverRadius: 15,
-                  },
-                ],
-              }}
-            />
-          </div>
-          : ""}
         </div>
       </div>
     </>

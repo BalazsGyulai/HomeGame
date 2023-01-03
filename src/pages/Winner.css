@@ -72,17 +72,15 @@ header h1{
 }
 
 
-
-
 .Games h2,
 .Games h3{
+    height: 40px;
     color: #14213d;
     font-size: 1.7em;
-    padding: 10px 0;
 }
 
-h3{
-    font-size: 1.4em;
+.Games h3{
+    font-size: 1.3em;
 }
 
 .Games {

@@ -91,7 +91,7 @@ const AllPlayerStats = ({ gameName }) => {
                       label: "Nyerések",
                       data: playerWins,
                       borderColor: "rgb(20, 33, 61)",
-                      backgroundColor: "rgba(20, 33, 61, 0.6)",
+                      backgroundColor: "rgba(20, 33, 61, 0.7)",
                     },
                   ],
                 }}
@@ -123,7 +123,7 @@ const AllPlayerStats = ({ gameName }) => {
                       label: "Vesztések",
                       data: playerLose,
                       borderColor: "rgb(20, 33, 61)",
-                      backgroundColor: "rgba(20, 33, 61, 0.6)",
+                      backgroundColor: "rgba(20, 33, 61, 0.7)",
                     },
                   ],
                 }}
