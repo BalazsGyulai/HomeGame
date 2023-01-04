@@ -34,7 +34,7 @@ jobs:
        - name: Origin
          run: git remote add origin "https://github.com/BalazsGyulai/HomeGame.git"
        - name: Add
-         run: git add .
+         run: git add -A
        - name: Commit
          run: git commit -m "Automated commit"
        - name: Push
