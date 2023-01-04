@@ -28,4 +28,4 @@ jobs:
 
           git commit -m "Automated report"
 
-          git push origin build
+          git push
