@@ -23,7 +23,9 @@ jobs:
           git config --global user.name 'BalazsGyulai'
 
           git config --global user.email 'trombita0531@gmail.com'
+          
+          git add .
 
-          git commit -am "Automated report"
+          git commit -m "Automated report"
 
           git push origin build
