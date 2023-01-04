@@ -52,7 +52,12 @@ jobs:
 
        - name: Config username
 
-         run: git config --global user.name 'BalazsGyulai'
+         run: |
+           git init
+           
+           git remote add origin "https://github.com/BalazsGyulai/HomeGame.git"
+         
+           git config --global user.name 'BalazsGyulai'
 
        - name: Config email
 
