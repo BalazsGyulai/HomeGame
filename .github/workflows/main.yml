@@ -5,8 +5,22 @@ on:
     branches: [master]
 
 jobs:
+  init:
+    name: Init
+    runs-on: ubuntu-latest
+    steps:
+      - name: Init
+        run: git init
+      - name: Config username
+        run: git config --global user.name 'BalazsGyulai'
+      - name: Config email
+        run: git config --global user.email 'trombita0531@gmail.com'
+      - name: Origin
+        run: git remote add origin "https://github.com/BalazsGyulai/HomeGame.git"
+        
   build:
     name: Building
+    needs: init
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -25,16 +39,8 @@ jobs:
      needs: build
      runs-on: ubuntu-latest
      steps:
-       - name: Init
-         run: git init
-       - name: Config username
-         run: git config --global user.name 'BalazsGyulai'
-       - name: Config email
-         run: git config --global user.email 'trombita0531@gmail.com'
-       - name: Origin
-         run: git remote add origin "https://github.com/BalazsGyulai/HomeGame.git"
        - name: Add
-         run: git add -A
+         run: git add .
        - name: Commit
          run: git commit -m "Automated commit"
        - name: Push
