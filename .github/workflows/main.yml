@@ -25,6 +25,8 @@ jobs:
      needs: build
      runs-on: ubuntu-latest
      steps:
+       - name: Init
+         run: git init
        - name: Config username
          run: git config --global user.name 'BalazsGyulai'
        - name: Config email
@@ -32,7 +34,7 @@ jobs:
        - name: Oigin
          run: git remote add origin "https://github.com/BalazsGyulai/HomeGame.git"
        - name: Add
-         run: git add .
+         run: git add /build/*
        - name: Commit
          run: git commit -m "Automated commit"
        - name: Push
