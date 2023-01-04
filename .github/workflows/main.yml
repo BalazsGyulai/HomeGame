@@ -31,10 +31,15 @@ jobs:
          run: git config --global user.name 'BalazsGyulai'
        - name: Config email
          run: git config --global user.email 'trombita0531@gmail.com'
-       - name: Oigin
+       - name: Origin
          run: git remote add origin "https://github.com/BalazsGyulai/HomeGame.git"
-       - name: Status
-         run: git status
+       - name: Add
+         run: git add .
+       - name: Commit
+         run: git commit -m "Automated commit"
+       - name: Push
+         run: git push origin build
+       
        
          
        
