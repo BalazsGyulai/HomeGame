@@ -1,6 +1,6 @@
-.error {
+#ErrorButton .error {
     position: absolute;
-    top: -120px;
+    top: -0;
     left: calc(100% - 10px);
     transform: translateX(-100%);
     border-radius: 7px;
@@ -11,34 +11,46 @@
     align-items: center;
     /* transition: 0.4s ease-in-out; */
     z-index: 30;
-    animation: ErrorVisibility 7s ease-in-out;
+    /* animation: ErrorVisibility 7s ease-in-out; */
 }
 
-.fail {
+#ErrorButton{
+    display: flex;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    background: none;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+#ErrorButton .fail {
     box-shadow: 3px 3px 0 #bd790d;
     background: #fca311;   
 }
 
-.fail p {
+#ErrorButton .fail p {
     color: #000;
 }
 
-.success {
+#ErrorButton .success {
     box-shadow: 3px 3px 0 #2c6e49;
     background: #4c956c;   
 }
 
-.success p{
+#ErrorButton .success p{
     color: #fff;
 }
 
-img {
+#ErrorButton img {
     margin: 5px 10px;
     width: 40px;
     height: 40px;
 }
 
-p{
+#ErrorButton p{
     padding: 5px 10px 5px 5px;
     font-size: 1em;
 }

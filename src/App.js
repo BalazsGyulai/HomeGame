@@ -51,7 +51,8 @@ function App() {
   }, []);
   return (
     <>
-      {ErrorShow === 1 ? <Error type={ErrorType} value={ErrorDesc} /> : ""}
+      {ErrorShow === 1 ? 
+      <Error type={ErrorType} value={ErrorDesc} /> : ""}
 
       {login ? (
         <div className="App">

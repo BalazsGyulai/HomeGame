@@ -10,6 +10,8 @@ import { FaTrash } from "react-icons/fa";
 import Settings from "./Settings";
 import Logout from "../img/logout.svg";
 import { clearSession } from "../functions/Session";
+import settingsSVG from "../img/settings.svg";
+
 
 const Nav = () => {
   const location = useLocation();
@@ -270,14 +272,20 @@ const Nav = () => {
                         <span>{player.username}</span>
                         {splitLocation[1] === "player" &&
                         parseInt(splitLocation[2]) === player.id ? (
-                          <button
+                          <>
+                          <button className="PlayerSettings">
+                            <img src={settingsSVG}/>
+                          </button>
+
+                          {/* <button
                             onClick={() => {
                               delPlayer(player.id);
                             }}
                             className="delbtn"
                           >
                             <FaTrash />
-                          </button>
+                          </button> */}
+                          </>
                         ) : (
                           ""
                         )}

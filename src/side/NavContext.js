@@ -3,6 +3,7 @@ import { createContext, useState } from "react";
 const NavManage = createContext();
 
 export function Nav({ children }) {
+  const [playerStatus, setPlayerStatus] = useState("member");
   let [active, setActive] = useState(true);
   const [players, setPlayers] = useState([]);
   const [scores, setScores] = useState([]);
@@ -12,7 +13,7 @@ export function Nav({ children }) {
   const [regist, setRegist] = useState(false);
   const [secureCode, setSecureCode] = useState("");
   const [playerCode, setPlayerCode] = useState("");
-  const [ErrorShow, setErrorShow] = useState(0);
+  const [ErrorShow, setErrorShow] = useState(1);
   const [ErrorDesc, setErrorDesc] = useState("Sikeres csatlakozás!");
   const [ErrorType, setErrorType] = useState("");
   // const baseURL = "http://games.gyulaibalazs.hu/";
@@ -23,6 +24,10 @@ export function Nav({ children }) {
   const [customGame, setCustomGame] = useState(0);
   const [customScores, setcustomScores] = useState([]);
   const [ActGame, setActGameName] = useState("");
+
+  const UpgradePlayerStatus = (value) => {
+    setPlayerStatus(value);
+  }
 
   const upgradeActGameName = (ActGameName) => {
     setActGameName(ActGameName);
@@ -140,10 +145,14 @@ export function Nav({ children }) {
     // setLogin(val);
   };
 
+  const ShowError = (val) => {
+    setErrorShow(val);
+  }
+
   const errorHandler = (desc, type) => {
     setErrorDesc(desc);
     setErrorType(type);
-    setErrorShow(1);
+    ShowError(1);
     setTimeout(() => {
       setErrorShow(0);
     }, 7000);
@@ -269,6 +278,7 @@ export function Nav({ children }) {
         ErrorDesc,
         ErrorType,
         errorHandler,
+        ShowError,
         games,
         UpgradeGames,
         UpgradeCustomScores,
@@ -276,7 +286,9 @@ export function Nav({ children }) {
         NewCustomGame,
         customGame,
         UpgradeCutomGame,
-        upgradeActGameName
+        upgradeActGameName,
+        UpgradePlayerStatus,
+        playerStatus
       }}
     >
       {children}

@@ -11,6 +11,8 @@ import {
   Tooltip,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+
+
 Chart.register(
   PointElement,
   LineElement,
@@ -20,17 +22,19 @@ Chart.register(
   Tooltip
 );
 
+
+
 Chart.defaults.color = "#14213d";
 
+
 const PlayerStats = ({ gameName, id }) => {
-  const { baseURL, game, secureCode } = useContext(NavManage);
+  const { baseURL, secureCode } = useContext(NavManage);
 
   const [loses, setLoses] = useState(0);
   const [winPoints, setWinPoints] = useState(0);
   const [viewGame, setViewGame] = useState(0);
   const [gameScoresDates, setGameScoresDates] = useState([]);
   const [gameScores, setGameScores] = useState([]);
-  const [playedGames, setPlayedGames] = useState([]);
   const [gameSumScoresDates, setGameSumScoresDates] = useState([]);
   const [gameSumScores, setGameSumScores] = useState([]);
   const [showGainedScores, setShowGainedScores] = useState(false);

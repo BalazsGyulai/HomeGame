@@ -36,6 +36,7 @@ if ($num == 1) {
         AccessDenied("wrong");
     } else if ($checkPwd === true) {
 
+        $data["membership"] = $user["status"];
         $data["userID"] = $user["id"];
         $data["gameID"] = $user["gameID"];
         $data["loginsha"] = hash("sha256", $user["id"] . $data["gameID"] . $_SERVER["REMOTE_ADDR"]);
