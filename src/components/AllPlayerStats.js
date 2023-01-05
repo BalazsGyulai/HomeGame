@@ -10,14 +10,63 @@ const AllPlayerStats = ({ gameName }) => {
   const [playerWins, setPlayersWins] = useState([]);
   const [playerLose, setPLayerLose] = useState([]);
   const { baseURL, secureCode } = useContext(NavManage);
+  const [chooseableYears, setChooseableYears] = useState([]);
+  const [selectedYear, setSelectedYears] = useState(0);
+
+  useEffect(() => {
+    UpgradePlayer();
+    UpgradeSelectedYearCollection();
+    UpgradeWins();
+    UpgradeLose();
+    // console.log(`${secureCode}         ${gameName}`)
+  }, []);
 
   useEffect(() => {
     UpgradePlayer();
     UpgradeWins();
     UpgradeLose();
+  }, [selectedYear]);
 
-    // console.log(`${secureCode}         ${gameName}`)
-  }, []);
+  //-------------------------------------
+  // Sets the chooseable years
+  //-------------------------------------
+
+  const UpgradeSelectedYearCollection = () => {
+    fetch(`${baseURL}stats.php`, {
+      method: "post",
+      body: JSON.stringify({
+        get: "playedYears",
+        gameID: secureCode,
+      }),
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        let years = ["all"];
+
+        data.forEach((year) => {
+          years.push(year);
+        });
+
+        setChooseableYears(years);
+        ChangeSelectedYearHandler(years[1]);
+      });
+  };
+
+  //-------------------------------------------
+  // This changes the useStateValue
+  //-------------------------------------------
+
+  const ChangeSelectedYearHandler = (year) => {
+    setSelectedYears(year);
+  }
+
+  //-------------------------------------------
+  // This runs when the select's value changes
+  //-------------------------------------------
+
+  const selectedYearHandler = (e) =>{
+    ChangeSelectedYearHandler(e.target.value);
+  }
 
   const UpgradePlayer = () => {
     fetch(`${baseURL}stats.php`, {
@@ -38,12 +87,14 @@ const AllPlayerStats = ({ gameName }) => {
       method: "post",
       body: JSON.stringify({
         get: "gamewins",
+        year: selectedYear,
         gameID: secureCode,
         gameName: gameName,
       }),
     })
       .then((data) => data.json())
       .then((data) => {
+        // console.log(data);
         setPlayersWins(data);
       });
   };
@@ -53,6 +104,7 @@ const AllPlayerStats = ({ gameName }) => {
       method: "post",
       body: JSON.stringify({
         get: "gamelose",
+        year: selectedYear,
         gameID: secureCode,
         gameName: gameName,
       }),
@@ -67,6 +119,23 @@ const AllPlayerStats = ({ gameName }) => {
     <>
       <div className="Games">
         <h2>{gameName} játék</h2>
+
+        <div className="selectYear">
+            <select value={selectedYear} onChange={selectedYearHandler}>
+              {chooseableYears.map((year, index) =>
+                year === "all" ? (
+                  <option key={index} value={year}>
+                    Összes
+                  </option>
+                ) : (
+                  <option key={index} value={year}>
+                    {year}
+                  </option>
+                )
+              )}
+            </select>
+          </div>
+
         <div className="Bars">
           <div className="Bar">
             <h3>Nyerések</h3>

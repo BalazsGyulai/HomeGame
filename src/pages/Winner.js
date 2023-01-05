@@ -126,7 +126,7 @@ const Winner = () => {
         <div className="Games">
           <h2>Összes játék</h2>
 
-          <div className="roundChart">
+          <div className="selectYear">
             <select value={selectedYear} onChange={selectedYearHandler}>
               {chooseableYears.map((year, index) =>
                 year === "all" ? (

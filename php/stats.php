@@ -104,34 +104,24 @@ if ($input["get"] == "wins") {
 
 if ($input["get"] == "allgames") {
     $id = $input["id"];
+    $date = $input["year"];
 
-    $stmt = $database->stmt_init();
-    $stmt = $database->prepare("SELECT game FROM jatekok WHERE userID = ?");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
+    if ($date !== "all") {
 
-    $result = $stmt->get_result();
-    $num = $result->num_rows;
-
-    $data = [];
-
-    for ($i = 0; $i < $num; $i++) {
-        $game = $result->fetch_assoc();
-
-        array_push($data, $game);
+        $stmt = $database->stmt_init();
+        $stmt = $database->prepare("SELECT count(a.jatekID) as games FROM (SELECT * FROM jatekok WHERE jatekok.userID = ? and year(jatekok.calendar) = ? GROUP BY game, gameName) a;");
+        $stmt->bind_param("is", $id, $date);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    } else {
+        $stmt = $database->stmt_init();
+        $stmt = $database->prepare("SELECT count(a.jatekID) as games FROM (SELECT * FROM jatekok WHERE jatekok.userID = ? GROUP BY game, gameName) a;");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
     }
 
-    $dbgame = 0;
-    $game = 0;
-
-    for ($i = 0; $i < count($data); $i++) {
-        if ($data[$i]["game"] != $game) {
-            $dbgame++;
-            $game = $data[$i]["game"];
-        }
-    }
-
-    echo json_encode($dbgame);
+    echo json_encode($result->fetch_assoc()["games"]);
 }
 
 if ($input["get"] == "lose") {
@@ -177,56 +167,84 @@ if ($input["get"] == "lose") {
 }
 
 if ($input["get"] == "gamewins") {
-    $game = $input["gameID"];
+    $gameID = $input["gameID"];
+    $date = $input["year"];
     $gameName = $input["gameName"];
 
-    $stmt = $database->stmt_init();
-    $stmt = $database->prepare("SELECT id FROM users WHERE gameID = ?");
-    $stmt->bind_param("s", $game);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $id_num = $result->num_rows;
+    $result = usersInGame($database, $gameID);
 
     $data = [];
 
-    for ($i = 0; $i < $id_num; $i++) {
-        $id = $result->fetch_assoc()["id"];
+    if ($date !== "all") {
+        for ($i = 0; $i < $result[0]; $i++) {
+            $userID = $result[1]->fetch_assoc()["id"];
 
-        $stmt = $database->stmt_init();
-        $stmt = $database->prepare("SELECT count(game) FROM wins WHERE userID = ? AND gameName = ?");
-        $stmt->bind_param("is", $id, $gameName);
-        $stmt->execute();
-        $wins = $stmt->get_result();
+            $stmt = $database->stmt_init();
+            // $stmt = $database->prepare("SELECT count(game) FROM wins WHERE userID = ?");
 
-        array_push($data, $wins->fetch_assoc()["count(game)"]);
+            $stmt = $database->prepare("SELECT count(a.game) as wins FROM (SELECT j.userID, j.game, YEAR(j.calendar) as year from jatekok j WHERE j.userID = ? AND j.gameName = ? and YEAR(j.calendar) = ? GROUP BY j.game) a INNER JOIN (SELECT w.game, w.gameName from wins w WHERE w.userID = ? and w.gameName=?) b on a.game = b.game;");
+            $stmt->bind_param("issis", $userID, $gameName, $date, $userID, $gameName);
+            $stmt->execute();
+            $wins = $stmt->get_result();
+
+            array_push($data, $wins->fetch_assoc()["wins"]);
+        }
+    } else {
+        for ($i = 0; $i < $result[0]; $i++) {
+            $userID = $result[1]->fetch_assoc()["id"];
+
+            $stmt = $database->stmt_init();
+            // $stmt = $database->prepare("SELECT count(game) FROM wins WHERE userID = ?");
+
+            $stmt = $database->prepare("SELECT count(a.game) as wins FROM (SELECT j.userID, j.game from jatekok j WHERE j.userID = ? AND j.gameName = ? GROUP BY j.game) a INNER JOIN (SELECT w.game, w.gameName from wins w WHERE w.userID = ? and w.gameName=?) b on a.game = b.game;");
+            $stmt->bind_param("isis", $userID, $gameName, $userID, $gameName);
+            $stmt->execute();
+            $wins = $stmt->get_result();
+
+            array_push($data, $wins->fetch_assoc()["wins"]);
+        }
     }
 
     echo json_encode($data);
 }
 
 if ($input["get"] == "gamelose") {
-    $game = $input["gameID"];
+    $gameID = $input["gameID"];
+    $date = $input["year"];
     $gameName = $input["gameName"];
 
-    $stmt = $database->stmt_init();
-    $stmt = $database->prepare("SELECT id FROM users WHERE gameID = ?");
-    $stmt->bind_param("s", $game);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $id_num = $result->num_rows;
+    $result = usersInGame($database, $gameID);
 
     $data = [];
 
-    for ($i = 0; $i < $id_num; $i++) {
-        $id = $result->fetch_assoc()["id"];
+    if ($date !== "all") {
+        for ($i = 0; $i < $result[0]; $i++) {
+            $userID = $result[1]->fetch_assoc()["id"];
 
-        $stmt = $database->stmt_init();
-        $stmt = $database->prepare("SELECT count(game) FROM loses WHERE userID = ? AND gameName = ?");
-        $stmt->bind_param("is", $id, $gameName);
-        $stmt->execute();
-        $wins = $stmt->get_result();
+            $stmt = $database->stmt_init();
+            // $stmt = $database->prepare("SELECT count(game) FROM wins WHERE userID = ?");
 
-        array_push($data, $wins->fetch_assoc()["count(game)"]);
+            $stmt = $database->prepare("SELECT count(a.game) as loses FROM (SELECT j.userID, j.game, YEAR(j.calendar) as year from jatekok j WHERE j.userID = ? AND j.gameName = ? and YEAR(j.calendar) = ? GROUP BY j.game) a INNER JOIN (SELECT l.game, l.gameName from loses l WHERE l.userID = ? and l.gameName= ? ) b on a.game = b.game;");
+            $stmt->bind_param("issis", $userID, $gameName, $date, $userID, $gameName);
+            $stmt->execute();
+            $wins = $stmt->get_result();
+
+            array_push($data, $wins->fetch_assoc()["loses"]);
+        }
+    } else {
+        for ($i = 0; $i < $result[0]; $i++) {
+            $userID = $result[1]->fetch_assoc()["id"];
+
+            $stmt = $database->stmt_init();
+            // $stmt = $database->prepare("SELECT count(game) FROM wins WHERE userID = ?");
+
+            $stmt = $database->prepare("SELECT count(a.game) as loses FROM (SELECT j.userID, j.game from jatekok j WHERE j.userID = ? AND j.gameName = ? GROUP BY j.game) a INNER JOIN (SELECT l.game, l.gameName from loses l WHERE l.userID = ? and l.gameName= ? ) b on a.game = b.game;");
+            $stmt->bind_param("isis", $userID, $gameName, $userID, $gameName);
+            $stmt->execute();
+            $wins = $stmt->get_result();
+
+            array_push($data, $wins->fetch_assoc()["loses"]);
+        }
     }
 
     echo json_encode($data);
