@@ -17,7 +17,8 @@ const Login = () => {
     UpgradePlayers,
     UpgradeSecureCode,
     errorHandler,
-    UpgradePlayerStatus
+    UpgradePlayerStatus,
+    UpgradeUsID,
   } = useContext(NavManage);
 
   useEffect(() => {
@@ -49,6 +50,7 @@ const Login = () => {
             UpgradePlayers();
             UpgradeSecureCode(data["gameID"], username);
             UpgradePlayerStatus(data["membership"]);
+            UpgradeUsID(data["userID"]);
 
             SetSession("userID", data["userID"]);
             SetSession("username", username);

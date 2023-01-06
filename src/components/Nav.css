@@ -4,6 +4,28 @@
   box-sizing: border-box;
 }
 
+#logo .sendEmail img{
+  width: 90%;
+  height: auto;
+}
+
+#logo .sendEmail{
+  position: absolute;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #3b64bc;
+  border: none;
+  box-shadow: none;
+  border-radius: 5px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  outline: none;
+  transition: 0.3s;
+}
+
 .PlayerSettings{
   position: absolute;
   right: 10px;
@@ -21,9 +43,15 @@
   transition: 0.3s;
 }
 
-.PlayerSettings:active{
+.PlayerSettings:active,
+#logo .sendEmail:active{
   background: #2a4684;
   transition: 0.3s;
+}
+
+#logo .sendEmail:hover img{
+  transform: rotateZ(360deg);
+  transition: 0.5s;
 }
 
 .PlayerSettings:hover img{

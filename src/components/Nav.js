@@ -11,7 +11,7 @@ import Settings from "./Settings";
 import Logout from "../img/logout.svg";
 import { clearSession } from "../functions/Session";
 import settingsSVG from "../img/settings.svg";
-
+import MailSVG from "../img/mail.svg";
 
 const Nav = () => {
   const location = useLocation();
@@ -30,6 +30,10 @@ const Nav = () => {
     UpgradeGames,
     games,
     NewCustomGame,
+    UpgradeUserSettings,
+    showUserSettings,
+    playerStatus,
+    usID,
   } = useContext(NavManage);
   const [visibleSettings, setVisibleSettings] = useState(true);
 
@@ -50,6 +54,19 @@ const Nav = () => {
     newGame();
   };
 
+  const SendEmail = () => {
+    fetch(`${baseURL}email.php`, {
+      method: "post",
+      body: JSON.stringify({
+        gameID: secureCode,
+      }),
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
+
   const NewCustomGameHandler = () => {
     NewCustomGame();
   };
@@ -65,18 +82,6 @@ const Nav = () => {
   //---------------------------------
   // Delete a player
   //---------------------------------
-
-  const delPlayer = (val) => {
-    fetch(`${baseURL}players.php`, {
-      method: "post",
-      body: JSON.stringify({
-        players: 9,
-        user: val,
-      }),
-    }).then(() => {
-      UpgradePlayers();
-    });
-  };
 
   //-------------------------------
   // Delete a game
@@ -118,6 +123,14 @@ const Nav = () => {
         {visibleSettings ? (
           <div className="MenuItems">
             <div id="logo">
+              {playerStatus === "leader" ? (
+                <button className="sendEmail" onClick={SendEmail}>
+                  <img src={MailSVG} />
+                </button>
+              ) : (
+                ""
+              )}
+
               <span>
                 <h1>JÁTÉKOK</h1>
               </span>
@@ -160,19 +173,23 @@ const Nav = () => {
                   <h2>Játékok</h2>
                 </div>
                 <ul className="category-item">
-                  <li>
-                    <Link
-                      to="/game/new"
-                      className={
-                        splitLocation[1] === "game" &&
-                        splitLocation[2] === "new"
-                          ? "active link"
-                          : "link"
-                      }
-                    >
-                      <span>Új játék</span>
-                    </Link>
-                  </li>
+                  {playerStatus === "leader" ? (
+                    <li>
+                      <Link
+                        to="/game/new"
+                        className={
+                          splitLocation[1] === "game" &&
+                          splitLocation[2] === "new"
+                            ? "active link"
+                            : "link"
+                        }
+                      >
+                        <span>Új játék</span>
+                      </Link>
+                    </li>
+                  ) : (
+                    ""
+                  )}
                   {/* <li>
                 <Link
                   to="/game/okros"
@@ -210,31 +227,36 @@ const Nav = () => {
                         }
                       >
                         <span>{game}</span>
-                        {splitLocation[1] === "custom" &&
-                        splitLocation[2] === game ? (
-                          <>
-                            <Link
-                              className="GameLog"
-                              to={`/custom/log/${game}`}
-                            >
-                              <GoFile />
-                            </Link>
-                            <button
-                              className="newGame"
-                              onClick={NewCustomGameHandler}
-                            >
-                              <GoPlus />
-                            </button>
-                            <button
-                              style={{ right: "70px" }}
-                              onClick={() => {
-                                delGame(game);
-                              }}
-                              className="delbtn"
-                            >
-                              <FaTrash />
-                            </button>
-                          </>
+
+                        {playerStatus === "leader" ? (
+                          splitLocation[1] === "custom" &&
+                          splitLocation[2] === game ? (
+                            <>
+                              <Link
+                                className="GameLog"
+                                to={`/custom/log/${game}`}
+                              >
+                                <GoFile />
+                              </Link>
+                              <button
+                                className="newGame"
+                                onClick={NewCustomGameHandler}
+                              >
+                                <GoPlus />
+                              </button>
+                              <button
+                                style={{ right: "70px" }}
+                                onClick={() => {
+                                  delGame(game);
+                                }}
+                                className="delbtn"
+                              >
+                                <FaTrash />
+                              </button>
+                            </>
+                          ) : (
+                            ""
+                          )
                         ) : (
                           ""
                         )}
@@ -248,16 +270,20 @@ const Nav = () => {
                   <h2>Tagok</h2>
                 </div>
                 <ul className="category-item">
-                  <li>
-                    <Link
-                      to="/add"
-                      className={
-                        splitLocation[1] === "add" ? "active link" : "link"
-                      }
-                    >
-                      <span>Új játékos</span>
-                    </Link>
-                  </li>
+                  {playerStatus === "leader" ? (
+                    <li>
+                      <Link
+                        to="/add"
+                        className={
+                          splitLocation[1] === "add" ? "active link" : "link"
+                        }
+                      >
+                        <span>Új játékos</span>
+                      </Link>
+                    </li>
+                  ) : (
+                    ""
+                  )}
                   {players.map((player, index) => (
                     <li key={index}>
                       <Link
@@ -272,20 +298,20 @@ const Nav = () => {
                         <span>{player.username}</span>
                         {splitLocation[1] === "player" &&
                         parseInt(splitLocation[2]) === player.id ? (
-                          <>
-                          <button className="PlayerSettings">
-                            <img src={settingsSVG}/>
-                          </button>
-
-                          {/* <button
-                            onClick={() => {
-                              delPlayer(player.id);
-                            }}
-                            className="delbtn"
-                          >
-                            <FaTrash />
-                          </button> */}
-                          </>
+                          splitLocation[2] === usID ? (
+                            <>
+                              <button
+                                onClick={() => {
+                                  UpgradeUserSettings(!showUserSettings);
+                                }}
+                                className="PlayerSettings"
+                              >
+                                <img src={settingsSVG} />
+                              </button>
+                            </>
+                          ) : (
+                            ""
+                          )
                         ) : (
                           ""
                         )}
@@ -297,7 +323,10 @@ const Nav = () => {
             </div>
           </div>
         ) : (
-          <Settings setVisible={(setVisible) => setVisibleSettings(setVisible)} menuActive={(menuActive) => UpgradeActive(menuActive)} />
+          <Settings
+            setVisible={(setVisible) => setVisibleSettings(setVisible)}
+            menuActive={(menuActive) => UpgradeActive(menuActive)}
+          />
         )}
 
         <div className="settings">
@@ -320,7 +349,6 @@ const Nav = () => {
           </Link>
         </div>
       </nav>
-
     </>
   );
 };

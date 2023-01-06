@@ -6,7 +6,8 @@ import Done from "../img/done.svg";
 const AddCustomPoint = ({ id, gameName }) => {
   const [score, setScore] = useState("");
   const [visbtn, setVisbtn] = useState(false);
-  const { baseURL, customGame, UpgradeCustomScores } = useContext(NavManage);
+  const { baseURL, customGame, UpgradeCustomScores, playerStatus } =
+    useContext(NavManage);
 
   //------------------------------------------------------
   // When the input value is changing it changes its value
@@ -63,26 +64,30 @@ const AddCustomPoint = ({ id, gameName }) => {
   return (
     <>
       <div className="addPoints">
-        <form onSubmit={submitHandler}>
-          <input
-            id={id}
-            type="tel"
-            placeholder="Új pont"
-            onBlur={BlurHandler}
-            onFocus={focusHandler}
-            onChange={changeHandler}
-            value={score}
-          />
+        {playerStatus === "leader" ? (
+          <form onSubmit={submitHandler}>
+            <input
+              id={id}
+              type="tel"
+              placeholder="Új pont"
+              onBlur={BlurHandler}
+              onFocus={focusHandler}
+              onChange={changeHandler}
+              value={score}
+            />
 
-          {visbtn ? (
-            <button type="submit">
-              {" "}
-              <img src={Done}/>
-            </button>
-          ) : (
-            ""
-          )}
-        </form>
+            {visbtn ? (
+              <button type="submit">
+                {" "}
+                <img src={Done} />
+              </button>
+            ) : (
+              ""
+            )}
+          </form>
+        ) : (
+          ""
+        )}
       </div>
     </>
   );

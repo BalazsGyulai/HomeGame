@@ -1,10 +1,8 @@
 import { useContext, useEffect } from "react";
-import Okros from "./components/Okros";
-import { Route } from "react-router-dom";
+import { Route, useLocation } from "react-router-dom";
 import Winner from "./pages/Winner";
 import Nav from "./components/Nav";
 import Add from "./pages/Add";
-import OkrosLog from "./components/OkrosLog";
 import "./App.css";
 import NavManage from "./side/NavContext";
 import PlayerInfo from "./pages/PlayerInfo";
@@ -19,6 +17,7 @@ import {
   SessionValue,
   clearSession,
 } from "./functions/Session";
+import UserSettings from "./components/UserSettings";
 
 function App() {
   const {
@@ -31,7 +30,12 @@ function App() {
     ErrorShow,
     UpgradePlayers,
     UpgradeSecureCode,
+    showUserSettings,
+    UpgradeUsID,
   } = useContext(NavManage);
+  const location = useLocation();
+  const { pathname } = location;
+  const SiteLocation = pathname.split("/");
 
   let opened = active ? "menuOpened" : "menuClosed";
 
@@ -41,6 +45,7 @@ function App() {
       IsThereASession("gameID") &&
       IsThereASession("username")
     ) {
+      UpgradeUsID(SessionValue("userID"));
       UpgradeSecureCode(SessionValue("gameID"), SessionValue("username"));
       UpgradePlayers();
       upgradeLogin(true);
@@ -51,41 +56,67 @@ function App() {
   }, []);
   return (
     <>
-      {ErrorShow === 1 ? 
-      <Error type={ErrorType} value={ErrorDesc} /> : ""}
+      {ErrorShow === 1 ? <Error type={ErrorType} value={ErrorDesc} /> : ""}
 
       {login ? (
         <div className="App">
           <Nav />
 
           <div className="container">
-            <Route path="/" exact>
-              <Winner />
-            </Route>
-            <Route path="/add" exact>
-              <Add />
-            </Route>
-            <Route path="/game/okros" exact>
-              <Okros />
-            </Route>
-            <Route path="/game/okros/log" exact>
-              <OkrosLog />
-            </Route>
-            <Route path="/game/new" exact>
-              <AddGame />
-            </Route>
+            {SiteLocation[0] === "" && SiteLocation[1] === "" ? (
+              <Route path="/" exact>
+                <Winner />
+              </Route>
+            ) : (
+              ""
+            )}
+
+            {SiteLocation[0] === "" && SiteLocation[1] === "add" ? (
+              <Route path="/add" exact>
+                <Add />
+              </Route>
+            ) : (
+              ""
+            )}
+
+            {SiteLocation[0] === "" &&
+            SiteLocation[1] === "game" &&
+            SiteLocation[2] === "new" ? (
+              <Route path="/game/new" exact>
+                <AddGame />
+              </Route>
+            ) : (
+              ""
+            )}
+
+            {
+              SiteLocation[0] === "" && SiteLocation[1] === "custom" ? 
             <Route path="/custom/:game" exact>
               <CustomGame />
-            </Route>
+            </Route> : ""
+            }
+
+            {
+              SiteLocation[0] === "" && SiteLocation[1] === "custom" && SiteLocation[2] === "log" ?
+
             <Route path="/custom/log/:game" exact>
               <CustomGameLog />
-            </Route>
+            </Route> : ""
+            }
+
+            {
+              SiteLocation[0] === "" && SiteLocation[1] === "player" ?
             <Route path="/player/:id" exact>
-              <PlayerInfo />
-            </Route>
+              {showUserSettings ? <UserSettings /> : <PlayerInfo />}
+            </Route> : ""
+            }
+
+            {
+              SiteLocation[0] === "" && SiteLocation[1] === "wins" ?
             <Route path="/wins" exact>
               <Winner />
-            </Route>
+            </Route> : ""
+            }
           </div>
         </div>
       ) : regist ? (

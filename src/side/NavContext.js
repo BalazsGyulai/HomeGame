@@ -13,17 +13,24 @@ export function Nav({ children }) {
   const [regist, setRegist] = useState(false);
   const [secureCode, setSecureCode] = useState("");
   const [playerCode, setPlayerCode] = useState("");
-  const [ErrorShow, setErrorShow] = useState(1);
+  const [ErrorShow, setErrorShow] = useState(0);
   const [ErrorDesc, setErrorDesc] = useState("Sikeres csatlakozás!");
   const [ErrorType, setErrorType] = useState("");
-  // const baseURL = "http://games.gyulaibalazs.hu/";
-  // const baseURL = "http://localhost/";
-  const baseURL = "http://192.168.0.46/";
-  const [errors, setErrors] = useState([]);
+  const baseURL = "http://games.gyulaibalazs.hu/";
   const [games, setGames] = useState([]);
   const [customGame, setCustomGame] = useState(0);
   const [customScores, setcustomScores] = useState([]);
   const [ActGame, setActGameName] = useState("");
+  const [showUserSettings, setShowUserSettings] = useState(false);
+  const [usID, setUsID] = useState(0);
+
+  const UpgradeUsID = (val) => {
+    setUsID (val);
+  }
+
+  const UpgradeUserSettings = (val) => {
+    setShowUserSettings(val)
+  }
 
   const UpgradePlayerStatus = (value) => {
     setPlayerStatus(value);
@@ -288,7 +295,11 @@ export function Nav({ children }) {
         UpgradeCutomGame,
         upgradeActGameName,
         UpgradePlayerStatus,
-        playerStatus
+        playerStatus,
+        UpgradeUserSettings,
+        showUserSettings,
+        UpgradeUsID,
+        usID
       }}
     >
       {children}

@@ -24,6 +24,7 @@ Chart.register(
 
 const PlayerInfo = () => {
   const { id } = useParams();
+  const [code, setCode] = useState("");
   const { baseURL, games, secureCode } = useContext(NavManage);
   const [username, setUsername] = useState("");
   const [allPlayedGames, setAllPlayedGames] = useState(0);
@@ -37,6 +38,7 @@ const PlayerInfo = () => {
   useEffect(() => {
     SetUsername();
     UpgradeSelectedYearCollection();
+    PlayerCode();
 
     AllGames();
     Losses();
@@ -117,8 +119,8 @@ const PlayerInfo = () => {
   // // Players's login secured code
   // //-------------------------------------------------
 
-  function PlayerCode() {
-    return <span>{`#${parseInt(id) + 1000}`}</span>;
+  const PlayerCode = () => {
+    setCode(parseInt(id) + 1000);
   }
 
   // //-------------------------------------------------
@@ -192,7 +194,7 @@ const PlayerInfo = () => {
         <div className="playerName">
           <h1>
             {`${username}`}
-            <PlayerCode />
+            <span>#{code}</span>
           </h1>
         </div>
 
