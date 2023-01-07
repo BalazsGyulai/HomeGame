@@ -37,6 +37,23 @@
         font-family: sans-serif;
         font-size: 1.1em;
         color: #14213d;">
+                Felhasználóneved:
+            </th>
+        </tr>
+        <tr>
+            <td style="padding: 10px;
+        color:#fca311;
+        font-weight: bold;
+        font-family: sans-serif;
+        font-size: 1.1em;">
+                {username}
+            </td>
+        </tr>
+        <tr>
+            <th style="       padding: 5px;
+        font-family: sans-serif;
+        font-size: 1.1em;
+        color: #14213d;">
                 Az email címed:
             </th>
         </tr>

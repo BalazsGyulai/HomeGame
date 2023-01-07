@@ -124,7 +124,7 @@ const UserSettings = () => {
     });
   };
 
-  return id === usID ? (
+  return id === usID || playerStatus === "leader" ? (
     <>
       <div className="playerInfo">
         <div className="playerName">

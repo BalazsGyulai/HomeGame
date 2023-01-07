@@ -63,7 +63,11 @@ const Nav = () => {
     })
       .then((data) => data.json())
       .then((data) => {
-        console.log(data);
+        if(data === "Success"){
+          errorHandler("Emailek sikeresen elküldve!", "success");
+        } else {
+          errorHandler("Nem sikerült elküldeni az emaileket!", "fail");
+        }
       });
   };
 
@@ -298,7 +302,7 @@ const Nav = () => {
                         <span>{player.username}</span>
                         {splitLocation[1] === "player" &&
                         parseInt(splitLocation[2]) === player.id ? (
-                          splitLocation[2] === usID ? (
+                          splitLocation[2] === usID || playerStatus === "leader" ? (
                             <>
                               <button
                                 onClick={() => {

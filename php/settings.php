@@ -176,6 +176,7 @@ if ($input["get"] === "pass") {
             $username = $user->fetch_assoc()["username"];
             $swap_array = array(
                 "{nev}" => $username,
+                "{username}" => $username, 
                 "{azonosito}" => "#{$secure}",
                 "{secureCode}" => "#{$secure}",
                 "{email}" => $email,
