@@ -18,6 +18,7 @@ import {
   clearSession,
 } from "./functions/Session";
 import UserSettings from "./components/UserSettings";
+import { motion, AnimatePresence } from "framer-motion";
 
 function App() {
   const {
@@ -89,40 +90,65 @@ function App() {
               ""
             )}
 
-            {
-              SiteLocation[0] === "" && SiteLocation[1] === "custom" ? 
-            <Route path="/custom/:game" exact>
-              <CustomGame />
-            </Route> : ""
-            }
+            {SiteLocation[0] === "" && SiteLocation[1] === "custom" ? (
+              <Route path="/custom/:game" exact>
+                <CustomGame />
+              </Route>
+            ) : (
+              ""
+            )}
 
-            {
-              SiteLocation[0] === "" && SiteLocation[1] === "custom" && SiteLocation[2] === "log" ?
+            {SiteLocation[0] === "" &&
+            SiteLocation[1] === "custom" &&
+            SiteLocation[2] === "log" ? (
+              <Route path="/custom/log/:game" exact>
+                <CustomGameLog />
+              </Route>
+            ) : (
+              ""
+            )}
 
-            <Route path="/custom/log/:game" exact>
-              <CustomGameLog />
-            </Route> : ""
-            }
+            {SiteLocation[0] === "" && SiteLocation[1] === "player" ? (
+              <Route path="/player/:id" exact>
+                {showUserSettings ? <UserSettings /> : <PlayerInfo />}
+              </Route>
+            ) : (
+              ""
+            )}
 
-            {
-              SiteLocation[0] === "" && SiteLocation[1] === "player" ?
-            <Route path="/player/:id" exact>
-              {showUserSettings ? <UserSettings /> : <PlayerInfo />}
-            </Route> : ""
-            }
-
-            {
-              SiteLocation[0] === "" && SiteLocation[1] === "wins" ?
-            <Route path="/wins" exact>
-              <Winner />
-            </Route> : ""
-            }
+            {SiteLocation[0] === "" && SiteLocation[1] === "wins" ? (
+              <Route path="/wins" exact>
+                <Winner />
+              </Route>
+            ) : (
+              ""
+            )}
           </div>
         </div>
-      ) : regist ? (
-        <Registration />
       ) : (
-        <Login />
+        <AnimatePresence>
+          {regist ? (
+            <motion.div
+              key="1"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Registration />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Login />
+            </motion.div>
+          )}
+        </AnimatePresence>
       )}
     </>
   );

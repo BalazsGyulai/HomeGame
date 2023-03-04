@@ -1,3 +1,7 @@
+.add{
+    position: absolute;
+}
+
 .btns {
     display: flex;
 }
