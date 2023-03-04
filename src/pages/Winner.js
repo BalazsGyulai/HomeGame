@@ -16,14 +16,13 @@ const Winner = () => {
   const [chooseableYears, setChooseableYears] = useState([]);
   const [selectedYear, setSelectedYears] = useState(0);
 
-  
   useEffect(() => {
     UpgradePlayer();
     UpgradeSelectedYearCollection();
     UpgradeWins();
     UpgradeLose();
   }, []);
-  
+
   useEffect(() => {
     UpgradePlayer();
     UpgradeWins();
@@ -61,15 +60,15 @@ const Winner = () => {
 
   const ChangeSelectedYearHandler = (year) => {
     setSelectedYears(year);
-  }
+  };
 
   //-------------------------------------------
   // This runs when the select's value changes
   //-------------------------------------------
 
-  const selectedYearHandler = (e) =>{
+  const selectedYearHandler = (e) => {
     ChangeSelectedYearHandler(e.target.value);
-  }
+  };
 
   const UpgradePlayer = () => {
     fetch(`${baseURL}stats.php`, {
@@ -116,6 +115,10 @@ const Winner = () => {
       });
   };
 
+  const Sections = ({ children }) => {
+    return <div>{children}</div>;
+  };
+
   return (
     <>
       <div id="wins">
@@ -123,95 +126,96 @@ const Winner = () => {
           <h1>Statisztika</h1>
         </header>
 
-        <div className="Games">
-          <h2>Összes játék</h2>
+          <div className="Games">
+            <h2>Összes játék</h2>
 
-          <div className="selectYear">
-            <select value={selectedYear} onChange={selectedYearHandler}>
-              {chooseableYears.map((year, index) =>
-                year === "all" ? (
-                  <option key={index} value={year}>
-                    Összes
-                  </option>
-                ) : (
-                  <option key={index} value={year}>
-                    {year}
-                  </option>
-                )
-              )}
-            </select>
-          </div>
+            <div className="selectYear">
+              <select value={selectedYear} onChange={selectedYearHandler}>
+                {chooseableYears.map((year, index) =>
+                  year === "all" ? (
+                    <option key={index} value={year}>
+                      Összes
+                    </option>
+                  ) : (
+                    <option key={index} value={year}>
+                      {year}
+                    </option>
+                  )
+                )}
+              </select>
+            </div>
 
-          <div className="Bars">
-            <div className="Bar">
-              <h3>Nyerések</h3>
-              <div className="chart">
-                <Bar
-                  options={{
-                    maintainAspectRatio: false,
-                    indexAxis: "y",
-                    elements: {
-                      bar: {
-                        borderWidth: 2,
+            <div className="Bars">
+              <div className="Bar">
+                <h3>Nyerések</h3>
+                <div className="chart">
+                  <Bar
+                    options={{
+                      maintainAspectRatio: false,
+                      indexAxis: "y",
+                      elements: {
+                        bar: {
+                          borderWidth: 2,
+                        },
                       },
-                    },
-                    plugins: {
-                      legend: {
-                        position: "right",
+                      plugins: {
+                        legend: {
+                          position: "right",
+                        },
                       },
-                    },
-                  }}
-                  data={{
-                    labels: players,
-                    datasets: [
-                      {
-                        label: "Nyerések",
-                        data: playerWins,
-                        borderColor: "rgb(20, 33, 61)",
-                        backgroundColor: "rgba(20, 33, 61, 0.7)",
+                    }}
+                    data={{
+                      labels: players,
+                      datasets: [
+                        {
+                          label: "Nyerések",
+                          data: playerWins,
+                          borderColor: "rgb(20, 33, 61)",
+                          backgroundColor: "rgba(20, 33, 61, 0.7)",
+                        },
+                      ],
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="Bar">
+                <h3>Vesztések</h3>
+                <div className="chart">
+                  <Bar
+                    options={{
+                      maintainAspectRatio: false,
+                      indexAxis: "y",
+                      elements: {
+                        bar: {
+                          borderWidth: 2,
+                        },
                       },
-                    ],
-                  }}
-                />
+                      plugins: {
+                        legend: {
+                          position: "right",
+                        },
+                      },
+                    }}
+                    data={{
+                      labels: players,
+                      datasets: [
+                        {
+                          label: "Vesztések",
+                          data: playerLose,
+                          borderColor: "rgb(20, 33, 61)",
+                          backgroundColor: "rgba(20, 33, 61, 0.7)",
+                        },
+                      ],
+                    }}
+                  />
+                </div>
               </div>
             </div>
-            <div className="Bar">
-              <h3>Vesztések</h3>
-              <div className="chart">
-                <Bar
-                  options={{
-                    maintainAspectRatio: false,
-                    indexAxis: "y",
-                    elements: {
-                      bar: {
-                        borderWidth: 2,
-                      },
-                    },
-                    plugins: {
-                      legend: {
-                        position: "right",
-                      },
-                    },
-                  }}
-                  data={{
-                    labels: players,
-                    datasets: [
-                      {
-                        label: "Vesztések",
-                        data: playerLose,
-                        borderColor: "rgb(20, 33, 61)",
-                        backgroundColor: "rgba(20, 33, 61, 0.7)",
-                      },
-                    ],
-                  }}
-                />
-              </div>
-            </div>
           </div>
-        </div>
+
         {games.map((game, index) => (
           <>
-            <AllPlayerStats key={index} gameName={game} />
+              <AllPlayerStats key={index} gameName={game} />
           </>
         ))}
       </div>
