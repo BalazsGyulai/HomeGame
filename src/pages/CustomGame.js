@@ -1,26 +1,53 @@
-import React, { useContext, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import NavManage from "../side/NavContext";
-import PlayerCustom from '../components/PlayerCustom';
-
+import PlayerCustom from "../components/PlayerCustom";
+import { motion } from "framer-motion";
 const CustomGame = () => {
-    const { game } = useParams();
-    const { column, customScores, UpgradeCustomScores, upgradeActGameName} = useContext(NavManage);
+  const { game } = useParams();
+  const { column, customScores, UpgradeCustomScores, upgradeActGameName } =
+    useContext(NavManage);
 
-    useEffect(() => {
-        UpgradeCustomScores(game);
-        upgradeActGameName(game);
-    }, [game]);
+  const variants = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const item={
+    hidden: {y: 20, opacity: 0},
+    visible: {y: 0, opacity: 1}
+  }
+
+  useEffect(() => {
+    UpgradeCustomScores(game);
+    upgradeActGameName(game);
+  }, [game]);
 
   return (
     <>
-    <div className="game" style={{gridTemplateColumns: `repeat(auto-fit, calc(100% / ${column}))`}}>
+      <motion.div
+        variants={variants}
+        initial="hidden"
+        animate="visible"
+        className="game"
+        style={{
+          gridTemplateColumns: `repeat(auto-fit, calc(100% / ${column}))`,
+        }}
+      >
         {customScores.map((score, index) => (
-            <PlayerCustom score={score} key={index} del={0} gameName={game}/>
+          <motion.div key={index} variants={item}>
+            <PlayerCustom score={score} key={index} del={0} gameName={game} />
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </>
-  )
-}
+  );
+};
 
-export default CustomGame
+export default CustomGame;

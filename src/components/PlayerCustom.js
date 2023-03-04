@@ -3,12 +3,44 @@ import NavManage from "../side/NavContext";
 import { FaTrash } from "react-icons/fa";
 import AddCustomPoint from "./AddCustomPoint";
 import "./PlayerCustom.css";
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 
-const PlayerCustom = ({score, del, gameName}) => {
+const PlayerCustom = ({ score, del, gameName }) => {
   const [Actscores, setActScores] = useState([]);
-  const { baseURL, customGame, customScores, secureCode, errorHandler, UpgradeCutomGame} = useContext(NavManage);
+  const {
+    baseURL,
+    customGame,
+    customScores,
+    secureCode,
+    errorHandler,
+    UpgradeCutomGame,
+  } = useContext(NavManage);
   const [sum, setSum] = useState(0);
   const [place, setPlace] = useState(0);
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, Math.round);
+
+  const variants = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const item={
+    hidden: {x: -20, opacity: 0},
+    visible: {x: 0, opacity: 1}
+  }
+
+  useEffect(() => {
+    const animation = animate(count, sum, { duration: 5 });
+
+    return animation.stop;
+  }, [sum]);
 
   useEffect(() => {
     // console.log(customGame);
@@ -17,7 +49,6 @@ const PlayerCustom = ({score, del, gameName}) => {
   }, [customScores, customGame]);
 
   const UpgradeSum = (array) => {
-
     fetch(`${baseURL}customgame.php`, {
       method: "post",
       body: JSON.stringify({
@@ -32,7 +63,7 @@ const PlayerCustom = ({score, del, gameName}) => {
       .then((data) => {
         // console.log(data);
 
-        if (data === "not found"){
+        if (data === "not found") {
           setPlace("-");
         } else {
           setPlace(data);
@@ -71,7 +102,6 @@ const PlayerCustom = ({score, del, gameName}) => {
       });
   };
 
-
   const delScore = (id) => {
     fetch(`${baseURL}customgame.php`, {
       method: "post",
@@ -91,14 +121,18 @@ const PlayerCustom = ({score, del, gameName}) => {
         <div className="gameInfo">
           <h2 className="PlayerPlace">#{place}</h2>
           <h1>{score.username}</h1>
-          <p>{sum}</p>
+          <motion.p>{rounded}</motion.p>
           <div className="Adder">
-          <AddCustomPoint id={score.id} gameName={gameName}/>
+            <AddCustomPoint id={score.id} gameName={gameName} />
           </div>
         </div>
-        <div className="gameRounds">
+        <motion.div
+          variants={variants}
+          initial="hidden"
+          animate="visible"
+         className="gameRounds">
           {Actscores.map((actScore, index, array) => (
-            <div key={index}>
+            <motion.div key={index} variants={item}>
               <span className="round">{array.length - index}.</span>
               <p>{actScore.value}</p>
               {del === 1 ? (
@@ -113,9 +147,9 @@ const PlayerCustom = ({score, del, gameName}) => {
               ) : (
                 ""
               )}
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </>
   );
