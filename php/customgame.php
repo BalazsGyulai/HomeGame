@@ -214,6 +214,9 @@ if ($input["players"] == 7) {
 }
 
 if ($input["players"] == 8) {
+    // $gameID = "Bali62cae449dafba6.41342841";
+    // $gameName = "VasÃºt";
+    // $round = 30;
     $gameID = $input["gameID"];
     $gameName = $input["game"];
     $round = $input["round"];
@@ -226,11 +229,11 @@ if ($input["players"] == 8) {
 
     $type = $result->fetch_assoc()["winnerOption"];
 
-    if ($type == "min") {
+    if ($type === "min") {
 
         $stmt = $database->stmt_init();
         $stmt = $database->prepare("SELECT userID FROM wins WHERE game = ? AND gameName = ?");
-        $stmt->bind_param("ss", $round, $gameName);
+        $stmt->bind_param("is", $round, $gameName);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -359,10 +362,7 @@ if ($input["players"] == 8) {
                 }
             }
         }
-    }
-
-
-    if ($type == "max") {
+    } else {
 
         $stmt = $database->stmt_init();
         $stmt = $database->prepare("SELECT userID FROM wins WHERE game = ? AND gameName = ?");
@@ -381,16 +381,17 @@ if ($input["players"] == 8) {
             $data = [];
             $sum = [];
 
+            // $round = intval($round) - 1;
+
             // kiszedi a játékosokat
             for ($i = 0; $i < $result->num_rows; $i++) {
                 $id = $result->fetch_assoc()["id"];
-
                 $stmt2 = $database->stmt_init();
                 $stmt2 = $database->prepare("SELECT sum(value), userID FROM jatekok WHERE userID = ? AND game = ? AND gameName=?");
                 $stmt2->bind_param("iis", $id, $round, $gameName);
                 $stmt2->execute();
                 $result2 = $stmt2->get_result();
-
+                
                 array_push($sum, $result2->fetch_assoc());
             }
 
@@ -398,18 +399,20 @@ if ($input["players"] == 8) {
             $min = null;
             $playerID = null;
             $x = 0;
+
+            
             while ($sum[$x]["sum(value)"] === null && $x < count($sum)) {
                 $x++;
             }
-
+            
             if ($x < count($sum)) {
                 $min = $sum[$x]["sum(value)"];
                 $playerID = $sum[$x]["userID"];
             }
 
-            // keresi a minimumot
+            // keresi a max-t
             for ($i = $x; $i < count($sum); $i++) {
-                if ($sum[$i]["sum(value)"] !== null && $sum[$i]["sum(value)"] < $min) {
+                if ($sum[$i]["sum(value)"] !== null && $sum[$i]["sum(value)"] > $min) {
                     $min = $sum[$i]["sum(value)"];
                     $playerID = $sum[$i]["userID"];
                 }
@@ -422,7 +425,7 @@ if ($input["players"] == 8) {
                     $userID = $sum[$i]["userID"];
                     $stmt3 = $database->stmt_init();
                     $stmt3 = $database->prepare("INSERT INTO wins(userID, game, gameName) VALUES(?,?,?)");
-                    $stmt3->bind_param("iis", $userID, $round, $gameName);
+                    $stmt3->bind_param("iis", $playerID, $round, $gameName);
                     $stmt3->execute();
                     // array_push($players, $sum[$i]["sum(value)"]);
                 }
@@ -447,6 +450,8 @@ if ($input["players"] == 8) {
 
             $data = [];
             $sum = [];
+
+            // $round = intval($round) - 1;
 
             // kiszedi a játékosokat
             for ($i = 0; $i < $result->num_rows; $i++) {
@@ -476,7 +481,7 @@ if ($input["players"] == 8) {
 
             // keresi a minimumot
             for ($i = $x; $i < count($sum); $i++) {
-                if ($sum[$i]["sum(value)"] !== null && $sum[$i]["sum(value)"] > $max) {
+                if ($sum[$i]["sum(value)"] !== null && $sum[$i]["sum(value)"] < $max) {
                     $max = $sum[$i]["sum(value)"];
                     $playerID = $sum[$i]["userID"];
                 }
@@ -489,37 +494,14 @@ if ($input["players"] == 8) {
                     $userID = $sum[$i]["userID"];
                     $stmt3 = $database->stmt_init();
                     $stmt3 = $database->prepare("INSERT INTO loses(userID, game, gameName) VALUES(?,?,?)");
-                    $stmt3->bind_param("iis", $userID, $round, $gameName);
+                    $stmt3->bind_param("iis", $playerID, $round, $gameName);
                     $stmt3->execute();
                     // array_push($players, $sum[$i]["sum(value)"]);
                 }
             }
         }
-    }
-
-
-    $stmt = $database->stmt_init();
-    $stmt = $database->prepare("SELECT id FROM users WHERE gameID = ?");
-    $stmt->bind_param("s", $gameID);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    $sum = [];
-
-    // kiszedi a játékosokat
-    for ($i = 0; $i < $result->num_rows; $i++) {
-        $id = $result->fetch_assoc()["id"];
-
-        $stmt2 = $database->stmt_init();
-        $stmt2 = $database->prepare("SELECT sum(value), userID FROM jatekok WHERE userID = ? AND game = ? AND gameName=?");
-        $stmt2->bind_param("iis", $id, $round, $gameName);
-        $stmt2->execute();
-        $result2 = $stmt2->get_result();
-
-        array_push($sum, $result2->fetch_assoc());
     }
 }
-
 
 if ($input["players"] == 9) {
     $act_user = $input["id"];
@@ -765,7 +747,7 @@ if ($input["players"] == 16) {
 
     $data = [];
 
-    if($year !== "all"){
+    if ($year !== "all") {
         $stmt = $database->stmt_init();
         $stmt = $database->prepare("SELECT sum(jatekok.value) as sum FROM jatekok WHERE userID = ? AND gameName = ? AND YEAR(jatekok.calendar) = ? GROUP BY game, gameName;");
         $stmt->bind_param("iss", $id, $gameName, $year);
