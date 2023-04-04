@@ -17,8 +17,6 @@ const PlayerCustom = ({ score, del, gameName }) => {
   } = useContext(NavManage);
   const [sum, setSum] = useState(0);
   const [place, setPlace] = useState(0);
-  const count = useMotionValue(0);
-  const rounded = useTransform(count, Math.round);
 
   const variants = {
     hidden: { opacity: 1 },
@@ -35,12 +33,6 @@ const PlayerCustom = ({ score, del, gameName }) => {
     hidden: {x: -20, opacity: 0},
     visible: {x: 0, opacity: 1}
   }
-
-  useEffect(() => {
-    const animation = animate(count, sum, { duration: 5 });
-
-    return animation.stop;
-  }, [sum]);
 
   useEffect(() => {
     // console.log(customGame);
@@ -121,7 +113,7 @@ const PlayerCustom = ({ score, del, gameName }) => {
         <div className="gameInfo">
           <h2 className="PlayerPlace">#{place}</h2>
           <h1>{score.username}</h1>
-          <motion.p>{rounded}</motion.p>
+          <p>{sum}</p>
           <div className="Adder">
             <AddCustomPoint id={score.id} gameName={gameName} />
           </div>
