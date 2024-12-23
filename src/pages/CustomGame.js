@@ -1,12 +1,19 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import NavManage from "../side/NavContext";
 import PlayerCustom from "../components/PlayerCustom";
 import { motion } from "framer-motion";
 const CustomGame = () => {
   const { game } = useParams();
-  const { column, customScores, UpgradeCustomScores, upgradeActGameName } =
-    useContext(NavManage);
+  const {
+    column,
+    customScores,
+    UpgradeCustomScores,
+    upgradeActGameName,
+    UpdateCustomScoresValue
+  } = useContext(NavManage);
+  const dragItem = useRef(null);
+  const dragOverItem = useRef(null);
 
   const variants = {
     hidden: { opacity: 1 },
@@ -29,6 +36,23 @@ const CustomGame = () => {
     upgradeActGameName(game);
   }, [game]);
 
+  const dragStart = (e, position) => {
+    dragItem.current = position;
+  };
+
+  const dragEnter = (e, position) => {
+    dragOverItem.current = position;
+  };
+
+  const drop = () => {
+    let copyItems = [...customScores];
+    const temp = copyItems[dragOverItem.current];
+    copyItems[dragOverItem.current] = copyItems[dragItem.current];
+    copyItems[dragItem.current] = temp;
+
+    UpdateCustomScoresValue(copyItems);
+  };
+
   return (
     <>
       <motion.div
@@ -43,7 +67,15 @@ const CustomGame = () => {
         {customScores.map((score, index) =>
           score.visible ? (
             <motion.div key={index} variants={item}>
-              <PlayerCustom score={score} key={index} del={0} gameName={game} />
+              <PlayerCustom
+                score={score}
+                key={index}
+                del={0}
+                gameName={game}
+                onDragStart={(e) => dragStart(e, index)}
+                onDragEnter={(e) => dragEnter(e, index)}
+                onDragEnd={drop}
+              />
             </motion.div>
           ) : (
             ""

@@ -10,7 +10,7 @@ const NavButton = (props) => {
     </Link>
   ) : (
     <button type="button" onClick={props.onClick} className={props.className}>
-      <img src={props.src} alt="open" />
+      {props.children ? props.children : <img src={props.src} alt="open" />}
     </button>
   );
 };

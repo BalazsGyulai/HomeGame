@@ -7,7 +7,14 @@ import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import NavButton from "./../UI/NavButton";
 import NavBtnStyle from "../UI/NavButton.module.css";
 
-const PlayerCustom = ({ score, del, gameName }) => {
+const PlayerCustom = ({
+  score,
+  del,
+  gameName,
+  onDragStart,
+  onDragEnter,
+  onDragEnd
+}) => {
   const [Actscores, setActScores] = useState([]);
   const {
     baseURL,
@@ -111,7 +118,13 @@ const PlayerCustom = ({ score, del, gameName }) => {
 
   return (
     <>
-      <div className="player">
+      <div
+        className="player"
+        onDragStart={onDragStart}
+        onDragEnter={onDragEnter}
+        onDragEnd={onDragEnd}
+        draggable
+      >
         <div className="gameInfo">
           <h2 className="PlayerPlace">#{place}</h2>
           <h1>{score.username}</h1>
