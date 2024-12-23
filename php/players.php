@@ -2,11 +2,12 @@
 
 require("./context/header.php");
 
-if ($input["players"] === 0){
+// Gives back the players
+if ($input["players"] === 0) {
     $gameID = $input["gameID"];
 
     $stmt = $database->stmt_init();
-    if (!$stmt = $database->prepare("SELECT username, id FROM users WHERE gameID = ?")){
+    if (!$stmt = $database->prepare("SELECT username, id FROM users WHERE gameID = ?")) {
         $data["status"] = "failed to connect to database";
         echo json_encode($data);
         exit;
@@ -16,14 +17,12 @@ if ($input["players"] === 0){
     $result = $stmt->get_result();
     $num = $result->num_rows;
 
-    // $sql = "SELECT username, id FROM users";
-    // $stmt = $database->query($sql);
-    // $num = $stmt->num_rows;
-
     $data = [];
     $players = [];
-    for ($i = 0; $i < $num; $i++){
+    for ($i = 0; $i < $num; $i++) {
         $row = $result->fetch_assoc();
+        $row["visible"] = true;
+
         array_push($players, $row);
     }
 
@@ -34,7 +33,7 @@ if ($input["players"] === 0){
     $stmt->close();
 }
 
-if ($input["players"] == 1){
+if ($input["players"] == 1) {
     $gameID = $input["gameID"];
     // INSERT INTO jatekok(userID, value, round, game) VALUES(12,50,1,1)
 
@@ -51,7 +50,7 @@ if ($input["players"] == 1){
     $players = [];
 
     $stmt = $database->stmt_init();
-    if (!$stmt = $database->prepare("SELECT id, username FROM users WHERE gameID = ?")){
+    if (!$stmt = $database->prepare("SELECT id, username FROM users WHERE gameID = ?")) {
         $data["status"] = "failed to connect to database";
         echo json_encode($data);
         exit;
@@ -60,11 +59,11 @@ if ($input["players"] == 1){
     $stmt->execute();
     $result = $stmt->get_result();
     $num = $result->num_rows;
-    
-    
-    for ($i = 0; $i < $num; $i++){
+
+
+    for ($i = 0; $i < $num; $i++) {
         $row = $result->fetch_assoc();
-        
+
         $id = intval($row["id"]);
         $sql2 = "SELECT value, game FROM jatekok WHERE userID = ? ORDER BY jatekID DESC";
         $stmt = $database->stmt_init();
@@ -73,31 +72,31 @@ if ($input["players"] == 1){
         $stmt->execute();
         $val = $stmt->get_result();
         $val_num = $val->num_rows;
-        if ($val_num > 0){
+        if ($val_num > 0) {
             $row2 = $val->fetch_assoc();
-            
+
             $row["game"] = $row2["game"];
-        } else{
+        } else {
             $row["game"] = 1;
         }
         array_push($players, $row);
     }
-     
+
     array_push($data, $players);
     $data["status"] = "success";
     $stmt->close();
     echo json_encode($data);
 }
 
-if ($input["players"] == 2){
+if ($input["players"] == 2) {
     $id = $input["id"];
     $game = $input["round"];
     $gameID = $input["gameID"];
-    
+
     $data = [];
     $sql = "SELECT jatekok.jatekID, jatekok.value FROM users INNER JOIN jatekok ON jatekok.userID = users.id AND jatekok.userID = ? AND jatekok.game = ? AND users.gameID = ? ORDER BY jatekID DESC";
     $stmt = $database->init();
-    if (!$stmt = $database->prepare($sql)){
+    if (!$stmt = $database->prepare($sql)) {
         $data["status"] = "failed to connect to database";
         echo json_encode($data);
         exit;
@@ -109,12 +108,12 @@ if ($input["players"] == 2){
     $num = $res->num_rows;
 
     $profile = [];
-    for ($i = 0; $i < $num; $i++){
+    for ($i = 0; $i < $num; $i++) {
         $row = $res->fetch_assoc();
 
         array_push($profile, $row);
     }
-    
+
     array_push($data, $profile);
     $data["status"] = "success";
     $stmt->close();
@@ -135,7 +134,7 @@ if ($input["players"] == 2){
 
 //     echo json_encode($data);
 // }
-if ($input["players"] == 3){
+if ($input["players"] == 3) {
     $id = $input["id"];
 
     $sql = "DELETE FROM jatekok WHERE jatekID = ?";
@@ -147,7 +146,7 @@ if ($input["players"] == 3){
     $stmt->close();
 }
 
-if ($input["players"] == 4){
+if ($input["players"] == 4) {
     $id = $input["user"];
 
     // $sql = "SELECT username FROM users WHERE id = ?";
@@ -161,25 +160,25 @@ if ($input["players"] == 4){
     $data = [];
 
     array_push($data, $result->fetch_assoc());
-    
+
     echo json_encode($data);
 }
 
-if ($input["players"] == 5){
+if ($input["players"] == 5) {
     $id = $input["user"];
     $stmt = $database->stmt_init();
     $stmt = $database->prepare("SELECT value, game FROM jatekok WHERE userID = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
-    
+
     $result = $stmt->get_result();
     $num = $result->num_rows;
-    
+
     echo json_encode($num);
 }
 
-if ($input["players"] == 6){
-    
+if ($input["players"] == 6) {
+
     $game = $input["game"];
     $gameID = $input["gameID"];
 
@@ -187,9 +186,9 @@ if ($input["players"] == 6){
     // $users = $database->query("SELECT id FROM users WHERE gameID = ?");
     // $numUser = $users->num_rows;
     $data = [];
-    
+
     $stmt = $database->stmt_init();
-    if (!$stmt = $database->prepare("SELECT id FROM users WHERE gameID = ?")){
+    if (!$stmt = $database->prepare("SELECT id FROM users WHERE gameID = ?")) {
         $data["status"] = "failed to connect to database";
         echo json_encode($data);
         exit;
@@ -198,25 +197,25 @@ if ($input["players"] == 6){
     $stmt->execute();
     $users = $stmt->get_result();
     $numUser = $users->num_rows;
-    
-    
-    for ($y = 0; $y < $numUser; $y++){
+
+
+    for ($y = 0; $y < $numUser; $y++) {
         $id = $users->fetch_assoc()["id"];
-        
+
         $stmt = $database->stmt_init();
         $stmt = $database->prepare("SELECT userID, sum(value) FROM jatekok WHERE userID = ? AND game = ?");
         $stmt->bind_param("ii", $id, $game);
         $stmt->execute();
         $result = $stmt->get_result();
-        
+
         $num = $result->num_rows;
-        
-        for ($i = 0; $i < $num; $i++){
+
+        for ($i = 0; $i < $num; $i++) {
             $row = $result->fetch_assoc();
             array_push($data, $row);
         }
     }
-    
+
     // echo json_encode($data);
     // Vesztés
 
@@ -227,20 +226,20 @@ if ($input["players"] == 6){
     $result = $stmt->get_result();
     $num_loses = $result->num_rows;
 
-    if ($num_loses == 0){
+    if ($num_loses == 0) {
 
         $max = 0;
 
         $x = 0;
-        while ($x < count($data) && $data[$x]["sum(value)"] == null){
-           $x++;
+        while ($x < count($data) && $data[$x]["sum(value)"] == null) {
+            $x++;
         }
-        
-        if ($x < count($data)){
+
+        if ($x < count($data)) {
             $max = $data[$x]["sum(value)"];
         }
 
-        for ($i = 0; $i < count($data); $i++){
+        for ($i = 0; $i < count($data); $i++) {
             if ($data[$i]["sum(value)"] > $max && $data[$i]["sum(value)"] != null) {
                 $max = $data[$i]["sum(value)"];
             }
@@ -248,19 +247,18 @@ if ($input["players"] == 6){
 
         $winers = [];
 
-        for ($i = 0; $i < count($data); $i++){
-            if ($data[$i]["sum(value)"] == $max){
+        for ($i = 0; $i < count($data); $i++) {
+            if ($data[$i]["sum(value)"] == $max) {
                 array_push($winers, $data[$i]["userID"]);
             }
         }
 
-        for ($i = 0; $i < count($winers); $i++){
+        for ($i = 0; $i < count($winers); $i++) {
             $stmt = $database->stmt_init();
             $stmt = $database->prepare("INSERT INTO loses(userID, game) VALUES(?,?)");
             $stmt->bind_param("ii", $winers[$i], $game);
             $stmt->execute();
         }
-
     }
 
     // győzelem
@@ -272,34 +270,34 @@ if ($input["players"] == 6){
     $result = $stmt->get_result();
     $num_win = $result->num_rows;
 
-    if ($num_win == 0){
+    if ($num_win == 0) {
 
         $min = 0;
 
         $x = 0;
-        while ($x < count($data) && $data[$x]["sum(value)"] == null){
-           $x++;
+        while ($x < count($data) && $data[$x]["sum(value)"] == null) {
+            $x++;
         }
-        
-        if ($x < count($data)){
+
+        if ($x < count($data)) {
             $min = $data[$x]["sum(value)"];
         }
 
-        for ($i = 0; $i < count($data); $i++){
+        for ($i = 0; $i < count($data); $i++) {
             if ($data[$i]["sum(value)"] < $min && $data[$i]["sum(value)"] != null) {
                 $min = $data[$i]["sum(value)"];
             }
         }
-        
+
         $losers = [];
 
-        for ($i = 0; $i < count($data); $i++){
-            if ($data[$i]["sum(value)"] == $min){
+        for ($i = 0; $i < count($data); $i++) {
+            if ($data[$i]["sum(value)"] == $min) {
                 array_push($losers, $data[$i]["userID"]);
             }
         }
 
-        for ($i = 0; $i < count($losers); $i++){
+        for ($i = 0; $i < count($losers); $i++) {
             $stmt = $database->stmt_init();
             $stmt = $database->prepare("INSERT INTO wins(userID, game) VALUES(?,?)");
             $stmt->bind_param("ii", $losers[$i], $game);
@@ -308,7 +306,7 @@ if ($input["players"] == 6){
     }
 }
 
-if ($input["players"] == 7){
+if ($input["players"] == 7) {
     $userID = $input["user"];
     $date = $input["year"];
 
@@ -317,32 +315,32 @@ if ($input["players"] == 7){
 
     if ($date !== "all") {
 
-            $stmt = $database->stmt_init();
-            // $stmt = $database->prepare("SELECT count(game) FROM wins WHERE userID = ?");
+        $stmt = $database->stmt_init();
+        // $stmt = $database->prepare("SELECT count(game) FROM wins WHERE userID = ?");
 
-            $stmt = $database->prepare("SELECT count(a.game) as loses FROM (SELECT j.userID, j.game, j.gameName, YEAR(j.calendar) FROM jatekok j WHERE j.userID = ? AND YEAR(j.calendar) = ? GROUP BY j.game, j.gameName) a INNER JOIN (SELECT l.game, l.gameName FROM loses l WHERE l.userID = ?) b ON a.gameName = b.gameName AND a.game = b.game;");
-            $stmt->bind_param("isi", $userID, $date, $userID);
-            $stmt->execute();
-            $wins = $stmt->get_result();
+        $stmt = $database->prepare("SELECT count(a.game) as loses FROM (SELECT j.userID, j.game, j.gameName, YEAR(j.calendar) FROM jatekok j WHERE j.userID = ? AND YEAR(j.calendar) = ? GROUP BY j.game, j.gameName) a INNER JOIN (SELECT l.game, l.gameName FROM loses l WHERE l.userID = ?) b ON a.gameName = b.gameName AND a.game = b.game;");
+        $stmt->bind_param("isi", $userID, $date, $userID);
+        $stmt->execute();
+        $wins = $stmt->get_result();
 
-            array_push($data, $wins->fetch_assoc()["loses"]);
+        array_push($data, $wins->fetch_assoc()["loses"]);
     } else {
 
-            $stmt = $database->stmt_init();
-            // $stmt = $database->prepare("SELECT count(game) FROM wins WHERE userID = ?");
+        $stmt = $database->stmt_init();
+        // $stmt = $database->prepare("SELECT count(game) FROM wins WHERE userID = ?");
 
-            $stmt = $database->prepare("SELECT count(a.game) as loses FROM (SELECT j.userID, j.game, j.gameName, YEAR(j.calendar) FROM jatekok j WHERE j.userID = ? GROUP BY j.game, j.gameName) a INNER JOIN (SELECT l.game, l.gameName FROM loses l WHERE l.userID = ?) b ON a.gameName = b.gameName AND a.game = b.game;");
-            $stmt->bind_param("ii", $userID, $userID);
-            $stmt->execute();
-            $wins = $stmt->get_result();
+        $stmt = $database->prepare("SELECT count(a.game) as loses FROM (SELECT j.userID, j.game, j.gameName, YEAR(j.calendar) FROM jatekok j WHERE j.userID = ? GROUP BY j.game, j.gameName) a INNER JOIN (SELECT l.game, l.gameName FROM loses l WHERE l.userID = ?) b ON a.gameName = b.gameName AND a.game = b.game;");
+        $stmt->bind_param("ii", $userID, $userID);
+        $stmt->execute();
+        $wins = $stmt->get_result();
 
-            array_push($data, $wins->fetch_assoc()["loses"]);
+        array_push($data, $wins->fetch_assoc()["loses"]);
     }
 
     echo json_encode($data);
 }
 
-if ($input["players"] == 8){
+if ($input["players"] == 8) {
     $userID = $input["user"];
     $date = $input["year"];
 
@@ -350,32 +348,32 @@ if ($input["players"] == 8){
 
     if ($date !== "all") {
 
-            $stmt = $database->stmt_init();
-            // $stmt = $database->prepare("SELECT count(game) FROM wins WHERE userID = ?");
+        $stmt = $database->stmt_init();
+        // $stmt = $database->prepare("SELECT count(game) FROM wins WHERE userID = ?");
 
-            $stmt = $database->prepare("SELECT count(a.game) as wins FROM (SELECT j.userID, j.game, j.gameName, YEAR(j.calendar) FROM jatekok j WHERE j.userID = ? AND YEAR(j.calendar) = ? GROUP BY j.game, j.gameName) a INNER JOIN (SELECT w.game, w.gameName FROM wins w WHERE w.userID = ?) b ON a.gameName = b.gameName AND a.game = b.game;");
-            $stmt->bind_param("isi", $userID, $date, $userID);
-            $stmt->execute();
-            $wins = $stmt->get_result();
+        $stmt = $database->prepare("SELECT count(a.game) as wins FROM (SELECT j.userID, j.game, j.gameName, YEAR(j.calendar) FROM jatekok j WHERE j.userID = ? AND YEAR(j.calendar) = ? GROUP BY j.game, j.gameName) a INNER JOIN (SELECT w.game, w.gameName FROM wins w WHERE w.userID = ?) b ON a.gameName = b.gameName AND a.game = b.game;");
+        $stmt->bind_param("isi", $userID, $date, $userID);
+        $stmt->execute();
+        $wins = $stmt->get_result();
 
-            array_push($data, $wins->fetch_assoc()["wins"]);
+        array_push($data, $wins->fetch_assoc()["wins"]);
     } else {
 
-            $stmt = $database->stmt_init();
-            // $stmt = $database->prepare("SELECT count(game) FROM wins WHERE userID = ?");
+        $stmt = $database->stmt_init();
+        // $stmt = $database->prepare("SELECT count(game) FROM wins WHERE userID = ?");
 
-            $stmt = $database->prepare("SELECT count(a.game) as wins FROM (SELECT j.userID, j.game, j.gameName, YEAR(j.calendar) FROM jatekok j WHERE j.userID = ? GROUP BY j.game, j.gameName) a INNER JOIN (SELECT w.game, w.gameName FROM wins w WHERE w.userID = ?) b ON a.gameName = b.gameName AND a.game = b.game;");
-            $stmt->bind_param("ii", $userID, $userID);
-            $stmt->execute();
-            $wins = $stmt->get_result();
+        $stmt = $database->prepare("SELECT count(a.game) as wins FROM (SELECT j.userID, j.game, j.gameName, YEAR(j.calendar) FROM jatekok j WHERE j.userID = ? GROUP BY j.game, j.gameName) a INNER JOIN (SELECT w.game, w.gameName FROM wins w WHERE w.userID = ?) b ON a.gameName = b.gameName AND a.game = b.game;");
+        $stmt->bind_param("ii", $userID, $userID);
+        $stmt->execute();
+        $wins = $stmt->get_result();
 
-            array_push($data, $wins->fetch_assoc()["wins"]);
+        array_push($data, $wins->fetch_assoc()["wins"]);
     }
 
     echo json_encode($data);
 }
 
-if ($input["players"] == 9){
+if ($input["players"] == 9) {
     $id = $input["user"];
 
     $stmt = $database->stmt_init();
@@ -401,10 +399,9 @@ if ($input["players"] == 9){
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $stmt->close();
- 
 }
 
-if ($input["players"] == 10){
+if ($input["players"] == 10) {
     // $user = 71;
     // $game = 5;
     $user = $input["user"];
@@ -417,16 +414,16 @@ if ($input["players"] == 10){
     $result = $stmt->get_result();
     $num = $result->num_rows;
     $data = [];
-    
-    for ($i = 0; $i < $num; $i++){
+
+    for ($i = 0; $i < $num; $i++) {
         array_push($data, $result->fetch_assoc()["calendar"]);
     }
-    
+
     echo json_encode($data);
     $stmt->close();
 }
 
-if ($input["players"] == 11){
+if ($input["players"] == 11) {
     // $user = 71;
     // $game = 5;
     $user = $input["user"];
@@ -439,16 +436,16 @@ if ($input["players"] == 11){
     $result = $stmt->get_result();
     $num = $result->num_rows;
     $data = [];
-    
-    for ($i = 0; $i < $num; $i++){
+
+    for ($i = 0; $i < $num; $i++) {
         array_push($data, $result->fetch_assoc()["value"]);
     }
-    
+
     echo json_encode($data);
     $stmt->close();
 }
 
-if ($input["players"] == 12){
+if ($input["players"] == 12) {
     // $user = 71;
     // $game = 5;
     $user = $input["user"];
@@ -460,22 +457,22 @@ if ($input["players"] == 12){
     $result = $stmt->get_result();
     $num = $result->num_rows;
     $data = [];
-    
+
     $act_game = 0;
 
-    for ($i = 0; $i < $num; $i++){
+    for ($i = 0; $i < $num; $i++) {
         $row = $result->fetch_assoc()["game"];
-        if ($act_game != $row){
+        if ($act_game != $row) {
             $act_game = $row;
             array_push($data, $row);
         }
     }
-    
+
     echo json_encode($data);
     $stmt->close();
 }
 
-if ($input["players"] == 13){
+if ($input["players"] == 13) {
     // $user = 71;
     // $game = 5;
     $user = $input["user"];
@@ -490,19 +487,19 @@ if ($input["players"] == 13){
     $result = $stmt->get_result();
     $num = $result->num_rows;
     $games = [];
-    
+
     $act_game = 0;
 
-    for ($i = 0; $i < $num; $i++){
+    for ($i = 0; $i < $num; $i++) {
         $row = $result->fetch_assoc()["game"];
-        if ($act_game != $row){
+        if ($act_game != $row) {
             $act_game = $row;
             array_push($games, $row);
         }
     }
 
     $data = [];
-    for($i = 0; $i < count($games); $i++ ){
+    for ($i = 0; $i < count($games); $i++) {
         $a = $games[$i];
 
         $stmt = $database->stmt_init();
@@ -513,9 +510,9 @@ if ($input["players"] == 13){
         $num = $result->num_rows;
         array_push($data, $result->fetch_assoc()["sum(value)"]);
     }
-    
 
-    
+
+
     echo json_encode($data);
     $stmt->close();
 }

@@ -15,12 +15,13 @@ import CustomGameLog from "./pages/CustomGameLog";
 import {
   IsThereASession,
   SessionValue,
-  clearSession,
+  clearSession
 } from "./functions/Session";
 import UserSettings from "./components/UserSettings";
 import { motion, AnimatePresence } from "framer-motion";
 
 function App() {
+  // global variables
   const {
     active,
     login,
@@ -32,15 +33,20 @@ function App() {
     UpgradePlayers,
     UpgradeSecureCode,
     showUserSettings,
-    UpgradeUsID,
+    UpgradeUsID
   } = useContext(NavManage);
+
+  // locate the user
   const location = useLocation();
   const { pathname } = location;
   const SiteLocation = pathname.split("/");
 
+  // local variables
   let opened = active ? "menuOpened" : "menuClosed";
 
+  // local functions
   useEffect(() => {
+    // login the user if there a session
     if (
       IsThereASession("userID") &&
       IsThereASession("gameID") &&
@@ -62,7 +68,7 @@ function App() {
       {login ? (
         <div className="App">
           <Nav />
-          
+
           <div className="container">
             {SiteLocation[0] === "" && SiteLocation[1] === "" ? (
               <Route path="/" exact>

@@ -4,12 +4,12 @@
   box-sizing: border-box;
 }
 
-#logo .sendEmail img{
+#logo .sendEmail img {
   width: 90%;
   height: auto;
 }
 
-#logo .sendEmail{
+#logo .sendEmail {
   position: absolute;
   left: 10px;
   display: flex;
@@ -26,7 +26,7 @@
   transition: 0.3s;
 }
 
-.PlayerSettings{
+.PlayerSettings {
   position: absolute;
   right: 10px;
   display: flex;
@@ -44,22 +44,22 @@
 }
 
 .PlayerSettings:active,
-#logo .sendEmail:active{
+#logo .sendEmail:active {
   background: #2a4684;
   transition: 0.3s;
 }
 
-#logo .sendEmail:hover img{
+#logo .sendEmail:hover img {
   transform: rotateZ(360deg);
   transition: 0.5s;
 }
 
-.PlayerSettings:hover img{
+.PlayerSettings:hover img {
   transform: rotateZ(180deg);
   transition: 0.5s;
 }
 
-.PlayerSettings img{
+.PlayerSettings img {
   width: 90%;
   height: auto;
   transform: rotateZ(0deg);
@@ -69,7 +69,7 @@
 
 nav {
   position: absolute;
-  top: 0; 
+  top: 0;
   left: 0;
   transform: translateX(0);
   width: 300px;
@@ -192,17 +192,17 @@ span h1 {
   transition: 0.3s ease-in;
 }
 
-.active{
+.active {
   background-color: #fca311;
   font-weight: 500;
 }
 
-.opened{
+.opened {
   left: 0;
   /* transform: translateX(0); */
 }
 
-.closed{
+.closed {
   left: -350px;
   /* transform: translateX(-100%); */
 }
@@ -225,7 +225,7 @@ span h1 {
 }
 
 .newGame:hover,
-.newGame:active{
+.newGame:active {
   box-shadow: inset 3px 3px 0 #2c6e49;
 }
 
@@ -247,20 +247,24 @@ span h1 {
 }
 
 .GameLog:hover,
-.GameLog:active{
+.GameLog:active {
   box-shadow: inset 3px 3px 0 #2a4684;
 }
 
-.settings{
-  position: relative;
+.settings {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
   padding: 0 10px;
   display: flex;
   align-items: center;
-  justify-content:space-between;
+  justify-content: space-between;
   height: 50px;
 }
 
-.settings button{
+.settings button {
   /* position: absolute; */
   display: flex;
   align-items: center;
@@ -278,18 +282,18 @@ span h1 {
   transition: 0.3s;
 }
 
-.settings button img{
+.settings button img {
   width: 100%;
   height: auto;
 }
 
 .settings button:active,
-.settings button:hover{
+.settings button:hover {
   background: #cccccc;
   transition: 0.3s;
 }
 
-.won{
+.won {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -297,13 +301,13 @@ span h1 {
   width: 40%;
   height: 50%;
   z-index: 15;
-  background: #fff; 
+  background: #fff;
   border: 1px solid #cccccc;
   border-radius: 10px;
   box-shadow: 5px 5px 10px #cccccc;
 }
 
-.won .choosebtns{
+.won .choosebtns {
   width: 70%;
   position: absolute;
   top: 50%;
@@ -311,7 +315,7 @@ span h1 {
   transform: translate(-50%, -50%);
 }
 
-.won button{
+.won button {
   width: 100%;
   padding: 10px;
   margin: 10px 0;

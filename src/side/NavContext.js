@@ -4,7 +4,7 @@ const NavManage = createContext();
 
 export function Nav({ children }) {
   const [playerStatus, setPlayerStatus] = useState("member");
-  let [active, setActive] = useState(true);
+  const [active, setActive] = useState(true);
   const [players, setPlayers] = useState([]);
   const [scores, setScores] = useState([]);
   const [game, setGame] = useState(0);
@@ -16,7 +16,7 @@ export function Nav({ children }) {
   const [ErrorShow, setErrorShow] = useState(0);
   const [ErrorDesc, setErrorDesc] = useState("Sikeres csatlakozás!");
   const [ErrorType, setErrorType] = useState("");
-  const baseURL = "http://games.gyulaibalazs.hu/";
+  const baseURL = "http://localhost/";
   const [games, setGames] = useState([]);
   const [customGame, setCustomGame] = useState(0);
   const [customScores, setcustomScores] = useState([]);
@@ -25,20 +25,20 @@ export function Nav({ children }) {
   const [usID, setUsID] = useState(0);
 
   const UpgradeUsID = (val) => {
-    setUsID (val);
-  }
+    setUsID(val);
+  };
 
   const UpgradeUserSettings = (val) => {
-    setShowUserSettings(val)
-  }
+    setShowUserSettings(val);
+  };
 
   const UpgradePlayerStatus = (value) => {
     setPlayerStatus(value);
-  }
+  };
 
   const upgradeActGameName = (ActGameName) => {
     setActGameName(ActGameName);
-  }
+  };
 
   const NewCustomGame = () => {
     // UpgradeCutomGame(gameName);
@@ -51,7 +51,7 @@ export function Nav({ children }) {
         gameID: secureCode,
         game: ActGame,
         round: customGame
-      }),
+      })
     })
       .then((data) => data.json())
       .then((data) => {
@@ -80,8 +80,8 @@ export function Nav({ children }) {
       body: JSON.stringify({
         players: 5,
         gameID: secureCode,
-        game: gameName,
-      }),
+        game: gameName
+      })
     })
       .then((data) => data.json())
       .then((data) => {
@@ -106,12 +106,12 @@ export function Nav({ children }) {
       body: JSON.stringify({
         players: 1,
         gameID: secureCode,
-        game: gameName,
-      }),
+        game: gameName
+      })
     })
       .then((data) => data.json())
       .then((data) => {
-        setcustomScores(data[0]);
+        UpdateCustomScoresValue(data[0]);
         UpgradeCutomGame(gameName);
 
         // const res = data[0];
@@ -128,25 +128,28 @@ export function Nav({ children }) {
       });
   };
 
+  const UpdateCustomScoresValue = (val) => {
+    setcustomScores(val);
+  };
+
   const UpgradeGames = () => {
     fetch(`${baseURL}games.php`, {
       method: "post",
       body: JSON.stringify({
-        gameID: secureCode,
-      }),
+        gameID: secureCode
+      })
     })
       .then((data) => data.json())
       .then((data) => {
         // console.log(data);
 
-        if (data.length !== 0){
+        if (data.length !== 0) {
           setGames(data);
         }
       });
   };
 
   const upgradeLogin = (val) => {
-
     setLogin(val);
 
     // setLogin(val);
@@ -154,7 +157,7 @@ export function Nav({ children }) {
 
   const ShowError = (val) => {
     setErrorShow(val);
-  }
+  };
 
   const errorHandler = (desc, type) => {
     setErrorDesc(desc);
@@ -172,8 +175,8 @@ export function Nav({ children }) {
       method: "post",
       body: JSON.stringify({
         gameID: code,
-        username: name,
-      }),
+        username: name
+      })
     })
       .then((data) => data.json())
       .then((data) => {
@@ -186,23 +189,29 @@ export function Nav({ children }) {
     setRegist(val);
   };
 
+  // Updates whether menu is displayed or not
   const UpgradeActive = (set) => {
-    setActive((active = set));
+    setActive(set);
   };
+
+  const MenuIsShown = () => {
+    setActive(!active);
+  };
+  // -----------------------------------------
 
   const UpgradePlayers = () => {
     fetch(`${baseURL}players.php`, {
       method: "post",
       body: JSON.stringify({
         players: 0,
-        gameID: secureCode,
-      }),
+        gameID: secureCode
+      })
     })
       .then((data) => data.json())
       .then((data) => {
         if (data["status"] === "success") {
           const res = data[0];
-          setPlayers(res);
+          UpdatePlayers(res);
         } else if (data["status"] === "failed to connect to database") {
           errorHandler("Váratlan hiba! Kérem jelentkezzen be újra!", "fail");
 
@@ -211,13 +220,17 @@ export function Nav({ children }) {
       });
   };
 
+  const UpdatePlayers = (res) => {
+    setPlayers(res);
+  };
+
   const UpgradeScores = () => {
     fetch(`${baseURL}players.php`, {
       method: "post",
       body: JSON.stringify({
         players: 1,
-        gameID: secureCode,
-      }),
+        gameID: secureCode
+      })
     })
       .then((data) => data.json())
       .then((data) => {
@@ -249,8 +262,8 @@ export function Nav({ children }) {
       body: JSON.stringify({
         players: 6,
         game: game,
-        gameID: secureCode,
-      }),
+        gameID: secureCode
+      })
     });
 
     setGame(game + 1);
@@ -299,7 +312,10 @@ export function Nav({ children }) {
         UpgradeUserSettings,
         showUserSettings,
         UpgradeUsID,
-        usID
+        usID,
+        MenuIsShown,
+        UpdatePlayers,
+        UpdateCustomScoresValue
       }}
     >
       {children}

@@ -14,15 +14,15 @@ const CustomGame = () => {
       opacity: 1,
       transition: {
         delayChildren: 0.3,
-        staggerChildren: 0.2,
-      },
-    },
+        staggerChildren: 0.2
+      }
+    }
   };
 
-  const item={
-    hidden: {y: 20, opacity: 0},
-    visible: {y: 0, opacity: 1}
-  }
+  const item = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1 }
+  };
 
   useEffect(() => {
     UpgradeCustomScores(game);
@@ -37,14 +37,19 @@ const CustomGame = () => {
         animate="visible"
         className="game"
         style={{
-          gridTemplateColumns: `repeat(auto-fit, calc(100% / ${column}))`,
+          gridTemplateColumns: `repeat(auto-fit, calc(100% / ${column}))`
         }}
       >
-        {customScores.map((score, index) => (
-          <motion.div key={index} variants={item}>
-            <PlayerCustom score={score} key={index} del={0} gameName={game} />
-          </motion.div>
-        ))}
+        {console.log(customScores)}
+        {customScores.map((score, index) =>
+          score.visible ? (
+            <motion.div key={index} variants={item}>
+              <PlayerCustom score={score} key={index} del={0} gameName={game} />
+            </motion.div>
+          ) : (
+            ""
+          )
+        )}
       </motion.div>
     </>
   );

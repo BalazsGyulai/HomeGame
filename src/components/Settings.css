@@ -80,11 +80,11 @@
     transition: 0.3s;
 } */
 
-.Settings{
+.Settings {
     height: calc(100vh - 130px);
 }
 
-.changer{
+.changer {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -92,7 +92,7 @@
     height: 40px;
 }
 
-.changer button{
+.changer button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -104,40 +104,55 @@
     border-radius: 5px;
 }
 
-.changer button:first-child{
+.changer button:first-child {
     background: #e60012;
     transition: 0.3s;
 }
 
-.changer button:first-child:hover{
+.changer button:first-child:hover {
     background: #c60010;
     box-shadow: inset 5px 5px 0px #99000d;
     transition: 0.3s;
 }
 
-.changer button:first-child:active{
+.changer button:first-child:active {
     background: #99000d;
     transition: 0.3s;
 }
 
-.changer button:last-child{
+.changer button:last-child {
     background: #00c3e3;
 }
 
-.changer button:last-child:hover{
+.changer button:last-child:hover {
     background: #00a1ba;
     box-shadow: inset 5px 5px 0px #00859a;
     transition: 0.3s;
 }
 
-.changer button:last-child:active{
+.changer button:last-child:active {
     background: #00859a;
 }
 
 
 
-.changer button img{
+.changer button img {
     margin: 0;
     width: 90%;
     height: auto;
+}
+
+.visibleBtn {
+    position: absolute;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    border-radius: 5px;
 }

@@ -38,8 +38,11 @@ if ($input["players"] == 1) {
         } else {
             $row["game"] = 1;
         }
+
+        $row["visible"] = true;
         array_push($players, $row);
     }
+
 
     array_push($data, $players);
     $data["status"] = "success";
@@ -391,7 +394,7 @@ if ($input["players"] == 8) {
                 $stmt2->bind_param("iis", $id, $round, $gameName);
                 $stmt2->execute();
                 $result2 = $stmt2->get_result();
-                
+
                 array_push($sum, $result2->fetch_assoc());
             }
 
@@ -400,11 +403,11 @@ if ($input["players"] == 8) {
             $playerID = null;
             $x = 0;
 
-            
+
             while ($sum[$x]["sum(value)"] === null && $x < count($sum)) {
                 $x++;
             }
-            
+
             if ($x < count($sum)) {
                 $min = $sum[$x]["sum(value)"];
                 $playerID = $sum[$x]["userID"];
