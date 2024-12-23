@@ -40,7 +40,6 @@ const CustomGame = () => {
           gridTemplateColumns: `repeat(auto-fit, calc(100% / ${column}))`
         }}
       >
-        {console.log(customScores)}
         {customScores.map((score, index) =>
           score.visible ? (
             <motion.div key={index} variants={item}>

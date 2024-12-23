@@ -90,7 +90,7 @@
   transition: 0.3s;
 }
 
-.player .gameInfo button img{
+.player .gameInfo button img {
   margin: 0;
   width: 90%;
   height: auto;
@@ -117,6 +117,7 @@
 .player .gameInfo button:hover {
   box-shadow: inset 3px 3px 0 #2c6e49;
 }
+
 .player .gameInfo button:active {
   background: #2c6e49;
 }
@@ -173,26 +174,4 @@
 .gameRounds .round {
   font-weight: bold;
   padding: 0 3px;
-}
-
-.delbtn {
-  position: absolute;
-  right: 5px;
-  width: 23px;
-  height: 23px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #c1121f;
-  box-shadow: 0 0 0 #780000;
-  color: #fff;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  outline: none;
-}
-
-.delbtn:hover,
-.delbtn:active{
-  box-shadow: inset 3px 3px 0 #780000;
 }

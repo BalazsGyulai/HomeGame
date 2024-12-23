@@ -11,9 +11,15 @@ import Settings from "./Settings";
 import Logout from "../img/logout.svg";
 import { clearSession } from "../functions/Session";
 import settingsSVG from "../img/settings.svg";
+import settingsBlack from "../img/settingsBlack.svg";
 import MailSVG from "../img/mail.svg";
+import add from "../img/add.svg";
+import trash from "../img/trash.svg";
+import clipboard from "../img/clipboard.svg";
 import NavHeader from "./../UI/NavHeader";
 import NavCategoryHolder from "./../UI/NavCategoryHolder";
+import NavButton from "./../UI/NavButton";
+import NavBtnStyle from "../UI/NavButton.module.css";
 
 const Nav = () => {
   // global configs
@@ -119,11 +125,14 @@ const Nav = () => {
 
   return (
     <>
-      {console.log(splitLocation)}
       {/* This button is always shown behind the sidebar */}
-      <button type="button" onClick={MenuIsShown} className="btn btn-open">
-        <img className="nav-btn" src={open} alt="open" />
-      </button>
+
+      <NavButton
+        onClick={MenuIsShown}
+        src={open}
+        type="button"
+        className={`${NavBtnStyle.LMargin} ${NavBtnStyle.LButton} ${NavBtnStyle.yellow_Btn}`}
+      />
 
       {/* Sidebar */}
 
@@ -194,24 +203,24 @@ const Nav = () => {
                       splitLocation[1] === "custom" &&
                       splitLocation[2] === game ? (
                         <>
-                          <Link className="GameLog" to={`/custom/log/${game}`}>
-                            <GoFile />
-                          </Link>
-                          <button
-                            className="newGame"
-                            onClick={NewCustomGameHandler}
-                          >
-                            <GoPlus />
-                          </button>
-                          <button
-                            style={{ right: "70px" }}
+                          <NavButton
+                            src={trash}
+                            className={`${NavBtnStyle.SButton} ${NavBtnStyle.redBtn}`}
                             onClick={() => {
                               delGame(game);
                             }}
-                            className="delbtn"
-                          >
-                            <FaTrash />
-                          </button>
+                          />
+                          <NavButton
+                            type="link"
+                            src={clipboard}
+                            className={`${NavBtnStyle.SButton} ${NavBtnStyle.blueBtn}`}
+                            to={`/custom/log/${game}`}
+                          />
+                          <NavButton
+                            src={add}
+                            className={`${NavBtnStyle.SButton} ${NavBtnStyle.greenBtn}`}
+                            onClick={() => NewCustomGame()}
+                          />
                         </>
                       ) : (
                         ""
@@ -259,14 +268,14 @@ const Nav = () => {
                         splitLocation[2] === usID ||
                         playerStatus === "leader" ? (
                           <>
-                            <button
+                            <NavButton
+                              type="button"
+                              src={settingsSVG}
+                              className={`${NavBtnStyle.SButton} ${NavBtnStyle.blueBtn}`}
                               onClick={() => {
                                 UpgradeUserSettings(!showUserSettings);
                               }}
-                              className="PlayerSettings"
-                            >
-                              <img src={settingsSVG} />
-                            </button>
+                            />
                           </>
                         ) : (
                           ""
@@ -293,23 +302,23 @@ const Nav = () => {
         -----------------------------------
         */}
         <div className="settings">
-          <button
+          <NavButton
+            type="button"
+            src={settingsBlack}
+            className={`${NavBtnStyle.MButton} ${NavBtnStyle.greyButton}`}
             onClick={() => {
               showSettings();
             }}
-          >
-            <GiGears />
-          </button>
-          <Link
-            to="/"
+          />
+          <NavButton
+            type="link"
+            src={Logout}
+            className={`${NavBtnStyle.MButton} ${NavBtnStyle.greyButton}`}
             onClick={() => {
               logOutHandler();
             }}
-          >
-            <button>
-              <img src={Logout} />
-            </button>
-          </Link>
+            to={"/"}
+          />
         </div>
       </nav>
     </>

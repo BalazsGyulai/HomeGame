@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import NavManage from "../side/NavContext";
-import { FaTrash } from "react-icons/fa";
+import trash from "../img/trash.svg";
 import AddCustomPoint from "./AddCustomPoint";
 import "./PlayerCustom.css";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import NavButton from "./../UI/NavButton";
+import NavBtnStyle from "../UI/NavButton.module.css";
 
 const PlayerCustom = ({ score, del, gameName }) => {
   const [Actscores, setActScores] = useState([]);
@@ -13,7 +15,7 @@ const PlayerCustom = ({ score, del, gameName }) => {
     customScores,
     secureCode,
     errorHandler,
-    UpgradeCutomGame,
+    UpgradeCutomGame
   } = useContext(NavManage);
   const [sum, setSum] = useState(0);
   const [place, setPlace] = useState(0);
@@ -24,15 +26,15 @@ const PlayerCustom = ({ score, del, gameName }) => {
       opacity: 1,
       transition: {
         delayChildren: 0.3,
-        staggerChildren: 0.2,
-      },
-    },
+        staggerChildren: 0.2
+      }
+    }
   };
 
-  const item={
-    hidden: {x: -20, opacity: 0},
-    visible: {x: 0, opacity: 1}
-  }
+  const item = {
+    hidden: { x: -20, opacity: 0 },
+    visible: { x: 0, opacity: 1 }
+  };
 
   useEffect(() => {
     // console.log(customGame);
@@ -48,8 +50,8 @@ const PlayerCustom = ({ score, del, gameName }) => {
         id: score.id,
         round: customGame,
         gameID: secureCode,
-        gameName: gameName,
-      }),
+        gameName: gameName
+      })
     })
       .then((data) => data.json())
       .then((data) => {
@@ -78,8 +80,8 @@ const PlayerCustom = ({ score, del, gameName }) => {
         id: score.id,
         round: customGame,
         gameID: secureCode,
-        gameName: gameName,
-      }),
+        gameName: gameName
+      })
     })
       .then((data) => data.json())
       .then((data) => {
@@ -100,8 +102,8 @@ const PlayerCustom = ({ score, del, gameName }) => {
       body: JSON.stringify({
         players: 4,
         id: id,
-        gameName: gameName,
-      }),
+        gameName: gameName
+      })
     }).then(() => {
       UpdateActScores();
     });
@@ -122,20 +124,21 @@ const PlayerCustom = ({ score, del, gameName }) => {
           variants={variants}
           initial="hidden"
           animate="visible"
-         className="gameRounds">
+          className="gameRounds"
+        >
           {Actscores.map((actScore, index, array) => (
             <motion.div key={index} variants={item}>
               <span className="round">{array.length - index}.</span>
               <p>{actScore.value}</p>
               {del === 1 ? (
-                <button
-                  className="delbtn"
+                <NavButton
+                  type="button"
+                  src={trash}
+                  className={`${NavBtnStyle.SButton} ${NavBtnStyle.redBtn}`}
                   onClick={() => {
                     delScore(actScore.jatekID);
                   }}
-                >
-                  <FaTrash />
-                </button>
+                />
               ) : (
                 ""
               )}

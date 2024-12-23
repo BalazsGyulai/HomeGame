@@ -1,0 +1,109 @@
+.yellow_Btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: none;
+    border: none;
+    outline: none;
+    transition: 0.3s;
+    border-radius: 5px;
+}
+
+.greenBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #4c956c;
+    box-shadow: 0 0 0 #2c6e49;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    outline: none;
+}
+
+.greenBtn:hover,
+.greenBtn:active {
+    box-shadow: inset 3px 3px 0 #2c6e49;
+}
+
+.redBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #c1121f;
+    box-shadow: 0 0 0 #780000;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    outline: none;
+}
+
+.redBtn:hover,
+.redBtn:active {
+    box-shadow: inset 3px 3px 0 #780000;
+}
+
+.blueBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #3b64bc;
+    box-shadow: 0 0 0 #2a4684;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    outline: none;
+}
+
+.blueBtn:hover,
+.blueBtn:active {
+    box-shadow: inset 3px 3px 0 #2a4684;
+}
+
+.greyButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    outline: none;
+}
+
+.greyButton:hover,
+.greyButton:active {
+    background: #ccc;
+    transition: 0.3s;
+}
+
+.LMargin {
+    margin: 15px;
+}
+
+.SButton {
+    padding: 4px;
+    width: 24px;
+    height: 24px;
+}
+
+.MButton {
+    padding: 3px;
+    width: 30px;
+    height: 30px;
+}
+
+.LButton {
+    padding: 5px;
+    width: 40px;
+    height: 40px;
+}
+
+.yellow_Btn:hover {
+    background: #fca311;
+    transition: 0.3s;
+}

@@ -1,0 +1,15 @@
+.logo {
+    display: flex;
+    align-items: center;
+    height: 80px;
+    padding: 10px;
+}
+
+.title {
+    margin: 0;
+    flex-grow: 2;
+    text-align: center;
+    font-size: 1.7em;
+    font-weight: bold;
+    color: #14213d;
+}

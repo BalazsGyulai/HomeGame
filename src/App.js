@@ -33,7 +33,8 @@ function App() {
     UpgradePlayers,
     UpgradeSecureCode,
     showUserSettings,
-    UpgradeUsID
+    UpgradeUsID,
+    UpgradePlayerStatus
   } = useContext(NavManage);
 
   // locate the user
@@ -55,6 +56,7 @@ function App() {
       UpgradeUsID(SessionValue("userID"));
       UpgradeSecureCode(SessionValue("gameID"), SessionValue("username"));
       UpgradePlayers();
+      UpgradePlayerStatus("leader");
       upgradeLogin(true);
     } else {
       upgradeLogin(false);
